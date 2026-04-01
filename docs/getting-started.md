@@ -18,7 +18,7 @@ Grimmory is a self-hosted library management system for ebooks, comics, and audi
 Create the directory structure and start the containers:
 
 ```bash
-mkdir -p ~/grimmory/{config/mariadb,data,books,bookdrop}
+mkdir -p ~/grimmory/{mariadb/config,data,books,bookdrop}
 cd ~/grimmory
 ```
 
