@@ -2,6 +2,10 @@
 
 Kobo sync lets you send books from Grimmory to your Kobo eReader and keep reading progress in sync between both. You control what gets synced through a dedicated Kobo shelf: add a book to the shelf and it appears on your device, remove it and it disappears on the next sync. Your shelves and magic shelves carry over as Kobo collections, so the organization you've built in Grimmory follows you to the device.
 
+:::info[Kobo Account Required]
+Your device must be signed in to a Kobo account for this integration to function. 
+:::
+
 The integration works by redirecting your Kobo's built-in sync to Grimmory instead of the Kobo Store. Your Kobo still functions normally (store purchases, firmware updates), but it also pulls books from your Grimmory library.
 
 :::info[File Format Support]
