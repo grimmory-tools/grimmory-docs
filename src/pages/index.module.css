@@ -725,7 +725,7 @@
 .modalIcon {
     width: 52px;
     height: 52px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--primary-400) 0%, var(--primary-600) 100%);
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -815,7 +815,7 @@
 .modalNote svg {
     flex-shrink: 0;
     margin-top: 0.1rem;
-    color: #667eea;
+    color: var(--primary-400);
 }
 
 .launchButton {
@@ -825,7 +825,7 @@
     gap: 0.5rem;
     width: 100%;
     padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--primary-400) 0%, var(--primary-600)  100%);
     color: white;
     font-size: 1.05rem;
     font-weight: 600;
