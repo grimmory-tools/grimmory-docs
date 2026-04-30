@@ -1,11 +1,52 @@
 :root {
-    --ifm-color-primary: #818cf8;
-    --ifm-color-primary-dark: #6366f1;
-    --ifm-background-color: #0f172a;
-    --ifm-navbar-background-color: rgba(30, 41, 59, 0.9);
-    --ifm-card-background: #1a2332;
-    --ifm-menu-color-background-active: #334155;
-    --ifm-menu-color-background-hover: #293548;
+    --primary-50: #fff7ed;
+    --primary-100: #ffedd5;
+    --primary-200: #fed7aa;
+    --primary-300: #fdba74;
+    --primary-400: #fb923c;
+    --primary-500: #f97316;
+    --primary-600: #ea580c;
+    --primary-700: #c2410c;
+    --primary-800: #9a3412;
+    --primary-900: #7c2d12;
+    --primary-950: #431407;
+
+    --surface-0: #ffffff;
+    --surface-50: #f4f6f8;
+    --surface-100: #e6e9ed;
+    --surface-200: #d3d8de;
+    --surface-300: #b4bcc7;
+    --surface-400: #919ca9;
+    --surface-500: #71808a;
+    --surface-600: #5a666f;
+    --surface-700: #464f56;
+    --surface-800: #34393e;
+    --surface-900: #1a1e21;
+    --surface-950: #0d1012;
+
+    --secondary-50: #f0f9ff;
+    --secondary-100: #e0f2fe;
+    --secondary-200: #bae6fd;
+    --secondary-300: #7dd3fc;
+    --secondary-400: #38bdf8;
+    --secondary-500: #0ea5e9;
+    --secondary-600: #0284c7;
+    --secondary-700: #0369a1;
+    --secondary-800: #075985;
+    --secondary-900: #0c4a6e;
+    --secondary-950: #082f49;
+
+    --logo-bookmark: green;
+    --logo-gradient-start: var(--primary-400);
+    --logo-gradient-end: var(--primary-600);
+
+    --ifm-color-primary: var(--primary-400);
+    --ifm-color-primary-dark: var(--primary-600);
+    --ifm-background-color: #0d1012;
+    --ifm-navbar-background-color: #2b2623;
+    --ifm-card-background: #13151c;
+    --ifm-menu-color-background-active: #2b2623;
+    --ifm-menu-color-background-hover: #282d32;
 
     --ifm-font-family-base: 'Inter', 'Segoe UI', sans-serif;
     --ifm-font-weight-base: 400;
@@ -15,9 +56,9 @@
 
     --ifm-navbar-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     --ifm-card-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
-    --ifm-code-background: #334155;
+    --ifm-code-background: #2b2623;
 
-    --custom-navbar-bg: rgba(24, 31, 57, 0.7);
+    --custom-navbar-bg: #2b2623;
 }
 
 .container {
