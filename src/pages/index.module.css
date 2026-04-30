@@ -85,9 +85,9 @@
     overflow: hidden;
     background: linear-gradient(
         135deg,
-        var(--primary-900) 0%,
-        var(--secondary-950) 50%,
-        var(--secondary-900) 100%
+        var(--primary-400) 0%,
+        var(--secondary-900) 50%,
+        var(--secondary-950) 100%
     );
     color: white;
 }
@@ -101,41 +101,8 @@
     overflow: hidden;
 }
 
-.floatingOrb1 {
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--primary-300) 0%, transparent 70%);
-    top: -80px;
-    right: -80px;
-    animation: float 8s ease-in-out infinite;
-    filter: blur(40px);
-}
-
-.floatingOrb2 {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--primary-300) 0%, transparent 70%);
-    bottom: -40px;
-    left: -40px;
-    animation: floatReverse 10s ease-in-out infinite;
-    filter: blur(40px);
-}
-
-.floatingOrb3 {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(99, 179, 237, 0.2) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 6s ease-in-out infinite;
-    filter: blur(50px);
+.floatingOrb1, .floatingOrb2, .floatingOrb3 {
+    display: none;
 }
 
 .gridPattern {
@@ -633,10 +600,10 @@
 .cta {
     padding: 3.5rem 2rem;
     background: linear-gradient(
-        135deg,
-        var(--secondary-900) 0%,
-        var(--secondary-950) 50%,
-        var(--primary-900) 100%
+        315deg,
+        var(--primary-400) 0%,
+        var(--secondary-900) 50%,
+        var(--secondary-950) 100%
     );
     color: white;
     text-align: center;

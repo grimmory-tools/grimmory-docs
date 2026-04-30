@@ -20,9 +20,9 @@
     --surface-500: #71808a;
     --surface-600: #5a666f;
     --surface-700: #464f56;
-    --surface-800: #34393e;
-    --surface-900: #1a1e21;
-    --surface-950: #0d1012;
+    --surface-800: #3b332e;
+    --surface-900: #211d1a;
+    --surface-950: #120f0d;
 
     --secondary-50: #f0f9ff;
     --secondary-100: #e0f2fe;
@@ -33,8 +33,8 @@
     --secondary-600: #0284c7;
     --secondary-700: #0369a1;
     --secondary-800: #075985;
-    --secondary-900: #0c4a6e;
-    --secondary-950: #082f49;
+    --secondary-900: #1e3a8a;
+    --secondary-950: #0f170a;
 
     --logo-bookmark: green;
     --logo-gradient-start: var(--primary-400);
@@ -43,10 +43,11 @@
     --ifm-color-primary: var(--primary-400);
     --ifm-color-primary-dark: var(--primary-600);
     --ifm-background-color: #0d1012;
-    --ifm-navbar-background-color: #2b2623;
+    --ifm-navbar-background-color: var(--surface-900);
+    --ifm-footer-background-color: var(--surface-900);
     --ifm-card-background: #13151c;
-    --ifm-menu-color-background-active: #2b2623;
-    --ifm-menu-color-background-hover: #282d32;
+    --ifm-menu-color-background-active: var(--surface-800);
+    --ifm-menu-color-background-hover: var(--surface-900);
 
     --ifm-font-family-base: 'Inter', 'Segoe UI', sans-serif;
     --ifm-font-weight-base: 400;
@@ -76,6 +77,10 @@
     -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--ifm-navbar-shadow);
     padding-left: calc(var(--ifm-navbar-padding-horizontal) + 0.5rem);
+}
+
+.footer {
+    background: var(--surface-900) !important;
 }
 
 .navbar-sidebar--show {
