@@ -61,6 +61,9 @@ const config: Config = {
   
   themeConfig: {
     navbar: {
+      logo: {
+        src: 'img/logo.svg',
+      },
       title: 'Grimmory',
       items: [
         {
