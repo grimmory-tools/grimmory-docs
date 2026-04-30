@@ -21,7 +21,7 @@
     --surface-600: #5a666f;
     --surface-700: #464f56;
     --surface-800: #3b332e;
-    --surface-900: #211d1a;
+    --surface-900: #2b2623;
     --surface-950: #120f0d;
 
     --secondary-50: #f0f9ff;
@@ -57,9 +57,9 @@
 
     --ifm-navbar-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     --ifm-card-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
-    --ifm-code-background: #2b2623;
+    --ifm-code-background: var(--surface-900);
 
-    --custom-navbar-bg: #2b2623;
+    --custom-navbar-bg: var(--surface-900);
 }
 
 .container {
