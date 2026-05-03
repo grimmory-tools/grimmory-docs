@@ -1,4 +1,5 @@
 import {themes as prismThemes} from 'prism-react-renderer';
+import type {ScalarOptions} from '@scalar/docusaurus';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
@@ -58,6 +59,25 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+
+  plugins: [
+    [
+      '@scalar/docusaurus',
+      {
+        label: 'API',
+        route: '/api',
+        showNavLink: false,
+        configuration: {
+          url: 'https://github.com/grimmory-tools/grimmory/releases/latest/download/openapi.json',
+          proxyUrl: 'https://proxy.scalar.com',
+          hideDarkModeToggle: true,
+          hideSearch: true,
+          showDeveloperTools: 'never',
+          layout: 'modern',
+        },
+      } satisfies ScalarOptions,
+    ],
+  ],
   
   themeConfig: {
     navbar: {
@@ -71,6 +91,11 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Docs',
+        },
+        {
+          to: '/api',
+          position: 'left',
+          label: 'API',
         },
         {
           type: 'search',
