@@ -41,7 +41,7 @@ const features: FeatureItem[] = [
   {
     icon: '🔄',
     title: 'Kobo & KOReader Sync',
-    description: 'Sync reading progress and highlights across Kobo and KOReader devices seamlessly.',
+    description: 'Sync content and reading progress across Kobo and KOReader devices seamlessly.',
   },
   {
     icon: '✉️',
