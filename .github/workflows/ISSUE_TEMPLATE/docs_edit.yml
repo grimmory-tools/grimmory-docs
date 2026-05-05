@@ -1,0 +1,70 @@
+name: ✏️ Documentation Edit
+description: Report an issue with existing documentation (incorrect, outdated, unclear, or formatting)
+title: "[Docs Edit]: "
+labels:
+  - docs-edit
+body:
+  - type: input
+    id: page_url
+    attributes:
+      label: Page / URL
+      description: Link to the documentation page that needs updating
+      placeholder: https://grimmory.org/docs...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Type of issue
+      description: What kind of problem is this?
+      options:
+        - Incorrect information
+        - Outdated content
+        - Unclear or confusing explanation
+        - Formatting / layout issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to change?
+      description: Clearly describe the problem.
+      placeholder: If this is result of a PR, link that
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_fix
+    attributes:
+      label: Suggested fix (optional)
+      description: If you have a proposed change, share it here
+      placeholder: You could update this section to say...
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or error messages (optional)
+      description: Drag and drop images here, or paste any error text you see.
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Want to help out?
+      options:
+        - "Yes! I'd love to help implement this"
+        - "I'm happy to help test and give feedback"
+        - "Just sharing the idea for now"
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've searched existing discussions and this hasn't been reported yet
+          required: true
+        - label: I've reviewed this report and have completed it as fully as I can
+          required: true
