@@ -3,6 +3,7 @@ description: Request or propose new documentation content
 title: "[Docs New]: "
 labels:
   - docs-new
+type: Documentation
 body:
   - type: input
     id: topic

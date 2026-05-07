@@ -3,6 +3,7 @@ description: Report an issue with existing documentation (incorrect, outdated, u
 title: "[Docs Edit]: "
 labels:
   - docs-edit
+type: Documentation  
 body:
   - type: input
     id: page_url
