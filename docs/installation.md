@@ -28,12 +28,12 @@ mkdir -p ~/grimmory/books
 mkdir -p ~/grimmory/bookdrop
 ```
 
-| Directory | Purpose |
-|-----------|---------|
-| `mariadb/config` | Database files. **Back this up.** |
-| `data` | Application data, cache, logs |
-| `books` | Your book library storage |
-| `bookdrop` | Auto-import folder (see [Bookdrop](bookdrop)) |
+| Directory        | Purpose                                       |
+| ---------------- | --------------------------------------------- |
+| `mariadb/config` | Database files. **Back this up.**             |
+| `data`           | Application data, cache, logs                 |
+| `books`          | Your book library storage                     |
+| `bookdrop`       | Auto-import folder (see [Bookdrop](bookdrop)) |
 
 ---
 
@@ -72,7 +72,7 @@ Change default passwords before deploying!
 
 Create `docker-compose.yml`:
 
-````yaml
+```yaml
 services:
   grimmory:
     image: grimmory/grimmory:latest
@@ -98,7 +98,6 @@ services:
 
   mariadb:
     image: lscr.io/linuxserver/mariadb:11.4.5
-    container_name: mariadb
     environment:
       - PUID=${DB_USER_ID}
       - PGID=${DB_GROUP_ID}
@@ -111,11 +110,11 @@ services:
       - ./mariadb/config:/config
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
       retries: 10
-````
+```
 
 #### Configuration Notes
 
@@ -168,6 +167,7 @@ Common causes: incorrect volume paths, port 6060 already in use, database passwo
 Verify MariaDB is healthy with `docker compose ps mariadb`. Ensure `DATABASE_PASSWORD` matches `MYSQL_PASSWORD` and `DATABASE_USERNAME` matches `MYSQL_USER`.
 
 **Reset database (last resort):**
+
 ```bash
 docker compose down
 rm -rf ~/grimmory/mariadb/config/*
@@ -181,6 +181,7 @@ This deletes all library metadata. Books remain but need re-importing.
 ### Permission Errors
 
 Find your user/group IDs with `id -u` and `id -g`, update `.env` accordingly, then fix directory ownership:
+
 ```bash
 sudo chown -R $USER:$USER ~/grimmory
 ```
@@ -188,14 +189,16 @@ sudo chown -R $USER:$USER ~/grimmory
 ### Port Already in Use
 
 Check what's using port 6060 with `sudo lsof -i :6060`, or change the port mapping in `docker-compose.yml`:
+
 ```yaml
 ports:
-  - "8080:6060"  # Access via http://localhost:8080
+  - "8080:6060" # Access via http://localhost:8080
 ```
 
 ### Can't Access from Network
 
 Open the port in your firewall:
+
 ```bash
 # UFW
 sudo ufw allow 6060/tcp
