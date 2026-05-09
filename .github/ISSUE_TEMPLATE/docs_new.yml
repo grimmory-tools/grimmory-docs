@@ -1,0 +1,69 @@
+name: 📄 New Documentation
+description: Request or propose new documentation content
+title: "[Docs New]: "
+labels:
+  - docs-new
+type: Documentation
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: What topic or feature needs documentation?
+      placeholder: e.g., Authentication flow, API pagination, Customization, etc.
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Suggested location
+      description: Where should this live in the docs?
+      placeholder: e.g., /docs/api, Getting Started section
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Why is this documentation needed?
+      placeholder: Users cannot currently figure out how to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: outline
+    attributes:
+      label: Proposed outline
+      description: Provide a rough structure or bullet points
+      placeholder: |
+        - Overview
+        - Prerequisites
+        - Step-by-step instructions
+        - Examples
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References (optional)
+      description: Links, specs, or related resources
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Want to help out?
+      options:
+        - "Yes! I'd love to help implement this"
+        - "I'm happy to help test and give feedback"
+        - "Just sharing the idea for now"
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've searched existing discussions and this hasn't been reported yet
+          required: true
+        - label: I've reviewed this report and have completed it as fully as I can
+          required: true
