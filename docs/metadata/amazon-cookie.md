@@ -14,9 +14,10 @@ Consider using a secondary Amazon account for this. Automated requests from Grim
 2. Open your browser's developer tools (`F12`, or `Cmd+Option+I` on Mac)
 3. Switch to the **Network** tab
 4. Refresh the page so new requests appear
-5. Click the first request in the list (the main page load)
-6. In the **Headers** panel, scroll down to **Request Headers** and find the `Cookie` field
-7. Copy the entire cookie value
+5. Select **Fetch/XHR** from the top filters
+6. Click the first request in the list (the main page load)
+7. In the **Headers** panel, scroll down to **Request Headers** and find the `Cookie` field
+8. Copy the entire cookie value
 
 ![Browser developer tools showing the Cookie header in Amazon's request headers](/img/metadata/amazon-cookie/amazon-cookie-1.jpg)
 
