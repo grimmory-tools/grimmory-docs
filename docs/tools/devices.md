@@ -60,8 +60,7 @@ When KOReader progress is synced to Grimmory, Grimmory automatically forwards th
 
 ## 📲 Kobo Integration
 
-Sync your Grimmory library and reading progress with your Kobo e-reader. Books on your Kobo shelf are delivered to the device, and reading progress can be synced bidirectionally.
-
+Sync your Grimmory library and reading activity with your Kobo e-reader. Books on your Kobo shelf are delivered to your device, your reading progress syncs both ways, and your Kobo ratings update in Grimmory.
 Requires the **Kobo Sync** permission.
 
 ![Kobo Integration Configuration](/img/devices/kobo-integration.jpg)
@@ -124,5 +123,6 @@ KEPUB and CBX conversions take extra processing time. Large files or libraries w
 - Kobo sync creates a dedicated "Kobo" shelf automatically. Add books to this shelf (or enable auto-add) to sync them to your device.
 - Hardcover sync is triggered automatically whenever KOReader progress is updated. There is no manual sync button.
 - Reading progress from KOReader and Kobo is stored separately, so both devices can be used independently.
+- Personal ratings set on Kobo sync into Grimmory on the next Kobo sync. Kobo ratings (1-5) are converted to Grimmory personal ratings (0-10). Existing Grimmory personal ratings are not pushed to Kobo.
 - KEPUB conversion uses the [kepubify](https://github.com/pgaskin/kepubify) tool and is handled server-side.
 - All device settings changes are reflected immediately without needing to restart the server.
