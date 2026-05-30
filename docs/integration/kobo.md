@@ -36,7 +36,9 @@ proxy_busy_buffers_size 256k;
 large_client_header_buffers 8 32k;
 ```
 
-:::info[X-Forwarded-Port] It's common in reverse proxy setups to port forward public listening ports to a different internal port. If your public listening port is different from $server_port, you must set X-Forwarded-Port to the public listening port. ie. public exposed port is 443 while nginx is listening on 8443
+:::info[X-Forwarded-Port]
+If your public listening port is different from your internal $server_port, you should set X-Forwarded-Port to the public listening port.
+For example, if your public server is available on port 443, but nginx is listening on 8443 you will need to set X-Forwarded-Port to port 443.
 :::
 
 :::info[Nginx Proxy Manager]
