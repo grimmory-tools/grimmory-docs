@@ -36,6 +36,11 @@ proxy_busy_buffers_size 256k;
 large_client_header_buffers 8 32k;
 ```
 
+:::info[X-Forwarded-Port]
+If your public listening port is different from your internal $server_port, you should set X-Forwarded-Port to the public listening port.
+For example, if your public server is available on port 443, but nginx is listening on 8443 you will need to set X-Forwarded-Port to port 443.
+:::
+
 :::info[Nginx Proxy Manager]
 The proxy headers are set automatically, but you still need to add the buffer settings manually under Advanced > Custom Nginx Configuration.
 :::
