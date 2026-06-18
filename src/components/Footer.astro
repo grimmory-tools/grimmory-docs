@@ -1,0 +1,58 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+
+const year = new Date().getFullYear();
+const links = [
+  { label: 'Docs', href: '/getting-started' },
+  { label: 'API', href: '/api' },
+  { label: 'GitHub', href: 'https://github.com/grimmory-tools/grimmory' },
+  { label: 'Discord', href: 'https://discord.gg/vNsB8CTebs' },
+  { label: 'Sponsor', href: 'https://opencollective.com/grimmory' },
+];
+---
+
+<Default />
+
+<div class="site-footer">
+  <nav class="footer-nav" aria-label="Footer">
+    {links.map(({ label, href }) => (
+      <a href={href} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {label}
+      </a>
+    ))}
+  </nav>
+  <p class="copyright">© {year} Grimmory</p>
+</div>
+
+<style>
+  .site-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: center;
+  }
+  .footer-nav a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+    transition: color 0.15s ease;
+  }
+  .footer-nav a:hover {
+    color: var(--color-primary);
+  }
+  .copyright {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--sl-text-xs);
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+title: "Hardcover API Token Setup"
+sidebar:
+  label: "Hardcover API"
+  order: 8
+---
+
+import ThemeImage from '../../../components/ThemeImage.astro';
+
+[Hardcover](https://hardcover.app) is a book tracking and discovery platform with rich metadata: covers, descriptions, community ratings, review counts, moods, and tags. To use it as a metadata provider in Grimmory, you need a free API token from your Hardcover account.
+
+---
+
+## Get Your Token
+
+1. Sign up or log in at [hardcover.app](https://hardcover.app)
+2. Go to [Account > API](https://hardcover.app/account/api) to open the API Access page
+3. Copy the token from the text box. It starts with `Bearer` followed by a long string beginning with `eyJ...`
+
+<ThemeImage src={"/img/metadata/hardcover-api/hardcover-1.jpg"} alt={"Hardcover API Access page showing the Bearer token"} />
+:::caution[Copy Only the Token]
+The text box contains `Bearer eyJ...`. When pasting into Grimmory, copy only the part **after** `Bearer `. Do not include the word "Bearer" or the space after it.
+:::
+
+---
+
+## Configure Grimmory
+
+1. Open **Settings > Metadata 1**
+2. Enable the **Hardcover** checkbox
+3. Paste the token (without the `Bearer ` prefix) into the **API Token** field
+4. Click **Save**
+
+<ThemeImage src={"/img/metadata/hardcover-api/hardcover-2.jpg"} alt={"Grimmory Metadata 1 settings with the Hardcover token field"} />
+Hardcover is now active as a metadata provider. You can set its priority for individual fields in the Advanced Metadata Fetch dialog.
+
+---
+
+## Troubleshooting
+
+| Problem | What to check |
+|---------|---------------|
+| Authentication errors | Make sure you removed the `Bearer ` prefix. Check for extra spaces at the start or end of the token. |
+| Token stopped working | Hardcover tokens expire after 1 year. Go back to the API page and copy the new token. Hardcover may also reset tokens during their beta period. |
+| No results for a book | Hardcover's coverage is broad but not exhaustive. Verify the book exists on hardcover.app by searching manually. |

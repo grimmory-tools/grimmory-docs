@@ -1,0 +1,1775 @@
+---
+title: "Magic Shelves"
+slug: magic-shelf
+sidebar:
+  label: "Magic Shelf"
+  order: 4
+---
+
+import ThemeImage from '../../../components/ThemeImage.astro';
+
+Magic Shelves are dynamic, rule-based collections that automatically organize your books using metadata filters. Define conditions like *"Unread sci-fi published after 2010 with a Goodreads rating above 4.0"* and the shelf populates itself, no manual sorting required.
+
+---
+
+## How Magic Shelves Work
+
+Each Magic Shelf is defined by a **rule tree**, a set of conditions organized into groups. Rules evaluate book metadata fields against values using operators like `equals`, `contains`, `greater_than`, and more.
+
+- **Rules** check a single field (e.g., `pageCount greater_than 300`).
+- **Groups** combine rules with `AND` (all must match) or `OR` (any can match).
+- **Nesting** allows groups inside groups for complex logic like *(Fantasy AND Unread) OR (Sci-Fi AND Rating > 4)*.
+
+Evaluation happens entirely in the browser, so there are no server round-trips for filtering.
+
+---
+
+## Creating a Magic Shelf
+
+### Step 1: Open the Interface
+
+<ThemeImage src={"/img/magic-shelf/magic-shelf-1.jpg"} alt={"Magic Shelf Open"} />
+Navigate to **Shelves** in the sidebar and click **New Magic Shelf**.
+
+### Step 2: Configure Your Shelf
+
+<ThemeImage src={"/img/magic-shelf/magic-shelf-2.jpg"} alt={"Magic Shelf Create"} />
+1. **Name** - Give your shelf a descriptive name.
+2. **Icon** - Choose a PrimeNG icon or upload a custom SVG.
+3. **Rules** - Click **Add a new rule** to define conditions. Click **Add a new group** to create nested AND/OR logic.
+4. **Save** - Click **Save Shelf** to activate it.
+
+:::tip[Metadata Quality]
+Magic Shelves are only as powerful as your metadata. The more complete your book data (categories, ratings, series info, moods, tags), the more precise your shelves can be.
+:::
+
+---
+
+## Fields Reference
+
+Magic Shelves can filter on any of the following book metadata fields, organized by category.
+
+### Organization
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Library | `library` | ID | The library a book belongs to |
+| Shelf | `shelf` | ID | Static shelves the book is on |
+| Read Status | `readStatus` | Enum | `UNREAD`, `READING`, `RE_READING`, `READ`, `PARTIALLY_READ`, `PAUSED`, `WONT_READ`, `ABANDONED`, `UNSET` |
+| Reading Progress | `readingProgress` | Decimal (0-100) | Maximum progress percentage across all reader formats |
+
+### Book Information
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Title | `title` | Text | Book title |
+| Subtitle | `subtitle` | Text | Book subtitle |
+| Description | `description` | Text | Book synopsis / description |
+| Authors | `authors` | Array | Author name(s) |
+| Categories | `categories` | Array | Genre / category tags |
+| Publisher | `publisher` | Text | Publisher name |
+| Language | `language` | Text | Language code (e.g., `en`, `es`, `de`) |
+| Page Count | `pageCount` | Number | Total pages |
+| Age Rating | `ageRating` | Number | Numeric age rating |
+| Content Rating | `contentRating` | Enum | `EVERYONE`, `TEEN`, `MATURE`, `ADULT`, `EXPLICIT` |
+
+### Series
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Series Name | `seriesName` | Text | Name of the series |
+| Series Number | `seriesNumber` | Decimal | Book's position in the series |
+| Series Total | `seriesTotal` | Number | Total books in the series |
+| Series Status | `seriesStatus` | Composite | `reading`, `not_started`, `fully_read`, `completed`, `ongoing` |
+| Series Gaps | `seriesGaps` | Composite | `any_gap`, `missing_first`, `missing_latest`, `duplicate_number` |
+| Series Position | `seriesPosition` | Composite | `first_in_series`, `last_in_series`, `next_unread` |
+
+### Dates
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Published Date | `publishedDate` | Date | Publication date |
+| Date Finished | `dateFinished` | Date | When you finished reading |
+| Last Read | `lastReadTime` | Date | Last time you opened the book |
+| Added On | `addedOn` | Date | When the book was added to your library |
+
+### Quality & Metadata
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Metadata Score | `metadataScore` | Decimal (0-100) | Grimmory's metadata match confidence |
+| Metadata Presence | `metadataPresence` | Composite | Check whether a specific metadata field is populated or empty. Uses `Has`/`Has Not` operators with a sub-selector of ~45 metadata fields |
+
+### Ratings & Reviews
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Personal Rating | `personalRating` | Decimal (0-10) | Your own rating |
+| Amazon Rating | `amazonRating` | Decimal (0-5) | Amazon average rating |
+| Amazon Reviews | `amazonReviewCount` | Number | Amazon review count |
+| Goodreads Rating | `goodreadsRating` | Decimal (0-5) | Goodreads average rating |
+| Goodreads Reviews | `goodreadsReviewCount` | Number | Goodreads review count |
+| Hardcover Rating | `hardcoverRating` | Decimal (0-5) | Hardcover average rating |
+| Hardcover Reviews | `hardcoverReviewCount` | Number | Hardcover review count |
+| Audible Rating | `audibleRating` | Decimal (0-5) | Audible average rating |
+| Audible Reviews | `audibleReviewCount` | Number | Audible review count |
+| RanobeDB Rating | `ranobedbRating` | Decimal (0-5) | RanobeDB average rating |
+| Lubimyczytac Rating | `lubimyczytacRating` | Decimal (0-5) | Lubimyczytac average rating |
+
+### Tags & Moods
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Moods | `moods` | Array | Mood descriptors (e.g., Dark, Cozy, Suspenseful) |
+| Tags | `tags` | Array | User-defined tags |
+
+### Audiobook
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| Narrator | `narrator` | Text | Audiobook narrator name |
+| Abridged | `abridged` | Boolean | Whether the audiobook is abridged |
+| Duration | `audiobookDuration` | Number (seconds) | Audiobook length in seconds |
+
+### File & Identifiers
+
+| Field | Key | Type | Description |
+|---|---|---|---|
+| File Type | `fileType` | Enum | `PDF`, `EPUB`, `CBR`, `CBZ`, `CB7`, `FB2`, `MOBI`, `AZW3` |
+| File Size | `fileSize` | Number (KB) | File size in kilobytes |
+| ISBN-13 | `isbn13` | Text | 13-digit ISBN |
+| ISBN-10 | `isbn10` | Text | 10-digit ISBN |
+| Physical | `isPhysical` | Boolean | Whether this is a physical book entry |
+
+---
+
+## Operators Reference
+
+### Text Operators
+
+| Operator | Key | Description |
+|---|---|---|
+| Equals | `equals` | Exact match (case-insensitive) |
+| Not Equals | `not_equals` | Does not match |
+| Contains | `contains` | Field includes the substring |
+| Does Not Contain | `does_not_contain` | Field excludes the substring |
+| Starts With | `starts_with` | Field begins with the value |
+| Ends With | `ends_with` | Field ends with the value |
+
+### Multi-Value Operators
+
+Used with array fields (authors, categories, moods, tags) and enum fields (readStatus, fileType, library, shelf).
+
+| Operator | Key | Description |
+|---|---|---|
+| Includes Any | `includes_any` | At least one of the specified values is present |
+| Includes All | `includes_all` | All specified values are present |
+| Excludes All | `excludes_all` | None of the specified values are present |
+
+### Comparison Operators
+
+Used with numeric, decimal, and date fields.
+
+| Operator | Key | Description |
+|---|---|---|
+| Greater Than | `greater_than` | Field value is above the threshold |
+| Greater Than or Equal | `greater_than_equal_to` | Field value is at or above the threshold |
+| Less Than | `less_than` | Field value is below the threshold |
+| Less Than or Equal | `less_than_equal_to` | Field value is at or below the threshold |
+| Between | `in_between` | Field value falls within a range (inclusive). Uses `valueStart` and `valueEnd` |
+
+### Empty Check Operators
+
+| Operator | Key | Description |
+|---|---|---|
+| Is Empty | `is_empty` | Field is null, empty string, or empty array |
+| Is Not Empty | `is_not_empty` | Field has a value |
+
+### Relative Date Operators
+
+Used exclusively with date fields (`publishedDate`, `dateFinished`, `lastReadTime`, `addedOn`).
+
+| Operator | Key | Value | Unit (`valueEnd`) | Description |
+|---|---|---|---|---|
+| Within Last | `within_last` | Number | `days`, `weeks`, `months`, `years` | Date is within the last N units |
+| Older Than | `older_than` | Number | `days`, `weeks`, `months`, `years` | Date is older than N units ago |
+| This Period | `this_period` | `week`, `month`, `year` | n/a | Date falls within the current period |
+
+### Composite Field Operators
+
+Used with `seriesStatus`, `seriesGaps`, `seriesPosition`, and `metadataPresence`. Series fields evaluate the entire series a book belongs to. `metadataPresence` checks whether a specific metadata field is populated on the book.
+
+| Operator | Key | Description |
+|---|---|---|
+| Is / Has | `equals` | The condition is true |
+| Is Not / Has Not | `not_equals` | The condition is false |
+
+**Series Status values:** `reading`, `not_started`, `fully_read`, `completed`, `ongoing`
+**Series Gaps values:** `any_gap`, `missing_first`, `missing_latest`, `duplicate_number`
+**Series Position values:** `first_in_series`, `last_in_series`, `next_unread`
+
+**Metadata Presence values:** Any metadata field key from the sub-selector dropdown, including: `title`, `subtitle`, `description`, `thumbnailUrl`, `publisher`, `publishedDate`, `language`, `pageCount`, `authors`, `categories`, `moods`, `tags`, `seriesName`, `seriesNumber`, `seriesTotal`, `isbn13`, `isbn10`, `asin`, `ageRating`, `contentRating`, `personalRating`, `amazonRating`, `goodreadsRating`, `hardcoverRating`, `ranobedbRating`, `lubimyczytacRating`, `audibleRating`, `amazonReviewCount`, `goodreadsReviewCount`, `hardcoverReviewCount`, `audibleReviewCount`, `goodreadsId`, `hardcoverId`, `googleId`, `audibleId`, `lubimyczytacId`, `ranobedbId`, `comicvineId`, `narrator`, `abridged`, `audiobookDuration`, `comicCharacters`, `comicTeams`, `comicLocations`, `comicPencillers`, `comicInkers`, `comicColorists`, `comicLetterers`, `comicCoverArtists`, `comicEditors`
+
+---
+
+## JSON Structure
+
+Each Magic Shelf stores its rules as a JSON object in the `filter_json` column. The root element is always a **group**.
+
+### Group
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [ ]
+}
+```
+
+| Property | Type | Description |
+|---|---|---|
+| `type` | `"group"` | Identifies this as a group (required for nested groups) |
+| `join` | `"and"` or `"or"` | How child rules are combined |
+| `rules` | Array | Child rules and/or nested groups |
+
+### Rule
+
+```json
+{
+  "field": "readStatus",
+  "operator": "equals",
+  "value": "READING"
+}
+```
+
+| Property | Type | Description |
+|---|---|---|
+| `field` | String | The metadata field key (see Fields Reference) |
+| `operator` | String | The comparison operator (see Operators Reference) |
+| `value` | Any | The comparison value. Array for multi-value operators, number for numeric fields, string for text |
+| `valueStart` | Any | Start value for `in_between` operator |
+| `valueEnd` | Any | End value for `in_between`, or unit string for `within_last`/`older_than` |
+
+### Nesting Example
+
+Groups can contain other groups for complex boolean logic:
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "categories", "operator": "includes_any", "value": ["Fantasy"] },
+        { "field": "categories", "operator": "includes_any", "value": ["Science Fiction"] }
+      ]
+    }
+  ]
+}
+```
+
+This matches: **Unread books** that are **either Fantasy or Science Fiction**.
+
+---
+
+## Sharing Shelves
+
+To share a Magic Shelf configuration with another user, right-click the shelf in the sidebar and select **Copy JSON**. The full rule tree is copied to your clipboard as JSON.
+
+<ThemeImage src={"/img/magic-shelf/magic-shelf-export.jpg"} alt={"Copy JSON option in the Magic Shelf context menu"} />
+The recipient can then import this JSON when creating a new Magic Shelf (see below), or you can use it as a backup of your shelf configuration.
+
+---
+
+## Importing Shelves
+
+### From the UI
+
+The easiest way to import a shelf is through the Magic Shelf Builder.
+
+1. Open the builder by clicking **New Magic Shelf** (or editing an existing one).
+2. Click the **Import** button at the bottom-left of the dialog.
+3. Paste the JSON into the text area and click **Apply**.
+
+<ThemeImage src={"/img/magic-shelf/magic-shelf-import-json.jpg"} alt={"Pasting JSON into the import text area"} />
+The builder validates the JSON and populates the rule tree so you can review or tweak the rules before saving.
+
+<ThemeImage src={"/img/magic-shelf/magic-shelf-import-applied.jpg"} alt={"Rules populated after applying imported JSON"} />
+### Via SQL
+
+You can also insert Magic Shelves directly into the database. Replace `<USER_ID>` with your user ID and paste the `filter_json` from any example below.
+
+```sql
+INSERT INTO magic_shelf (user_id, name, icon, icon_type, filter_json, is_public)
+VALUES (
+  <USER_ID>,
+  'Shelf Name',
+  'star',
+  'PRIME_NG',
+  '<PASTE THE JSON HERE AS A SINGLE-LINE STRING>',
+  false
+);
+```
+
+:::caution[JSON Formatting]
+The `filter_json` column expects a valid JSON string. When pasting into SQL, ensure the JSON is on a single line with internal quotes properly escaped, or use your database client's JSON insertion support.
+:::
+
+To find your user ID:
+
+```sql
+SELECT id, username FROM users;
+```
+
+---
+
+## Example Library
+
+Below are ready-to-use Magic Shelf configurations. Each includes the `filter_json` content you can copy directly.
+
+---
+
+### Reading Status & Progress
+
+#### 1. Currently Reading
+
+Surface every book you're in the middle of right now. Whether it's a first read or a revisit, this shelf keeps your active reads front and center so you always know what's on your nightstand.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READING" },
+    { "field": "readStatus", "operator": "equals", "value": "RE_READING" }
+  ]
+}
+```
+
+#### 2. Unread Backlog
+
+The full scope of your to-be-read pile in one place. Every book sitting in your library that you haven't cracked open yet. Stare at it, feel inspired, feel overwhelmed, and then pick one.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" }
+  ]
+}
+```
+
+#### 3. Finished This Year
+
+Your annual reading achievement tracker. Every book you've completed since January 1st of the current year shows up here automatically, giving you a running count of your yearly reading goal progress.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "dateFinished", "operator": "this_period", "value": "year" }
+  ]
+}
+```
+
+#### 4. Recently Finished (Last 30 Days)
+
+A rolling 30-day window of your completed reads. Great for tracking your reading velocity, sharing recent recommendations with friends, or just admiring how productive you've been lately.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "dateFinished", "operator": "within_last", "value": 30, "valueEnd": "days" }
+  ]
+}
+```
+
+#### 5. Stalled Reads
+
+These are the books you started with the best of intentions but haven't touched in over a month. This shelf is your gentle wake-up call: either pick them back up, or be honest with yourself and shelve them as abandoned.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READING" },
+    { "field": "lastReadTime", "operator": "older_than", "value": 30, "valueEnd": "days" }
+  ]
+}
+```
+
+#### 6. Abandoned & DNF
+
+Your graveyard of books that didn't make the cut. Maybe the writing wasn't for you, maybe the plot fizzled out. Either way, keeping track of your DNFs (Did Not Finish) helps you avoid re-purchasing them and lets you revisit the list when you're feeling generous.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "ABANDONED" },
+    { "field": "readStatus", "operator": "equals", "value": "WONT_READ" }
+  ]
+}
+```
+
+#### 7. Almost Done
+
+You're at 75% or more but haven't crossed the finish line yet. These books are so close to done that a single dedicated reading session could check them off your list. Stop starting new books and finish these first.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readingProgress", "operator": "greater_than_equal_to", "value": 75 },
+    { "field": "readStatus", "operator": "not_equals", "value": "READ" }
+  ]
+}
+```
+
+#### 8. Quick Wins
+
+Short unread books under 200 pages that you can realistically finish in a day or two. When you're in a reading slump or need a confidence boost, grab one of these and enjoy the satisfaction of checking it off fast.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "pageCount", "operator": "less_than", "value": 200 },
+    { "field": "pageCount", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 9. Comfort Re-Read Candidates
+
+These are your all-time favorites, the books you rated 9 or 10 out of 10. When you don't feel like gambling on something new, reach for one of these guaranteed great reads. Like comfort food, but for your brain.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READ" },
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 9 }
+  ]
+}
+```
+
+#### 10. Half-Read Limbo
+
+Books stuck in purgatory between 25% and 75% progress. You've invested enough time that abandoning them feels wasteful, but not enough to see the light at the end of the tunnel. This shelf forces you to confront them and decide: push through or let go.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readingProgress", "operator": "in_between", "valueStart": 25, "valueEnd": 75 },
+    { "field": "readStatus", "operator": "not_equals", "value": "READ" }
+  ]
+}
+```
+
+---
+
+### Genre & Category Collections
+
+#### 11. Dark Academia
+
+Ivy-covered colleges, morally questionable protagonists, and prose dripping with atmosphere. This shelf combines Gothic and literary fiction categories with dark, atmospheric moods to surface the kind of books where secret societies meet beautiful writing.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Gothic Fiction", "Literary Fiction", "Dark Academia"] },
+    { "field": "moods", "operator": "includes_any", "value": ["Dark", "Atmospheric", "Mysterious"] }
+  ]
+}
+```
+
+#### 12. Cozy Mysteries
+
+Tea shops, small towns, amateur sleuths, and murders that somehow feel charming. This shelf pairs mystery categories with cozy, light moods so you get the puzzle-solving fun without the gritty crime scene darkness. Perfect for rainy afternoons with a cup of tea.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Mystery", "Cozy Mystery", "Crime"] },
+    { "field": "moods", "operator": "includes_any", "value": ["Cozy", "Light", "Heartwarming"] }
+  ]
+}
+```
+
+#### 13. Epic Fantasy Doorstoppers
+
+Massive fantasy novels over 500 pages packed with sprawling worlds, complex magic systems, and casts of characters you'll need a glossary to keep track of. These are the books that demand weeks of your time and reward every page.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Fantasy", "Epic Fantasy", "High Fantasy"] },
+    { "field": "pageCount", "operator": "greater_than", "value": 500 }
+  ]
+}
+```
+
+#### 14. Romantic Suspense
+
+The best of both worlds: heart-racing tension and heart-fluttering romance woven together. This shelf finds books that live in both the romance and thriller categories, where the danger is real and the chemistry is undeniable.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Romance", "Romantic Suspense"] },
+    { "field": "categories", "operator": "includes_any", "value": ["Thriller", "Suspense", "Mystery"] }
+  ]
+}
+```
+
+#### 15. Hard Sci-Fi Deep Dives
+
+Science fiction that takes the "science" part seriously. This shelf uses a nested OR group to scan book descriptions for keywords like *physics*, *quantum*, *space*, and *relativity*, combined with sci-fi categories. The result: books that make you think as much as they entertain.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Science Fiction", "Hard Science Fiction"] },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "description", "operator": "contains", "value": "physics" },
+        { "field": "description", "operator": "contains", "value": "quantum" },
+        { "field": "description", "operator": "contains", "value": "space" },
+        { "field": "description", "operator": "contains", "value": "relativity" }
+      ]
+    }
+  ]
+}
+```
+
+#### 16. True Crime Collection
+
+Real-world crime stories that are stranger than fiction. Investigations, serial killers, courtroom dramas, cold cases, and forensic deep dives. This shelf gathers every true crime book in your library into one gripping, addictive collection.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["True Crime", "Crime", "Criminology"] }
+  ]
+}
+```
+
+#### 17. Philosophy & Self-Improvement
+
+Books for the mind and soul. From ancient Stoic wisdom to modern psychology and personal development, this shelf gathers everything aimed at helping you think deeper, live better, and understand the human condition.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Philosophy", "Self-Help", "Psychology", "Personal Development", "Mindfulness"] }
+  ]
+}
+```
+
+#### 18. Horror & Supernatural
+
+Ghosts, monsters, cursed objects, and things that go bump in the night. This shelf casts a wide net across horror sub-genres to build your ultimate scary reading list. Best enjoyed with all the lights on.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Horror", "Supernatural", "Gothic", "Ghost Stories", "Paranormal"] }
+  ]
+}
+```
+
+#### 19. Children's & Young Adult
+
+Everything for younger readers gathered into one family-friendly shelf. Middle grade adventures, YA romances, picture books, and coming-of-age stories. Great for parents curating their kids' reading lists or adults who never outgrew the magic of these genres.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Young Adult", "Children's", "Middle Grade", "Picture Books", "Juvenile Fiction"] }
+  ]
+}
+```
+
+#### 20. Graphic Novels & Comics
+
+Visual storytelling in all its forms. This shelf uses an OR group to catch both category-tagged graphic novels and comic book file formats (CBR, CBZ, CB7), ensuring nothing slips through the cracks regardless of how it was imported.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Graphic Novel", "Comics", "Manga", "Comic Book"] },
+    { "field": "fileType", "operator": "includes_any", "value": ["CBR", "CBZ", "CB7"] }
+  ]
+}
+```
+
+---
+
+### Ratings & Reviews
+
+#### 21. Hidden Gems
+
+These are the books the algorithms missed. Rated 4.0+ on Goodreads but with fewer than 5,000 reviews, they represent genuine quality that hasn't hit the mainstream yet. Discover your next favorite book before everyone else does.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 },
+    { "field": "goodreadsReviewCount", "operator": "less_than", "value": 5000 },
+    { "field": "goodreadsReviewCount", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 22. Universally Acclaimed
+
+When both Amazon and Goodreads agree a book is 4.5+ stars, you know it's something special. These are the books that transcend platform bias and reader demographics, representing the rare consensus picks that almost everyone loves.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "amazonRating", "operator": "greater_than_equal_to", "value": 4.5 },
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.5 }
+  ]
+}
+```
+
+#### 23. Personal Favorites
+
+Your personal hall of fame: every book you've rated 9 or 10 out of 10. These aren't just good books, they're the ones that stayed with you, the ones you'd press into a stranger's hands and say "you have to read this."
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 9 }
+  ]
+}
+```
+
+#### 24. Underrated by You
+
+Your contrarian shelf. These are books you rated 8+ that Goodreads scores below 3.5. Either you have impeccable taste that the masses haven't caught up to, or you found something in these books that others missed. Either way, fascinating picks.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 8 },
+    { "field": "goodreadsRating", "operator": "less_than", "value": 3.5 },
+    { "field": "goodreadsRating", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 25. Bestsellers
+
+The blockbusters of the book world. With 10,000+ Amazon reviews and a 4.0+ rating, these are the books that dominated reading lists and sparked countless conversations. Your library's heavyweight champions.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "amazonReviewCount", "operator": "greater_than", "value": 10000 },
+    { "field": "amazonRating", "operator": "greater_than_equal_to", "value": 4.0 }
+  ]
+}
+```
+
+#### 26. Needs Your Rating
+
+You finished these books but never left a rating. This shelf is a gentle nudge to go back and record your thoughts while the memory is still fresh. Consistent ratings make all your other rating-based shelves work better.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READ" },
+    { "field": "personalRating", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 27. Disappointing Reads
+
+The letdown shelf. Books where Goodreads promised 4.0+ stars but you gave them 4 or less out of 10. Whether the hype was overblown or the book just wasn't your thing, this collection is a useful reference for understanding where your taste diverges from the crowd.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "personalRating", "operator": "less_than_equal_to", "value": 4 },
+    { "field": "personalRating", "operator": "greater_than", "value": 0 },
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 }
+  ]
+}
+```
+
+---
+
+### Series Management
+
+#### 28. Next Up in Series
+
+Your personal reading queue, automatically curated. For every series you've started, this shelf surfaces the next unread entry. No more digging through your library trying to remember which book comes after the one you just finished.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesPosition", "operator": "equals", "value": "next_unread" }
+  ]
+}
+```
+
+#### 29. Unread Series Starters
+
+The gateway shelf. Every first book in a series that you haven't read yet, waiting for you to take the plunge. This is where new adventures begin. Browse this shelf when you're ready to commit to something fresh and multi-volume.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesPosition", "operator": "equals", "value": "first_in_series" },
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" }
+  ]
+}
+```
+
+#### 30. Series with Missing Books
+
+Gap detector. These are series in your library where the numbering has holes: you own book 1 and book 3, but book 2 is nowhere to be found. Use this shelf to identify which series need completing before you can read them straight through.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesGaps", "operator": "equals", "value": "any_gap" }
+  ]
+}
+```
+
+#### 31. Missing Book One
+
+You can't start a series without the first book, and this shelf finds every series where that's exactly your problem. Whether it's a lending oversight or an incomplete download, these are the gaps worth filling first.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesGaps", "operator": "equals", "value": "missing_first" }
+  ]
+}
+```
+
+#### 32. Fully Read Series
+
+The victory lap shelf. Every series where you've read every single book from start to finish. These completed conquests are proof of your dedication and a great source of recommendations for friends looking for a binge-worthy series.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesStatus", "operator": "equals", "value": "fully_read" }
+  ]
+}
+```
+
+#### 33. Unstarted Series
+
+Entire series sitting untouched in your library, waiting for you to dive in. Sometimes you buy all the books with the best of intentions. This shelf shows you which series are still at zero progress so you can finally pick one to begin.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesStatus", "operator": "equals", "value": "not_started" }
+  ]
+}
+```
+
+#### 34. Currently Active Series
+
+Series where you're actively in the middle of reading at least one book. This keeps your ongoing multi-book journeys visible so they don't get lost in the shuffle of standalone reads.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesStatus", "operator": "equals", "value": "reading" }
+  ]
+}
+```
+
+#### 35. Long-Running Series (10+ Books)
+
+The marathons of the book world. Series with 10 or more installments that represent a serious time investment. Whether it's a sprawling fantasy epic or a long-running mystery series, these are the collections that reward long-term commitment.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesName", "operator": "is_not_empty", "value": null },
+    { "field": "seriesTotal", "operator": "greater_than_equal_to", "value": 10 }
+  ]
+}
+```
+
+#### 36. Standalone Books
+
+Self-contained stories with no sequels, no cliffhangers, and no pressure to buy the next installment. Sometimes you just want a complete experience in one book. This shelf isolates everything that isn't part of a series.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesName", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 37. Ongoing Series (Not Yet Complete)
+
+Series where the author hasn't published the final book yet. These are the ones where you might want to wait before starting, or at least brace yourself for the agony of waiting for the next release.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesStatus", "operator": "equals", "value": "ongoing" }
+  ]
+}
+```
+
+#### 38. Duplicate Series Entries
+
+A quality control shelf that flags series where multiple books share the same series number. This usually indicates duplicate imports, mismatched metadata, or edition conflicts that need manual cleanup.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesGaps", "operator": "equals", "value": "duplicate_number" }
+  ]
+}
+```
+
+---
+
+### Library Maintenance & Metadata Quality
+
+#### 39. Missing Core Metadata
+
+The essential cleanup shelf. Using an OR group, it catches any book missing a title, authors, or categories. These are the three fields that every book should have, and gaps here make search, filtering, and other Magic Shelves less effective.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "title", "operator": "is_empty", "value": null },
+    { "field": "authors", "operator": "is_empty", "value": null },
+    { "field": "categories", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 40. Uncategorized Books
+
+Books with no genre or category assigned. Without categories, these books are invisible to every genre-based Magic Shelf you create. Fix these first for the biggest improvement in your library's organization.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 41. No Description
+
+Books without a synopsis or description. You'll see these as blank cards when browsing, and they're harder to recommend or remember what they're about. A quick metadata refresh usually fixes them.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "description", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 42. Low Metadata Match Score
+
+Books where Grimmory had less than 50% confidence in the metadata match during import. These may have the wrong cover, wrong description, or data from a completely different edition. Worth reviewing manually to make sure nothing got mixed up.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "metadataScore", "operator": "less_than", "value": 50 },
+    { "field": "metadataScore", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 43. Missing ISBN
+
+Books with neither ISBN-13 nor ISBN-10 recorded. ISBNs are the universal book identifier, and without one, automatic metadata lookups and cross-referencing become much harder. These may need a manual search to find the right edition.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "isbn13", "operator": "is_empty", "value": null },
+    { "field": "isbn10", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 44. Read But Untagged
+
+You've already finished these books, so you know what they're about. Yet they have no user tags. Take a few minutes to tag them retroactively and you'll unlock much richer tag-based filtering across your entire library.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READ" },
+    { "field": "tags", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 45. Missing Publisher
+
+Books with no publisher information. This is common with self-published works, fan translations, or files that were poorly scraped during import. Adding publisher data helps with sorting and discovering patterns in your reading preferences.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "publisher", "operator": "is_empty", "value": null },
+    { "field": "authors", "operator": "is_not_empty", "value": null }
+  ]
+}
+```
+
+#### 46. No Mood Data
+
+Books without any mood tags assigned. Moods like *Dark*, *Cozy*, *Suspenseful*, and *Heartwarming* are what power mood-based shelves and make "what should I read next?" decisions so much easier. This shelf shows you where to start tagging.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "moods", "operator": "is_empty", "value": null }
+  ]
+}
+```
+
+#### 86. Missing Cover or Description
+
+A quick audit shelf that catches any book missing a cover image or a description. These are the two most visible pieces of metadata — without them, books look incomplete in your library and are harder to browse. Using `metadataPresence` with `Has Not` makes this a single rule per field instead of juggling `is_empty` across different field types.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "metadataPresence", "operator": "not_equals", "value": "thumbnailUrl" },
+    { "field": "metadataPresence", "operator": "not_equals", "value": "description" }
+  ]
+}
+```
+
+#### 87. Books Without External IDs
+
+Books that are missing key external identifiers like Goodreads ID, ASIN, and Google ID. Without these, automatic metadata lookups and cross-referencing across platforms won't work. This shelf helps you identify which books need a manual metadata refresh.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "metadataPresence", "operator": "not_equals", "value": "goodreadsId" },
+    { "field": "metadataPresence", "operator": "not_equals", "value": "asin" },
+    { "field": "metadataPresence", "operator": "not_equals", "value": "googleId" }
+  ]
+}
+```
+
+#### 88. Audiobooks Missing Narrator Info
+
+Audiobooks that have a duration recorded but no narrator name. The narrator is one of the most important factors in audiobook quality, so having this data helps you search and filter your audio collection effectively.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "metadataPresence", "operator": "equals", "value": "audiobookDuration" },
+    { "field": "metadataPresence", "operator": "not_equals", "value": "narrator" }
+  ]
+}
+```
+
+#### 89. Well-Catalogued Books
+
+The gold standard shelf. Books that have all the essentials: cover image, description, authors, categories, and at least one external ID. These are the books whose metadata is in great shape and need no further attention.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "metadataPresence", "operator": "equals", "value": "thumbnailUrl" },
+    { "field": "metadataPresence", "operator": "equals", "value": "description" },
+    { "field": "metadataPresence", "operator": "equals", "value": "authors" },
+    { "field": "metadataPresence", "operator": "equals", "value": "categories" },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "metadataPresence", "operator": "equals", "value": "goodreadsId" },
+        { "field": "metadataPresence", "operator": "equals", "value": "isbn13" },
+        { "field": "metadataPresence", "operator": "equals", "value": "asin" }
+      ]
+    }
+  ]
+}
+```
+
+#### 90. Comics Missing Creator Credits
+
+Comic books that have comic metadata but are missing key creator information like pencillers, inkers, or cover artists. Useful for completionists who want their comic collection properly credited.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "metadataPresence", "operator": "equals", "value": "comicCharacters" },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "metadataPresence", "operator": "not_equals", "value": "comicPencillers" },
+        { "field": "metadataPresence", "operator": "not_equals", "value": "comicInkers" },
+        { "field": "metadataPresence", "operator": "not_equals", "value": "comicCoverArtists" }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### Date-Based Collections
+
+#### 47. Added This Week
+
+Your freshest acquisitions from the last 7 days. This is the "what's new" shelf that automatically rolls forward, always showing your latest library additions. Great for keeping track of impulse purchases and recent discoveries.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "addedOn", "operator": "within_last", "value": 1, "valueEnd": "weeks" }
+  ]
+}
+```
+
+#### 48. Gathering Dust
+
+The guilt shelf. These books were added to your library over 90 days ago, you've never opened them, and they're still marked as unread. They represent good intentions that never turned into action. Maybe today is the day.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "addedOn", "operator": "older_than", "value": 90, "valueEnd": "days" },
+    { "field": "lastReadTime", "operator": "is_empty", "value": null },
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" }
+  ]
+}
+```
+
+#### 49. Classic Literature (Pre-1950)
+
+Timeless works published before 1950. From Victorian novels to early 20th century modernism, this shelf gathers the literary giants that have shaped reading culture for generations. The books your English teacher wanted you to love.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "publishedDate", "operator": "less_than", "value": "1950-01-01" }
+  ]
+}
+```
+
+#### 50. Modern Releases (2020 Onward)
+
+The cutting edge of contemporary publishing. Everything released from 2020 onwards, capturing the latest trends in fiction and non-fiction. This shelf keeps evolving as new books hit your library.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "publishedDate", "operator": "greater_than_equal_to", "value": "2020-01-01" }
+  ]
+}
+```
+
+#### 51. Read Long Ago
+
+Books you finished over a year ago. Enough time has passed that the details have faded, making these perfect candidates for a re-read. You'll rediscover passages you forgot and appreciate the story with fresh eyes.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "dateFinished", "operator": "older_than", "value": 1, "valueEnd": "years" },
+    { "field": "readStatus", "operator": "equals", "value": "READ" }
+  ]
+}
+```
+
+---
+
+### Author, Publisher & Language
+
+#### 52. Foreign Language Collection
+
+Every non-English book in your library, neatly gathered into one multilingual collection. Whether you're practicing a second language or collecting translations, this shelf makes it easy to find books outside the English-speaking world.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "language", "operator": "not_equals", "value": "en" },
+    { "field": "language", "operator": "is_not_empty", "value": null }
+  ]
+}
+```
+
+#### 53. Specific Author Collection
+
+Build a dedicated shelf for your favorite author. The `contains` operator means partial matches work: searching for "sanderson" catches "Brandon Sanderson" without needing the full name. Replace `"sanderson"` with any author you love.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "authors", "operator": "contains", "value": "sanderson" }
+  ]
+}
+```
+
+#### 54. Publisher Spotlight
+
+Group all books from a specific publisher together. Replace `"tor"` with any publisher name. Useful for readers who've noticed they tend to love books from certain imprints, or for tracking your favorite indie publisher's catalog.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "publisher", "operator": "contains", "value": "tor" }
+  ]
+}
+```
+
+#### 55. Books with Subtitles
+
+Books that have subtitle metadata, which often indicates non-fiction, academic works, or expanded/annotated editions. A surprisingly useful filter for separating reference material from pure narrative fiction in your library.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "subtitle", "operator": "is_not_empty", "value": null }
+  ]
+}
+```
+
+---
+
+### File & Format Management
+
+#### 56. EPUB Library
+
+All your EPUB format books in one place. EPUBs are the gold standard for reflowable e-reading, and this shelf gives you a quick view of your primary digital reading collection.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "fileType", "operator": "equals", "value": "EPUB" }
+  ]
+}
+```
+
+#### 57. Comics & Manga Archive
+
+Everything in comic book archive formats (CBR, CBZ, CB7). Your visual storytelling collection, from western comics to manga to webcomics, all identified by their file format regardless of how their metadata is tagged.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "fileType", "operator": "includes_any", "value": ["CBR", "CBZ", "CB7"] }
+  ]
+}
+```
+
+#### 58. Oversized Files (100MB+)
+
+Files larger than 100 MB that are eating through your storage. These are usually image-heavy PDFs, uncompressed comics, or scanned books that could benefit from optimization, compression, or format conversion.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "fileSize", "operator": "greater_than", "value": 102400 }
+  ]
+}
+```
+
+#### 59. Physical Book Collection
+
+Every book you've marked as a physical copy. A digital mirror of your real-world bookshelves, letting you track what you own in physical form alongside your e-library. Useful for avoiding duplicate purchases and lending management.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "isPhysical", "operator": "equals", "value": true }
+  ]
+}
+```
+
+#### 60. PDF Conversion Queue
+
+Unread PDFs that might benefit from conversion to EPUB for a better reading experience. PDFs don't reflow text, making them awkward on e-readers and phones. This shelf identifies the best candidates for conversion.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "fileType", "operator": "equals", "value": "PDF" },
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" }
+  ]
+}
+```
+
+---
+
+### Audiobook Collections
+
+#### 61. Full Audiobook Library
+
+Every audiobook in your collection, identified by having a duration greater than zero. Your complete narrated library in one shelf, whether you listen during commutes, workouts, or while falling asleep.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "audiobookDuration", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 62. Epic Listens (10+ Hours)
+
+Audiobooks that clock in at over 10 hours of narration. These are the marathon listens: epic fantasy sagas, comprehensive histories, and sprawling novels that will keep you company on road trips, long flights, or weeks of commuting.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "audiobookDuration", "operator": "greater_than_equal_to", "value": 36000 }
+  ]
+}
+```
+
+#### 63. Quick Listens (Under 3 Hours)
+
+Short audiobooks under 3 hours that you can finish in a single listening session. Perfect for a short commute, an afternoon walk, or when you want the satisfaction of completing something without a multi-day commitment.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "audiobookDuration", "operator": "greater_than", "value": 0 },
+    { "field": "audiobookDuration", "operator": "less_than", "value": 10800 }
+  ]
+}
+```
+
+#### 64. Unabridged Only
+
+The complete, uncut audiobook experience. No chapters skipped, no passages summarized. This shelf filters for audiobooks explicitly marked as unabridged, so you know you're getting every word the author intended.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "abridged", "operator": "equals", "value": false },
+    { "field": "narrator", "operator": "is_not_empty", "value": null }
+  ]
+}
+```
+
+#### 65. Top Audible Picks
+
+Audiobooks rated 4.5 or higher on Audible, where the combination of narrator performance and source material creates something truly special. These are the productions where the narration elevates the book to a whole new level.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "audibleRating", "operator": "greater_than_equal_to", "value": 4.5 },
+    { "field": "narrator", "operator": "is_not_empty", "value": null }
+  ]
+}
+```
+
+---
+
+### Advanced Multi-Rule Combinations
+
+These examples combine multiple fields and nested groups for sophisticated filtering.
+
+#### 66. Book Club Picks
+
+The ideal book club selection: unread fiction between 200 and 400 pages with a Goodreads rating of 3.8+. Long enough to generate real discussion, short enough that everyone can finish it in a month, and well-reviewed enough to guarantee quality.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "pageCount", "operator": "in_between", "valueStart": 200, "valueEnd": 400 },
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 3.8 },
+    { "field": "categories", "operator": "includes_any", "value": ["Fiction", "Literary Fiction", "Contemporary"] }
+  ]
+}
+```
+
+#### 67. Travel Reading List
+
+Compact unread EPUBs under 300 pages, curated for portability. When you're packing for a trip, you need books that are light on your device and achievable within a vacation's reading time. This shelf pre-selects exactly those.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "fileType", "operator": "equals", "value": "EPUB" },
+    { "field": "pageCount", "operator": "less_than", "value": 300 },
+    { "field": "pageCount", "operator": "greater_than", "value": 0 }
+  ]
+}
+```
+
+#### 68. Award-Worthy Literary Fiction
+
+The kind of literary fiction that ends up on prize shortlists. Goodreads rating of 4.2+ with over 10,000 reviews means both quality and cultural impact. These books shaped conversations and likely won (or deserved) major awards.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.2 },
+    { "field": "goodreadsReviewCount", "operator": "greater_than", "value": 10000 },
+    { "field": "categories", "operator": "includes_any", "value": ["Literary Fiction", "Fiction", "Contemporary Fiction"] }
+  ]
+}
+```
+
+#### 69. Spooky Season Queue
+
+Your October reading list, auto-curated. Unread horror, gothic, supernatural, and paranormal books under 400 pages, sized perfectly for knocking one out per week throughout the spookiest month of the year. Set this shelf up in September and you'll be ready.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "pageCount", "operator": "less_than_equal_to", "value": 400 },
+    { "field": "categories", "operator": "includes_any", "value": ["Horror", "Gothic", "Supernatural", "Paranormal", "Ghost Stories"] }
+  ]
+}
+```
+
+#### 70. Summer Beach Reads
+
+Light, fun, and breezy. Unread books under 350 pages with moods like *Light*, *Fun*, *Romantic*, and *Feel-Good*. The kind of books you can enjoy poolside with a cold drink, where the stakes are low and the vibes are immaculate.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "pageCount", "operator": "less_than", "value": 350 },
+    { "field": "moods", "operator": "includes_any", "value": ["Light", "Fun", "Romantic", "Heartwarming", "Feel-Good"] }
+  ]
+}
+```
+
+#### 71. High-Value Unread Fantasy
+
+Your premium unread fantasy queue. This shelf uses a nested OR group to find unread fantasy books rated 4.0+ on *either* Amazon or Goodreads, so you don't miss great books that only have ratings on one platform. The cream of your unread fantasy collection.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "categories", "operator": "includes_any", "value": ["Fantasy", "Epic Fantasy", "Urban Fantasy", "Dark Fantasy"] },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 },
+        { "field": "amazonRating", "operator": "greater_than_equal_to", "value": 4.0 }
+      ]
+    }
+  ]
+}
+```
+
+#### 72. Nostalgia Re-Read Shelf
+
+Books you finished over 2 years ago and rated 8+. Enough time has passed that the details have faded and the story will feel fresh again. These are proven favorites where you already know the payoff is worth the time investment.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "READ" },
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 8 },
+    { "field": "dateFinished", "operator": "older_than", "value": 2, "valueEnd": "years" }
+  ]
+}
+```
+
+#### 73. New Arrivals Needing Attention
+
+A quality control net for recent imports. Books added in the last 2 weeks that either have a low metadata score, are missing categories, or lack a description. Catching these issues early means fewer headaches later when your shelves aren't matching properly.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "addedOn", "operator": "within_last", "value": 2, "valueEnd": "weeks" },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "metadataScore", "operator": "less_than", "value": 50 },
+        { "field": "categories", "operator": "is_empty", "value": null },
+        { "field": "description", "operator": "is_empty", "value": null }
+      ]
+    }
+  ]
+}
+```
+
+#### 74. Highly Rated Short Reads
+
+Proof that great things come in small packages. Books under 250 pages that you rated 8+. These are the tight, focused, perfectly-paced reads that don't waste a single page. Share this shelf with friends who say they don't have time to read.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "pageCount", "operator": "less_than", "value": 250 },
+    { "field": "pageCount", "operator": "greater_than", "value": 0 },
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 8 }
+  ]
+}
+```
+
+#### 75. Unread Series Starters with High Ratings
+
+The best entry points into new series. First books rated 4.0+ on Goodreads that you haven't read yet. If a series opener has strong ratings, the whole series is likely worth your time. This shelf surfaces only the most promising starting lines.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesPosition", "operator": "equals", "value": "first_in_series" },
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 }
+  ]
+}
+```
+
+#### 76. Mature Content Filter
+
+Books rated Mature, Adult, or Explicit, gathered into one clearly labeled shelf. Useful for keeping age-restricted content organized, setting up separate profiles, or simply knowing what's in your library that isn't suitable for all audiences.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "contentRating", "operator": "includes_any", "value": ["MATURE", "ADULT", "EXPLICIT"] }
+  ]
+}
+```
+
+#### 77. Recently Added & Highly Rated Elsewhere
+
+Your most promising new additions. Books added in the last month that already have strong ratings (4.0+) on Goodreads, Amazon, or Hardcover. A nested OR group checks all three platforms, so you see every new book that comes with a seal of approval.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "addedOn", "operator": "within_last", "value": 1, "valueEnd": "months" },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 },
+        { "field": "amazonRating", "operator": "greater_than_equal_to", "value": 4.0 },
+        { "field": "hardcoverRating", "operator": "greater_than_equal_to", "value": 4.0 }
+      ]
+    }
+  ]
+}
+```
+
+#### 78. Cross-Platform Favorites
+
+The ultimate consensus shelf. Books rated 4.0+ on *both* Goodreads and Amazon with 1,000+ reviews on each platform. When two very different reader communities both love a book with significant sample sizes, you can be extremely confident it delivers.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 },
+    { "field": "amazonRating", "operator": "greater_than_equal_to", "value": 4.0 },
+    { "field": "goodreadsReviewCount", "operator": "greater_than", "value": 1000 },
+    { "field": "amazonReviewCount", "operator": "greater_than", "value": 1000 }
+  ]
+}
+```
+
+#### 79. Binge-Worthy Completed Series
+
+Fully read series with 5+ books where you rated the first entry 8+. These are your verified binge-worthy series, the ones you know from personal experience are worth recommending. Perfect for answering "what series should I read next?"
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "seriesStatus", "operator": "equals", "value": "fully_read" },
+    { "field": "seriesTotal", "operator": "greater_than_equal_to", "value": 5 },
+    { "field": "seriesPosition", "operator": "equals", "value": "first_in_series" },
+    { "field": "personalRating", "operator": "greater_than_equal_to", "value": 8 }
+  ]
+}
+```
+
+#### 80. The "Should I Keep This?" Shelf
+
+Library cleanup candidates. Books with low personal ratings (3 or under), no tags, and added more than 6 months ago. If a book has been in your library that long with a bad rating and no organizational effort, it might be time to let it go.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "personalRating", "operator": "less_than_equal_to", "value": 3 },
+    { "field": "personalRating", "operator": "greater_than", "value": 0 },
+    { "field": "tags", "operator": "is_empty", "value": null },
+    { "field": "addedOn", "operator": "older_than", "value": 6, "valueEnd": "months" }
+  ]
+}
+```
+
+#### 81. Dark & Atmospheric Fantasy
+
+For readers who like their fantasy grim, gritty, and dripping with atmosphere. This shelf combines dark fantasy and grimdark categories with moods like *Dark*, *Atmospheric*, and *Bleak*, then filters for a Goodreads rating of 3.8+ to ensure quality. The result: the best of morally grey worlds.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Fantasy", "Dark Fantasy", "Epic Fantasy", "Grimdark"] },
+    { "field": "moods", "operator": "includes_any", "value": ["Dark", "Atmospheric", "Gritty", "Bleak"] },
+    { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 3.8 }
+  ]
+}
+```
+
+#### 82. Non-Fiction Deep Dives (500+ Pages)
+
+Long-form non-fiction over 500 pages. These are the sweeping histories, comprehensive biographies, and dense scientific explorations that take weeks to read and permanently change how you see the world. Not for the faint of heart, but immensely rewarding.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Non-Fiction", "Nonfiction", "History", "Science", "Biography", "Economics", "Politics"] },
+    { "field": "pageCount", "operator": "greater_than_equal_to", "value": 500 }
+  ]
+}
+```
+
+#### 83. Paused & Partially Read Recovery
+
+The second-chance shelf. Books in *Paused* or *Partially Read* status that you set aside for one reason or another. Life got busy, another book grabbed your attention, or you just needed a break. This shelf keeps them visible so they don't get forgotten entirely.
+
+```json
+{
+  "type": "group",
+  "join": "or",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "PAUSED" },
+    { "field": "readStatus", "operator": "equals", "value": "PARTIALLY_READ" }
+  ]
+}
+```
+
+#### 84. Multi-Genre Crossovers
+
+Books that refuse to stay in one lane. This shelf finds sci-fi books that also carry a mystery, thriller, romance, or horror tag. Genre-bending stories that combine the best elements of multiple categories into something unexpected and hard to put down.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "categories", "operator": "includes_any", "value": ["Science Fiction"] },
+    { "field": "categories", "operator": "includes_any", "value": ["Mystery", "Thriller", "Romance", "Horror"] }
+  ]
+}
+```
+
+#### 85. Weekend Warrior TBR
+
+Your realistic weekend reading list. Unread books between 150 and 300 pages with a nested OR group requiring either a Goodreads rating of 4.0+ or a personal rating of 7+. Achievable in two days, and guaranteed to be worth your time.
+
+```json
+{
+  "type": "group",
+  "join": "and",
+  "rules": [
+    { "field": "readStatus", "operator": "equals", "value": "UNREAD" },
+    { "field": "pageCount", "operator": "in_between", "valueStart": 150, "valueEnd": 300 },
+    {
+      "type": "group",
+      "join": "or",
+      "rules": [
+        { "field": "goodreadsRating", "operator": "greater_than_equal_to", "value": 4.0 },
+        { "field": "personalRating", "operator": "greater_than_equal_to", "value": 7 }
+      ]
+    }
+  ]
+}
+```

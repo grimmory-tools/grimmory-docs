@@ -1,0 +1,40 @@
+---
+import AppButton from './AppButton.astro';
+
+const links = [
+  { label: 'Discord', href: 'https://discord.gg/vNsB8CTebs', icon: 'discord' },
+  { label: 'GitHub', href: 'https://github.com/grimmory-tools/grimmory', icon: 'github' },
+  { label: 'Sponsor', href: 'https://opencollective.com/grimmory', icon: 'openCollective' },
+] as const;
+---
+
+<nav class="community" aria-label="Community">
+  <ul>
+    {links.map(({ label, href, icon }) => (
+      <li>
+        <AppButton href={href} target="_blank" size="lg" icon={icon} label={label} />
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .community {
+    margin-block: clamp(1.5rem, 5vw, 3rem);
+  }
+  .community ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .community li {
+    margin: 0;
+    padding: 0;
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+import Check from '@lucide/astro/icons/check';
+import Wrench from '@lucide/astro/icons/wrench';
+import User from '@lucide/astro/icons/user';
+import House from '@lucide/astro/icons/house';
+import Library from '@lucide/astro/icons/library';
+import Upload from '@lucide/astro/icons/upload';
+import Book from '@lucide/astro/icons/book';
+import Files from '@lucide/astro/icons/files';
+import BookOpen from '@lucide/astro/icons/book-open';
+import Zap from '@lucide/astro/icons/zap';
+import LockOpen from '@lucide/astro/icons/lock-open';
+import Settings from '@lucide/astro/icons/settings';
+import Palette from '@lucide/astro/icons/palette';
+import ChevronRight from '@lucide/astro/icons/chevron-right';
+import SidebarRestorePoint from '@astrojs/starlight/components/SidebarRestorePoint.astro';
+
+interface SidebarEntry {
+	type: 'link' | 'group';
+	label: string;
+	entries?: SidebarEntry[];
+	href?: string;
+	isCurrent?: boolean;
+	collapsed?: boolean;
+	attrs?: Record<string, string | number | boolean | null | undefined>;
+	badge?: {
+		text: string;
+		variant?: string;
+		class?: string;
+	};
+}
+
+interface Props {
+	sublist: SidebarEntry[];
+	nested?: boolean;
+}
+
+const { sublist, nested } = Astro.props;
+
+const iconByLabel: Record<string, typeof Check> = {
+	'Getting Started': Check,
+	Installation: Wrench,
+	'Setup Admin User': User,
+	Dashboard: House,
+	Library,
+	Bookdrop: Upload,
+	'Books & Collections': Book,
+	Metadata: Files,
+	'Reader & Display': BookOpen,
+	Integrations: Zap,
+	Authentication: LockOpen,
+	Administration: Settings,
+	Customization: Palette,
+	Customisation: Palette,
+};
+
+function hasCurrentEntry(entries: SidebarEntry[] = []): boolean {
+	return entries.some((entry) => entry.isCurrent || hasCurrentEntry(entry.entries));
+}
+
+function getLabel(label: string): string {
+	return label
+		.split('-')
+		.map((word) => (word.toLowerCase() === 'oidc' ? 'OIDC' : word.charAt(0).toUpperCase() + word.slice(1)))
+		.join(' ');
+}
+
+function getIcon(label: string) {
+	return iconByLabel[label];
+}
+---
+
+<ul class:list={{ 'top-level': !nested }}>
+	{
+		sublist.map((entry) => {
+			const label = getLabel(entry.label);
+			const EntryIcon = !nested ? getIcon(label) : undefined;
+
+			return (
+				<li>
+					{entry.type === 'link' ? (
+						<a
+							href={entry.href}
+							aria-current={entry.isCurrent ? 'page' : undefined}
+							class:list={[{ large: !nested, 'has-sidebar-icon': EntryIcon }, entry.attrs?.class]}
+							{...entry.attrs}
+						>
+							{EntryIcon && <EntryIcon class="sidebar-item-icon" aria-hidden="true" />}
+							<span>{label}</span>
+							{entry.badge && <span class:list={['sl-badge', entry.badge.variant, entry.badge.class]}>{entry.badge.text}</span>}
+						</a>
+					) : (
+						<details open={hasCurrentEntry(entry.entries) || !entry.collapsed}>
+							<summary class:list={{ 'has-sidebar-icon': EntryIcon }}>
+								<span class="group-label">
+									{EntryIcon && <EntryIcon class="sidebar-item-icon" aria-hidden="true" />}
+									<span class="large">{label}</span>
+									{entry.badge && <span class:list={['sl-badge', entry.badge.variant, entry.badge.class]}>{entry.badge.text}</span>}
+								</span>
+								<ChevronRight class="caret" aria-hidden="true" />
+							</summary>
+							<SidebarRestorePoint />
+							<Astro.self sublist={entry.entries ?? []} nested />
+						</details>
+					)}
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	@layer starlight.core {
+		ul {
+			--sl-sidebar-item-padding-inline: 0.5rem;
+			list-style: none;
+			padding: 0;
+		}
+
+		li {
+			overflow-wrap: anywhere;
+		}
+
+		ul ul li {
+			margin-inline-start: var(--sl-sidebar-item-padding-inline);
+			border-inline-start: 1px solid var(--sl-color-hairline-light);
+			padding-inline-start: var(--sl-sidebar-item-padding-inline);
+		}
+
+		.large {
+			font-size: var(--sl-text-lg);
+			font-weight: 600;
+			color: var(--sl-color-white);
+		}
+
+		.top-level > li + li {
+			margin-top: 0.75rem;
+		}
+
+		summary {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0.2em var(--sl-sidebar-item-padding-inline);
+			line-height: 1.4;
+			cursor: pointer;
+			user-select: none;
+		}
+		summary::marker,
+		summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.caret {
+			width: 1.25rem;
+			height: 1.25rem;
+			transition: transform 0.2s ease-in-out;
+			flex-shrink: 0;
+		}
+		:global([dir='rtl']) .caret {
+			transform: rotateZ(180deg);
+		}
+		[open] > summary .caret {
+			transform: rotateZ(90deg);
+		}
+
+		a {
+			display: block;
+			border-radius: 0.25rem;
+			text-decoration: none;
+			color: var(--sl-color-gray-2);
+			padding: 0.3em var(--sl-sidebar-item-padding-inline);
+			line-height: 1.4;
+		}
+
+		a:hover,
+		a:focus {
+			color: var(--sl-color-white);
+		}
+
+		[aria-current='page'],
+		[aria-current='page']:hover,
+		[aria-current='page']:focus {
+			font-weight: 600;
+			color: var(--sl-color-text-invert);
+			background-color: var(--sl-color-text-accent);
+		}
+
+		@media (min-width: 50rem) {
+			.top-level > li + li {
+				margin-top: 0.5rem;
+			}
+			.large {
+				font-size: var(--sl-text-base);
+			}
+			a {
+				font-size: var(--sl-text-sm);
+			}
+		}
+	}
+</style>

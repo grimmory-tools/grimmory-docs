@@ -1,0 +1,159 @@
+---
+title: "Authelia"
+slug: authentication/authelia
+sidebar:
+  label: "Authelia"
+  order: 5
+---
+
+import ThemeImage from '../../../../components/ThemeImage.astro';
+
+This guide walks you through setting up [Authelia](https://www.authelia.com/) as an OIDC provider for Grimmory. Authelia is a popular self-hosted authentication server that provides SSO and multi-factor authentication for your reverse proxy setup. If you're already using Authelia to protect your services behind Traefik, Caddy, or nginx, adding Grimmory as an OIDC client is straightforward.
+
+By the end of this guide, your users will be able to sign in to Grimmory with their Authelia account. The setup takes about 5 minutes.
+
+:::note[Already have OIDC working?]
+This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/authentication/oidc-settings) reference.
+:::
+
+---
+
+## Part 1: Add Grimmory as an OIDC Client in Authelia
+
+Authelia's OIDC configuration lives in its YAML config file. Add a client entry for Grimmory under `identity_providers.oidc.clients`.
+
+Here's a complete working configuration. Replace `grimmory.example.com` with your actual Grimmory domain and `auth.example.com` with your Authelia domain:
+
+```yaml
+identity_providers:
+  oidc:
+    clients:
+      - client_name: Grimmory
+        client_id: # generate this: https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
+        client_secret: # generate this: https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
+        authorization_policy: two_factor
+        require_pkce: true
+        pkce_challenge_method: S256
+        scopes:
+          - openid
+          - profile
+          - email
+          - groups
+          - offline_access
+        redirect_uris:
+          - https://your-grimmory-domain.com/oauth2-callback
+```
+
+### What Each Section Does
+
+**`authorization_policy: two_factor`** requires 2FA. Change to `one_factor` if you don't use MFA, or adjust based on your security needs.
+
+**`scopes`** must include `groups` if you want to use Grimmory's [Group Mapping](/authentication/oidc-settings#group-mapping) feature. Without it, Authelia won't include group memberships in the token.
+
+:::danger[Don't forget the `groups` scope]
+If you plan to use group mapping, you must include `groups` in both the `scopes` list and the `claims_policy`. Without it, Authelia won't send group information to Grimmory, and group mapping will silently do nothing.
+:::
+
+Restart Authelia after saving the config.
+
+---
+
+## Part 2: Configure Grimmory
+
+Navigate to **Settings > OIDC** in Grimmory.
+
+<ThemeImage src={"/img/authentication/authelia/grimmory-oidc-settings.jpg"} alt={"Grimmory OIDC Settings"} />
+Fill in the provider configuration:
+
+| Field | Value |
+|-------|-------|
+| **Provider Name** | `Authelia` (shown on the login button) |
+| **Client ID** | Whatever you set as `client_id` in the Authelia config |
+| **Client Secret** | The client secret you generated and used in the Authelia config |
+| **Issuer URI** | Your Authelia URL **without** a trailing slash (e.g., `https://auth.example.com`) |
+
+:::danger[No trailing slash on the Issuer URI]
+Authelia's issuer does **not** use a trailing slash, unlike Authentik. Using `https://auth.example.com/` (with slash) will cause discovery to fail. Use `https://auth.example.com` (without slash).
+:::
+
+The default claim mappings work with Authelia:
+
+| Claim | Value |
+|-------|-------|
+| **Username** | `preferred_username` |
+| **Email** | `email` |
+| **Display Name** | `name` |
+| **Groups** | `groups` |
+
+Click **Test Connection** to verify Grimmory can reach Authelia. All checks should pass.
+
+Click **Save**, then toggle **OIDC Login** to **ON** in the Login Methods section.
+
+### Back-Channel Logout
+
+Authelia [does not currently support](https://www.authelia.com/roadmap/active/openid-connect-1.0-provider/#openid-connect-back-channel-logout-10) back-channel logout, so it cannot be used.
+
+---
+
+## Test It
+
+Open an incognito/private browser window and navigate to your Grimmory instance. Click "Sign in with Authelia". You'll be redirected to Authelia's login page.
+
+After authenticating (including 2FA if configured), you should be redirected back to Grimmory and logged in.
+
+<ThemeImage src={"/img/authentication/authelia/login-success.jpg"} alt={"Login Success"} />
+Verify that your username and email are correct.
+
+---
+
+## What's Next
+
+Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/authentication/oidc-settings):
+
+- **[User Provisioning](/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
+- **[Group Mapping](/authentication/oidc-settings#group-mapping):** Map Authelia groups to Grimmory permissions and library access (make sure you included `groups` in the scopes and claims policy)
+- **[OIDC-Only Mode](/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Authelia
+- **[Account Linking](/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
+
+---
+
+## Troubleshooting
+
+### Test Connection Fails
+
+- The Issuer URI must **not** have a trailing slash. Use `https://auth.example.com`, not `https://auth.example.com/`.
+- Make sure Grimmory's server can reach Authelia. If both run in Docker, they need to be on the same network or the external URL must be reachable.
+- Check that Authelia restarted successfully after your config change. A YAML syntax error can prevent the OIDC provider from starting.
+
+### Login Redirects But Fails
+
+- The **redirect URI** in Authelia's config must match exactly: `https://your-grimmory-domain.com/oauth2-callback`
+- Check Authelia's logs for a detailed error message.
+
+### "User Not Provisioned" Error
+
+Auto-provisioning is off by default. Either enable it in [OIDC Settings](/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Authelia username (case-sensitive).
+
+### Group Mapping Not Working
+
+- Make sure `groups` is in the `scopes` list in Authelia's config.
+- Verify the **Groups Claim** in Grimmory is set to `groups`.
+- Check that **Group Sync Mode** in Grimmory is not set to Disabled.
+- The group names must match exactly (case-sensitive) between Authelia and Grimmory's group mappings.
+
+### 2FA Prompt Every Time
+
+This is controlled by Authelia's `authorization_policy`. If you set it to `two_factor`, users authenticate with 2FA. Change to `one_factor` if you don't want MFA for Grimmory.
+
+### Can't Access Grimmory At All
+
+- Admin backdoor: `/login?local=true`
+- Nuclear option: set `FORCE_DISABLE_OIDC=true` as an environment variable and restart
+
+---
+
+## Additional Resources
+
+- [Authelia OpenID Connect Documentation](https://www.authelia.com/configuration/identity-providers/openid-connect/provider/)
+- [Authelia OIDC Client Configuration](https://www.authelia.com/configuration/identity-providers/openid-connect/clients/)
+- [Grimmory OIDC Settings Reference](/authentication/oidc-settings)

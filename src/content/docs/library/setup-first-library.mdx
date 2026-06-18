@@ -1,0 +1,82 @@
+---
+title: "Setup First Library"
+sidebar:
+  label: "Setup First Library"
+  order: 1
+---
+
+import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsIcon from '../../../components/DocsIcon.astro';
+
+A library is a collection of book folders that Grimmory monitors and indexes. Each library has its own settings for metadata handling, format priority, and file watching.
+
+---
+
+## Creating a Library
+
+Click **"Add a Library"** from the dashboard, or click the **+** button next to **Libraries** in the sidebar.
+
+<ThemeImage src={"/img/first-library/click-add-a-library.jpg"} alt={"Empty Dashboard"} />
+This opens the library creation dialog.
+
+<ThemeImage src={"/img/first-library/new-library-dialog.jpg"} alt={"New Library Dialog"} />
+---
+
+### Library Details
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Name** | Yes | A descriptive name (e.g., "Novels", "Comics", "Audiobooks") |
+| **Icon** | No | Pick from the icon set or upload a custom SVG |
+
+---
+
+### Book Folders
+
+Click **"Add folder"** to open the directory picker and select folders containing your book files. You can add multiple folders to a single library, but a folder can only belong to one library.
+
+<ThemeImage src={"/img/first-library/library-folder-picker.jpg"} alt={"Folder Picker"} />
+Remove a folder by clicking the <DocsIcon name="x" label="Remove" /> button next to it.
+
+:::caution[Permissions]
+Make sure Docker has read access to the selected paths. If folders aren't showing up, check your volume mounts in `docker-compose.yml`.
+:::
+
+---
+
+### Options
+
+**Watch Folders** toggles automatic detection of new, changed, or deleted books. Recommended for active collections.
+
+**Metadata Source** controls where Grimmory reads metadata during scans:
+
+| Option | Behavior |
+|--------|----------|
+| Embedded Only | Reads metadata from inside the book file (default) |
+| Sidecar Only | Reads from sidecar files (e.g., OPF files next to the book) |
+| Prefer Sidecar | Uses sidecar if available, falls back to embedded |
+| Prefer Embedded | Uses embedded if available, falls back to sidecar |
+| None | Skips metadata extraction during scan |
+
+**Format Priority** sets which file format is treated as primary when a book exists in multiple formats. Drag the chips to reorder.
+
+**Allowed Formats** restricts which file types this library scans. All formats are allowed by default: EPUB, PDF, CBX (CBZ/CBR/CB7), MOBI, AZW3, FB2, and Audiobook (M4B/M4A/MP3).
+
+---
+
+## After Creation
+
+Click **"Create"** to save. Grimmory immediately scans the selected folders, extracts metadata, generates cover thumbnails, and indexes everything. Processing runs in the background, so you can navigate freely.
+
+<ThemeImage src={"/img/first-library/library-processing.jpg"} alt={"Library Processing"} />
+:::tip[Multiple Libraries]
+Create separate libraries for different collections (e.g., Novels, Comics, Technical Books). Each can have its own metadata source and format settings.
+:::
+
+---
+
+## Next Steps
+
+- Set up [metadata providers](/metadata/metadata-fetch-configuration) for richer book information
+- Learn about [library management](/library/edit-library) for rescanning, metadata refresh, and deletion
+- Read about [organization modes](/library/organization-modes) for optimal file organization

@@ -1,0 +1,77 @@
+#starlight__search {
+  --pagefind-ui-primary: var(--color-text);
+  --pagefind-ui-text: var(--color-text-secondary);
+  --pagefind-ui-background: transparent;
+  --pagefind-ui-border: var(--color-border);
+  --pagefind-ui-border-width: 0;
+  --pagefind-ui-tag: var(--color-active-surface);
+  --sl-search-corners: 0.5rem;
+}
+
+dialog:has(#starlight__search) {
+  background: color-mix(in srgb, var(--sl-color-bg) 64%, var(--color-card));
+  border: 1px solid var(--color-border);
+}
+
+@media (min-width: 50rem) {
+  dialog:has(#starlight__search) {
+    min-height: 0;
+    border-radius: 0.5rem;
+    box-shadow:
+      0 20px 64px rgb(0 0 0 / 32%),
+      0 30px 80px -20px rgb(0 0 0 / 70%),
+      0 10px 30px -10px rgb(0 0 0 / 50%);
+  }
+}
+
+dialog:has(#starlight__search)::backdrop {
+  background: rgb(0 0 0 / 56%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.dialog-frame:has(#starlight__search) {
+  padding: 0;
+  gap: 0;
+}
+
+#starlight__search .pagefind-ui__search-input {
+  color: var(--color-text);
+}
+
+#starlight__search:has(.pagefind-ui__result, .pagefind-ui__message) .pagefind-ui__search-input {
+  border-bottom: 1px solid var(--color-border);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#starlight__search .pagefind-ui__search-input:is(:focus, :focus-visible) {
+  outline: none;
+}
+
+#starlight__search .pagefind-ui__drawer:has(.pagefind-ui__result, .pagefind-ui__message) {
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+
+#starlight__search .pagefind-ui__results-area {
+  margin-top: 0;
+}
+
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
+#starlight__search .pagefind-ui__result-nested {
+  background: transparent;
+}
+
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):focus-within,
+#starlight__search .pagefind-ui__result-nested:hover,
+#starlight__search .pagefind-ui__result-nested:focus-within {
+  background: var(--color-active-surface);
+  outline: 0;
+}
+
+#starlight__search
+  :is(.pagefind-ui__result-title, .pagefind-ui__result-nested):is(:hover, :focus-within)
+  .pagefind-ui__result-link {
+  color: var(--color-primary);
+}

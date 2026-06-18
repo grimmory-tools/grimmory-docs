@@ -1,0 +1,60 @@
+---
+title: "Content Restrictions"
+slug: content-restrictions
+sidebar:
+  label: "Content Restrictions"
+  order: 1
+---
+
+Content Restrictions let admins control what books are visible to specific users based on metadata like categories, tags, moods, age ratings, and content ratings.
+
+---
+
+## Configuration
+
+Content restrictions are configured per user in **Settings > User Management**. Expand a user's card to find the Content Restrictions section.
+
+---
+
+## Restriction Types
+
+| Type | Description | Example values |
+|---|---|---|
+| **Category** | Filter by book genre/category | Horror, Romance, True Crime |
+| **Tag** | Filter by book tags | violence, explicit-language |
+| **Mood** | Filter by book moods | dark, disturbing |
+| **Age Rating** | Filter by numeric age rating | 0, 6, 10, 13, 16, 18, 21 |
+| **Content Rating** | Filter by content rating label | Everyone, Teen, Mature, Adult, Explicit |
+
+The value dropdowns are populated dynamically from your actual library metadata, so only categories, tags, and moods that exist in your collection are available to select.
+
+---
+
+## Restriction Modes
+
+Each restriction operates in one of two modes:
+
+### Exclude
+
+Hides any book that matches the restricted value. For example, excluding the category "Horror" removes all horror books from the user's view.
+
+For age ratings in exclude mode, the system uses the minimum excluded age as a ceiling. Excluding age 13 and above means the user only sees books rated below 13.
+
+### Allow Only
+
+Shows only books that match the allowed values. For example, allowing only the category "Children" means the user sees nothing else.
+
+Both modes can be combined across different restriction types. A user can have exclude restrictions on categories and allow-only restrictions on content ratings at the same time.
+
+---
+
+## How Restrictions Are Enforced
+
+Restrictions apply in two places:
+
+- **Book listings** are filtered before results are returned, so restricted books never appear in the book browser, shelves, magic shelves, or search results
+- **Direct book access** is checked when opening a specific book. If a restricted book is accessed directly (e.g., via URL), the server returns a 403 Forbidden response
+
+:::note
+Only admins can configure content restrictions. Users cannot see or modify their own restrictions.
+:::

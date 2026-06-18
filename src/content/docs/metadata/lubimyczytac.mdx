@@ -1,0 +1,75 @@
+---
+title: "LubimyCzytac"
+sidebar:
+  label: "LubimyCzytac"
+  order: 9
+---
+
+[LubimyCzytac](https://lubimyczytac.pl) is Poland's largest book rating and review platform, often called the "Polish Goodreads." It's the best source for metadata on Polish literature and Polish translations, covering titles, authors, descriptions, ratings, series information, ISBNs, and cover images that may not exist on English-language platforms.
+
+:::note[No Setup Required]
+LubimyCzytac doesn't need API tokens, cookies, or any authentication. Just toggle it on in **Settings > Metadata 2** and you're done.
+:::
+
+---
+
+## Enabling LubimyCzytac
+
+Open **Settings > Metadata 2**, find **Lubimyczytac** in the provider list, flip the toggle, and save. That's all there is to it.
+
+---
+
+## Using It in Metadata Fetch
+
+Once enabled, LubimyCzytac appears as a priority option in the Advanced Metadata Fetch dialog. You can set it as Priority 1, 2, 3, or 4 for any individual field.
+
+**For Polish books or Polish translations**, set LubimyCzytac as Priority 1 for most fields and use Google Books or Goodreads as fallbacks. **For English books**, keep it as Priority 3 or 4 behind providers like Amazon or Google. If LubimyCzytac doesn't have data for a particular field, Grimmory automatically tries the next provider in your priority list.
+
+---
+
+## What You Get
+
+LubimyCzytac provides the standard set of metadata fields: title, authors, description, cover image, publisher, published date, page count, language, ISBN-10, ISBN-13, categories, tags, series name, and series number.
+
+It also returns two provider-specific fields:
+
+| Field | Description |
+|-------|-------------|
+| **LubimyCzytac ID** | Unique identifier linking to the book's page on lubimyczytac.pl. Shown as a clickable link in the metadata viewer. |
+| **LubimyCzytac Rating** | Community rating from Polish readers. Displayed with the site's favicon in the metadata viewer. |
+
+Both fields can be locked in the metadata picker to prevent overwriting during future refreshes.
+
+:::note[Rating Scale]
+LubimyCzytac uses a 10-point scale. Grimmory automatically converts it to 5 points for consistency with other providers (e.g., an 8.0 becomes 4.0).
+:::
+
+---
+
+## Language Handling
+
+LubimyCzytac returns language names in Polish. Grimmory maps them to ISO 639-1 codes automatically:
+
+| Polish Name | Code | Language |
+|-------------|------|----------|
+| polski | `pl` | Polish |
+| angielski | `en` | English |
+| niemiecki | `de` | German |
+| francuski | `fr` | French |
+| hiszpański | `es` | Spanish |
+| włoski | `it` | Italian |
+
+---
+
+## Troubleshooting
+
+| Problem | What to check |
+|---------|---------------|
+| No results returned | Make sure the provider is enabled in Settings > Metadata 2. Verify the book exists on lubimyczytac.pl by searching manually. |
+| Wrong book matched | Use **title + author name** for the most accurate results. For Polish books, searching with the Polish title gives the highest accuracy. |
+| Missing fields | Not every book has complete metadata. LubimyCzytac coverage is strongest for Polish literature and weakest for niche English-only titles. |
+| Network errors | Confirm your Grimmory instance can reach lubimyczytac.pl (check firewalls, DNS, and proxy settings). |
+
+:::note[Web Scraping]
+LubimyCzytac doesn't provide a public API, so Grimmory uses web scraping. This is reliable but may occasionally break if the LubimyCzytac website structure changes. If metadata fetching suddenly stops working for this provider, check for a Grimmory update.
+:::

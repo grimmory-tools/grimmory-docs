@@ -1,0 +1,186 @@
+---
+import AppButton from './AppButton.astro';
+import Logo from '../assets/logo.svg';
+
+const PAGE_TITLE_ID = '_top';
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero ?? {};
+
+const actionButtonProps = {
+  primary: { tone: 'primary', variant: 'solid' },
+  secondary: { tone: 'neutral', variant: 'soft' },
+  minimal: { tone: 'neutral', variant: 'ghost' },
+} as const;
+---
+
+<div class="hero">
+  <div class="hero-sentinel" aria-hidden="true"></div>
+  <div class="hero-bounds">
+    <div class="hero-inner">
+      <h1 id={PAGE_TITLE_ID} class="headline">
+        <span class="hero-brand"><Logo class="hero-logo" aria-hidden="true" />Grimmory:</span> <Fragment set:html={tagline ?? title} />
+      </h1>
+      {actions.length > 0 && (
+        <div class="actions">
+          {actions.map(({ text, link, variant = 'primary', icon }) => {
+            const button = actionButtonProps[variant];
+
+            return (
+              <AppButton href={link} tone={button.tone} variant={button.variant} size="lg" icon={icon?.name} iconPlacement="end">
+                {text}
+              </AppButton>
+            );
+          })}
+        </div>
+      )}
+    </div>
+    <div class="hero-media" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+  const sentinel = document.querySelector('.hero-sentinel');
+  if (sentinel) {
+    new IntersectionObserver(
+      ([entry]) => document.documentElement.toggleAttribute('data-scrolled', !entry.isIntersecting),
+      { threshold: 0 }
+    ).observe(sentinel);
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-height: clamp(560px, 78vh, 860px);
+    padding-block: clamp(2.5rem, 4vw, 5rem);
+  }
+
+  .hero-sentinel {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+  }
+
+  .hero-bounds {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: var(--sl-content-pad-x);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: start;
+    max-width: 34rem;
+    gap: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    container-type: inline-size;
+  }
+
+  .hero-inner h1 {
+    margin: 0;
+    font-size: clamp(var(--sl-text-2xl), 0.5rem + 2.5vw, var(--sl-text-4xl));
+    line-height: var(--sl-line-height-headings);
+    font-weight: 600;
+    color: var(--sl-color-white);
+    text-wrap: balance;
+  }
+
+  .hero-inner h1 .hero-brand {
+    font-weight: 700;
+    background: linear-gradient(to bottom, var(--color-logo-start), var(--color-logo-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .hero-inner h1 .hero-logo {
+    --logo-gradient-start: var(--color-logo-start);
+    --logo-gradient-end: var(--color-logo-end);
+    --logo-bookmark: var(--color-logo-bookmark);
+    height: 0.85em;
+    width: auto;
+    margin-inline-end: 0.3em;
+    vertical-align: -0.07em;
+  }
+
+  .hero-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 0.875rem;
+    overflow: hidden;
+    background: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-hairline-shade);
+    box-shadow:
+      0 1px 1px rgb(0 0 0 / 4%),
+      0 10px 24px -10px rgb(0 0 0 / 18%),
+      0 32px 60px -24px rgb(0 0 0 / 24%);
+  }
+
+  .hero-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  @container (min-width: 24rem) {
+    .actions {
+      flex-direction: row;
+      align-items: center;
+      width: auto;
+    }
+  }
+
+  @media (max-width: 50rem) {
+    .hero {
+      min-height: auto;
+      padding-block-start: 0;
+      /* .hero has overflow: hidden; the media's drop shadow reaches ~68px
+         below the box, so reserve enough room for it to render uncut. */
+      padding-block-end: 5rem;
+    }
+
+    .hero-bounds {
+      grid-template-columns: 1fr;
+      gap: clamp(2.5rem, 10vw, 4rem);
+      align-items: start;
+    }
+
+    .hero-inner {
+      min-height: calc(100svh - var(--sl-nav-height, 3.5rem));
+      justify-content: center;
+      max-width: none;
+      gap: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    .hero-inner h1 {
+      font-size: clamp(2rem, 8vw, 2.75rem);
+    }
+  }
+</style>
