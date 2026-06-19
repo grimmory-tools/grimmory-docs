@@ -2,25 +2,25 @@
 import Default from '@astrojs/starlight/components/Footer.astro';
 
 const year = new Date().getFullYear();
+const isSplash = Astro.locals.starlightRoute.entry.data.template === 'splash';
 const links = [
   { label: 'Docs', href: '/getting-started' },
   { label: 'API', href: '/api' },
-  { label: 'GitHub', href: 'https://github.com/grimmory-tools/grimmory' },
-  { label: 'Discord', href: 'https://discord.gg/vNsB8CTebs' },
-  { label: 'Sponsor', href: 'https://opencollective.com/grimmory' },
 ];
 ---
 
 <Default />
 
 <div class="site-footer">
-  <nav class="footer-nav" aria-label="Footer">
-    {links.map(({ label, href }) => (
-      <a href={href} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-        {label}
-      </a>
-    ))}
-  </nav>
+  {!isSplash && (
+    <nav class="footer-nav" aria-label="Footer">
+      {links.map(({ label, href }) => (
+        <a href={href} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+          {label}
+        </a>
+      ))}
+    </nav>
+  )}
   <p class="copyright">© {year} Grimmory</p>
 </div>
 

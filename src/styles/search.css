@@ -1,3 +1,9 @@
+@media (min-width: 50rem) {
+  .header {
+    grid-template-columns: auto 1fr auto;
+  }
+}
+
 #starlight__search {
   --pagefind-ui-primary: var(--color-text);
   --pagefind-ui-text: var(--color-text-secondary);

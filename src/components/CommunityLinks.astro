@@ -1,30 +1,49 @@
 ---
 import AppButton from './AppButton.astro';
-
-const links = [
-  { label: 'Discord', href: 'https://discord.gg/vNsB8CTebs', icon: 'discord' },
-  { label: 'GitHub', href: 'https://github.com/grimmory-tools/grimmory', icon: 'github' },
-  { label: 'Sponsor', href: 'https://opencollective.com/grimmory', icon: 'openCollective' },
-] as const;
+import BookOpen from '@lucide/astro/icons/book-open';
 ---
 
-<nav class="community" aria-label="Community">
-  <ul>
-    {links.map(({ label, href, icon }) => (
+<aside class="cta">
+  <h2 class="cta-title">Join the community</h2>
+  <nav class="cta-actions" aria-label="Community">
+    <ul>
       <li>
-        <AppButton href={href} target="_blank" size="lg" icon={icon} label={label} />
+        <AppButton href="https://discord.gg/vNsB8CTebs" target="_blank" size="lg" icon="discord" label="Join the Discord" tone="primary" variant="solid" />
       </li>
-    ))}
-  </ul>
-</nav>
+      <li>
+        <AppButton href="/getting-started" size="lg" tone="neutral" variant="soft">
+          <BookOpen size="1em" aria-hidden="true" />
+          <span>Documentation</span>
+        </AppButton>
+      </li>
+      <li>
+        <AppButton href="https://github.com/grimmory-tools/grimmory" target="_blank" size="lg" icon="github" label="GitHub" tone="neutral" variant="soft" />
+      </li>
+      <li>
+        <AppButton href="https://opencollective.com/grimmory" target="_blank" size="lg" icon="openCollective" label="Sponsor" tone="neutral" variant="soft" />
+      </li>
+    </ul>
+  </nav>
+</aside>
 
 <style>
-  .community {
-    margin-block: clamp(1.5rem, 5vw, 3rem);
+  .cta {
+    margin-block: clamp(3rem, 8vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
   }
-  .community ul {
-    list-style: none;
+  .cta-title {
     margin: 0;
+    font-size: var(--sl-text-2xl);
+    font-weight: 600;
+    color: var(--color-text-strong);
+  }
+  .cta-actions ul {
+    list-style: none;
+    margin: 0.5rem 0 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
@@ -32,8 +51,7 @@ const links = [
     gap: 0.75rem;
     justify-content: center;
   }
-
-  .community li {
+  .cta-actions li {
     margin: 0;
     padding: 0;
   }

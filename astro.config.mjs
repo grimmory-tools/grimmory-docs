@@ -68,7 +68,6 @@ export default defineConfig({
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/grimmory-tools/grimmory' },
         { icon: 'discord', label: 'Discord', href: 'https://discord.gg/vNsB8CTebs' },
-        { icon: 'openCollective', label: 'Sponsor', href: 'https://opencollective.com/grimmory' },
       ],
 
       sidebar: [

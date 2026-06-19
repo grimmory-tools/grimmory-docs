@@ -265,6 +265,10 @@
     @apply bg-[var(--sidebar-active-bg)] font-medium text-[color:var(--color-primary-text)];
   }
 
+  starlight-toc a[aria-current='true'] {
+    @apply font-semibold;
+  }
+
   .sidebar-content .caret {
     @apply text-[color:var(--color-text)] transition-[color,transform] duration-200 ease-out;
   }
