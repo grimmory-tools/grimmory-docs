@@ -6,7 +6,7 @@ sidebar:
   order: 4
 ---
 
-import ThemeImage from '../../../../components/ThemeImage.astro';
+import DocsImage from '../../../../components/DocsImage.astro';
 
 This guide walks you through setting up [Pocket ID](https://pocket-id.org/) as an OIDC provider for Grimmory. Pocket ID is a lightweight, self-hosted identity provider that's especially popular in homelabs for its simplicity. If you just want SSO without the complexity of a full-featured provider, Pocket ID is a great choice.
 
@@ -22,10 +22,10 @@ This guide covers the initial setup. For details on user provisioning, group map
 
 Open your Pocket ID admin panel and go to **Settings > Administration > OIDC Clients**. Click **Add OIDC Client**.
 
-<ThemeImage src={"/img/authentication/pocket-id/create-client.jpg"} alt={"Create Client"} />
+<DocsImage src={"/img/authentication/pocket-id/create-client"} alt={"Create Client"} />
 Fill in the client configuration:
 
-<ThemeImage src={"/img/authentication/pocket-id/client-details.jpg"} alt={"Client Details"} />
+<DocsImage src={"/img/authentication/pocket-id/client-details"} alt={"Client Details"} />
 | Field | Value | Notes |
 |-------|-------|-------|
 | **Name** | `Grimmory` | Shown to users in the Pocket ID dashboard |
@@ -51,7 +51,7 @@ Click **Save**.
 
 After saving, Pocket ID generates a **Client ID** for your application.
 
-<ThemeImage src={"/img/authentication/pocket-id/copy-client-id.jpg"} alt={"Copy Client ID"} />
+<DocsImage src={"/img/authentication/pocket-id/copy-client-id"} alt={"Copy Client ID"} />
 Copy it. You'll also need your **Issuer URL**, which is simply your Pocket ID base URL:
 
 | Value | Example |
@@ -65,7 +65,7 @@ Copy it. You'll also need your **Issuer URL**, which is simply your Pocket ID ba
 
 Navigate to **Settings > OIDC** in Grimmory.
 
-<ThemeImage src={"/img/authentication/pocket-id/grimmory-oidc-settings.jpg"} alt={"Grimmory OIDC Settings"} />
+<DocsImage src={"/img/authentication/pocket-id/grimmory-oidc-settings"} alt={"Grimmory OIDC Settings"} />
 Fill in the provider configuration:
 
 | Field | Value |
@@ -94,10 +94,10 @@ Click **Save**, then toggle **OIDC Login** to **ON** in the Login Methods sectio
 
 Open your Pocket ID dashboard and go to **My Apps**. You should see the Grimmory application card.
 
-<ThemeImage src={"/img/authentication/pocket-id/app-card.jpg"} alt={"Grimmory App Card"} />
+<DocsImage src={"/img/authentication/pocket-id/app-card"} alt={"Grimmory App Card"} />
 Click the **Grimmory** card. Pocket ID handles the authentication and redirects you to Grimmory.
 
-<ThemeImage src={"/img/authentication/pocket-id/login-success.jpg"} alt={"Login Success"} />
+<DocsImage src={"/img/authentication/pocket-id/login-success"} alt={"Login Success"} />
 You should be logged in automatically. Verify that your username and email are correct.
 
 **Alternative:** Open an incognito window, go to your Grimmory instance, and click "Sign in with Pocket ID".

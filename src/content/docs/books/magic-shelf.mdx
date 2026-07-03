@@ -6,7 +6,7 @@ sidebar:
   order: 4
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 Magic Shelves are dynamic, rule-based collections that automatically organize your books using metadata filters. Define conditions like *"Unread sci-fi published after 2010 with a Goodreads rating above 4.0"* and the shelf populates itself, no manual sorting required.
 
@@ -28,12 +28,12 @@ Evaluation happens entirely in the browser, so there are no server round-trips f
 
 ### Step 1: Open the Interface
 
-<ThemeImage src={"/img/magic-shelf/magic-shelf-1.jpg"} alt={"Magic Shelf Open"} />
+<DocsImage src={"/img/magic-shelf/magic-shelf-1"} alt={"Magic Shelf Open"} />
 Navigate to **Shelves** in the sidebar and click **New Magic Shelf**.
 
 ### Step 2: Configure Your Shelf
 
-<ThemeImage src={"/img/magic-shelf/magic-shelf-2.jpg"} alt={"Magic Shelf Create"} />
+<DocsImage src={"/img/magic-shelf/magic-shelf-2"} alt={"Magic Shelf Create"} />
 1. **Name** - Give your shelf a descriptive name.
 2. **Icon** - Choose a PrimeNG icon or upload a custom SVG.
 3. **Rules** - Click **Add a new rule** to define conditions. Click **Add a new group** to create nested AND/OR logic.
@@ -280,7 +280,7 @@ This matches: **Unread books** that are **either Fantasy or Science Fiction**.
 
 To share a Magic Shelf configuration with another user, right-click the shelf in the sidebar and select **Copy JSON**. The full rule tree is copied to your clipboard as JSON.
 
-<ThemeImage src={"/img/magic-shelf/magic-shelf-export.jpg"} alt={"Copy JSON option in the Magic Shelf context menu"} />
+<DocsImage src={"/img/magic-shelf/magic-shelf-export"} alt={"Copy JSON option in the Magic Shelf context menu"} />
 The recipient can then import this JSON when creating a new Magic Shelf (see below), or you can use it as a backup of your shelf configuration.
 
 ---
@@ -295,10 +295,10 @@ The easiest way to import a shelf is through the Magic Shelf Builder.
 2. Click the **Import** button at the bottom-left of the dialog.
 3. Paste the JSON into the text area and click **Apply**.
 
-<ThemeImage src={"/img/magic-shelf/magic-shelf-import-json.jpg"} alt={"Pasting JSON into the import text area"} />
+<DocsImage src={"/img/magic-shelf/magic-shelf-import-json"} alt={"Pasting JSON into the import text area"} />
 The builder validates the JSON and populates the rule tree so you can review or tweak the rules before saving.
 
-<ThemeImage src={"/img/magic-shelf/magic-shelf-import-applied.jpg"} alt={"Rules populated after applying imported JSON"} />
+<DocsImage src={"/img/magic-shelf/magic-shelf-import-applied"} alt={"Rules populated after applying imported JSON"} />
 ### Via SQL
 
 You can also insert Magic Shelves directly into the database. Replace `<USER_ID>` with your user ID and paste the `filter_json` from any example below.

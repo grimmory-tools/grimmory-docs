@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 import DocsIcon from '../../../components/DocsIcon.astro';
 
 OpenID Connect (OIDC) lets your users sign in to Grimmory with the same account they use for all your other self-hosted apps. Instead of managing separate passwords, you delegate authentication to a central identity provider like [Authentik](https://goauthentik.io/), [Keycloak](https://www.keycloak.org/), [Authelia](https://www.authelia.com/), or [Pocket ID](https://pocket-id.org/). Users click one button, authenticate once, and they're in.
@@ -27,7 +27,7 @@ The concepts on this page apply to any OIDC-compliant provider.
 
 The OIDC settings page starts with a simple choice: which login methods should be available?
 
-<ThemeImage src={"/img/authentication/oidc-settings/login-methods.png"} alt={"Login Methods"} />
+<DocsImage src={"/img/authentication/oidc-settings/login-methods"} alt={"Login Methods"} />
 **Local Login** is the built-in username/password system. It's always on and cannot be fully disabled. Even if you switch entirely to OIDC, admins can still reach the local login form as a safety net (more on that in [OIDC-Only Mode](#oidc-only-mode)).
 
 **OIDC Login** enables the "Sign in with \<Provider\>" button on the login page. Toggle this on once you've completed the provider configuration below.
@@ -40,7 +40,7 @@ You can run both methods side by side. Users who have both a local password and 
 
 This is where you connect Grimmory to your identity provider. You'll need to create a client/application in your provider first (the provider-specific guides walk through this), then enter the credentials here.
 
-<ThemeImage src={"/img/authentication/oidc-settings/provider-configuration.png"} alt={"Provider Configuration"} />
+<DocsImage src={"/img/authentication/oidc-settings/provider-configuration"} alt={"Provider Configuration"} />
 ### Connection Settings
 
 | Field | What to enter | Notes |
@@ -115,7 +115,7 @@ Checks that pass show a green checkmark. Warnings (yellow) mean the feature will
 
 Once you save your provider configuration, Grimmory shows a reference panel with the exact values you need to paste into your identity provider's client settings. Each value has a copy button.
 
-<ThemeImage src={"/img/authentication/oidc-settings/provider-reference.png"} alt={"Provider Configuration Reference"} />
+<DocsImage src={"/img/authentication/oidc-settings/provider-reference"} alt={"Provider Configuration Reference"} />
 These values are auto-generated based on your Grimmory instance URL. You don't need to edit them; just copy them into your provider.
 
 | Value | Where to put it in your provider | Example |
@@ -139,7 +139,7 @@ This is a server-to-server call, so the Back-Channel Logout URI must be reachabl
 
 If you want all users to authenticate exclusively through your identity provider, with no password-based fallback.
 
-<ThemeImage src={"/img/authentication/oidc-settings/oidc-only-mode.png"} alt={"OIDC-Only Mode"} />
+<DocsImage src={"/img/authentication/oidc-settings/oidc-only-mode"} alt={"OIDC-Only Mode"} />
 When you enable OIDC-Only Mode:
 
 1. The local login form disappears from the login page
@@ -178,7 +178,7 @@ Restart Grimmory. OIDC is now completely disabled regardless of database setting
 
 When someone logs in via OIDC for the first time, what should happen? User provisioning controls whether Grimmory creates the account automatically and what permissions it starts with.
 
-<ThemeImage src={"/img/authentication/oidc-settings/user-provisioning.png"} alt={"User Provisioning"} />
+<DocsImage src={"/img/authentication/oidc-settings/user-provisioning"} alt={"User Provisioning"} />
 ### Automatic User Provisioning
 
 **Enabled (recommended for most setups):** Any user who successfully authenticates through your OIDC provider gets a Grimmory account automatically. No admin action needed. The account is created with the default permissions and library access you configure below.
@@ -237,7 +237,7 @@ Group mapping is the most powerful feature of Grimmory's OIDC integration. It le
 
 Instead of manually configuring each user's permissions in Grimmory, you manage everything in your identity provider. Move a user to a different group in Authentik or Keycloak, and their Grimmory access updates on next login.
 
-<ThemeImage src={"/img/authentication/oidc-settings/group-mapping.png"} alt={"Group Mapping"} />
+<DocsImage src={"/img/authentication/oidc-settings/group-mapping"} alt={"Group Mapping"} />
 ### Group Sync Mode
 
 The sync mode determines *how* group mappings are applied on each login.

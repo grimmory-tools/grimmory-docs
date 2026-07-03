@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 OPDS (Open Publication Distribution System) lets you browse and download books from your Grimmory library using any OPDS-compatible reading app. Point your app at Grimmory's catalog URL, authenticate, and your full library is available on any device: e-readers, tablets, phones.
 
@@ -17,7 +17,7 @@ Grimmory also provides a **Komga-compatible API** for apps that speak the Komga 
 
 Go to **Settings > OPDS** in Grimmory. The top section has two toggles:
 
-<ThemeImage src={"/img/opds/opds.jpg"} alt={"Grimmory OPDS Configuration page showing server toggles, endpoint URLs, and OPDS user management"} />
+<DocsImage src={"/img/opds/opds"} alt={"Grimmory OPDS Configuration page showing server toggles, endpoint URLs, and OPDS user management"} />
 **OPDS Server Enabled** activates the standard OPDS catalog at `/api/v1/opds`. This is what most reading apps connect to.
 
 **Komga API** activates the Komga-compatible API at `/komga/api/`. Enable this if you use Tachiyomi, Komelia, or other Komga clients. It uses the same OPDS user accounts for authentication.

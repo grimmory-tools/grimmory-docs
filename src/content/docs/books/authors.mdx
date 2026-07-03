@@ -6,7 +6,7 @@ sidebar:
   order: 7
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 Grimmory automatically builds an author catalog from your book metadata. Click **Authors** in the sidebar to explore your collection organized by who wrote it.
 
@@ -16,7 +16,7 @@ Grimmory automatically builds an author catalog from your book metadata. Click *
 
 The author browser displays a card grid of every author in your library.
 
-<ThemeImage src={"/img/authors/browse-all-authors.jpg"} alt={"Browse All Authors"} />
+<DocsImage src={"/img/authors/browse-all-authors"} alt={"Browse All Authors"} />
 ### Search and Sort
 
 Type in the search bar to filter authors by name. The sort dropdown offers several options:
@@ -81,14 +81,14 @@ Click any author card to open their detail page. There are up to three tabs depe
 
 The landing tab shows the author's biography, with links to their Amazon and Audible pages (via their ASIN). Long biographies are collapsed by default and can be expanded. Below the bio, all of the author's books in your library are listed.
 
-<ThemeImage src={"/img/authors/author-details.jpg"} alt={"Author Details"} />
+<DocsImage src={"/img/authors/author-details"} alt={"Author Details"} />
 ---
 
 ### Edit Details
 
 Update the author's name, ASIN, biography, and photo. Each field has its own lock toggle so you can protect specific edits from being overwritten during metadata refreshes.
 
-<ThemeImage src={"/img/authors/edit-details.jpg"} alt={"Edit Details"} />
+<DocsImage src={"/img/authors/edit-details"} alt={"Edit Details"} />
 **Photo options:**
 - **Upload** a file from your device (PNG or JPEG, max 5 MB)
 - **Search** to find a photo online (uses DuckDuckGo image search, shows resolution for each result)
@@ -106,7 +106,7 @@ If you've manually curated an author's bio or photo, lock those fields so they a
 
 Look up author information from online metadata providers. Enter the author's name, select a region, and click **Search**.
 
-<ThemeImage src={"/img/authors/search-author.jpg"} alt={"Search Author"} />
+<DocsImage src={"/img/authors/search-author"} alt={"Search Author"} />
 Available regions: **US**, **UK**, **AU**, **CA**, **IN**, **FR**, **DE**, **IT**, **ES**, **JP**.
 
 Each result shows the author's name, ASIN, and biography preview. Click the **Match** button on a result to pull its data into your local author record. Matching respects field locks, so any locked fields will be left untouched.

@@ -5,7 +5,7 @@ sidebar:
   order: 7
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 Amazon metadata works out of the box, but if you run into 503 errors or rate limiting, providing a browser session cookie gives Grimmory a way to look like a regular logged-in user. The cookie is optional but recommended for the most reliable results.
 
@@ -26,7 +26,7 @@ Consider using a secondary Amazon account for this. Automated requests from Grim
 7. In the **Headers** panel, scroll down to **Request Headers** and find the `Cookie` field
 8. Copy the entire cookie value
 
-<ThemeImage src={"/img/metadata/amazon-cookie/amazon-cookie-1.jpg"} alt={"Browser developer tools showing the Cookie header in Amazon's request headers"} />
+<DocsImage src={"/img/metadata/amazon-cookie/amazon-cookie-1"} alt={"Browser developer tools showing the Cookie header in Amazon's request headers"} />
 The cookie is a long string containing multiple key-value pairs separated by semicolons. Copy the whole thing.
 
 ---
@@ -38,7 +38,7 @@ The cookie is a long string containing multiple key-value pairs separated by sem
 3. Paste the cookie string into the **Cookie** field
 4. Click **Save**
 
-<ThemeImage src={"/img/metadata/amazon-cookie/amazon-cookie-2.jpg"} alt={"Grimmory Metadata 1 settings showing the Amazon region dropdown and cookie field"} />
+<DocsImage src={"/img/metadata/amazon-cookie/amazon-cookie-2"} alt={"Grimmory Metadata 1 settings showing the Amazon region dropdown and cookie field"} />
 That's it. Grimmory will include the cookie when fetching metadata from Amazon, which gives access to richer results and avoids rate limits.
 
 ---

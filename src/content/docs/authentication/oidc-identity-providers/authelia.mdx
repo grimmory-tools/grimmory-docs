@@ -6,7 +6,7 @@ sidebar:
   order: 5
 ---
 
-import ThemeImage from '../../../../components/ThemeImage.astro';
+import DocsImage from '../../../../components/DocsImage.astro';
 
 This guide walks you through setting up [Authelia](https://www.authelia.com/) as an OIDC provider for Grimmory. Authelia is a popular self-hosted authentication server that provides SSO and multi-factor authentication for your reverse proxy setup. If you're already using Authelia to protect your services behind Traefik, Caddy, or nginx, adding Grimmory as an OIDC client is straightforward.
 
@@ -62,7 +62,7 @@ Restart Authelia after saving the config.
 
 Navigate to **Settings > OIDC** in Grimmory.
 
-<ThemeImage src={"/img/authentication/authelia/grimmory-oidc-settings.jpg"} alt={"Grimmory OIDC Settings"} />
+<DocsImage src={"/img/authentication/authelia/grimmory-oidc-settings"} alt={"Grimmory OIDC Settings"} />
 Fill in the provider configuration:
 
 | Field | Value |
@@ -101,7 +101,7 @@ Open an incognito/private browser window and navigate to your Grimmory instance.
 
 After authenticating (including 2FA if configured), you should be redirected back to Grimmory and logged in.
 
-<ThemeImage src={"/img/authentication/authelia/login-success.jpg"} alt={"Login Success"} />
+<DocsImage src={"/img/authentication/authelia/login-success"} alt={"Login Success"} />
 Verify that your username and email are correct.
 
 ---

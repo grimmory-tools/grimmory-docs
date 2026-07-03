@@ -6,7 +6,7 @@ sidebar:
   order: 1
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 Grimmory lets you upload custom SVG icons to use with libraries, shelves, and magic shelves. The icon picker gives you access to a built-in PrimeNG icon set, your uploaded SVG collection, and a form to add new icons by pasting SVG code. Icons from [Lucide](https://lucide.dev/), [Iconoir](https://iconoir.com/), [Heroicons](https://heroicons.com/), or [Feather Icons](https://feathericons.com/) work well.
 
@@ -16,7 +16,7 @@ Grimmory lets you upload custom SVG icons to use with libraries, shelves, and ma
 
 The icon picker appears whenever you're creating or editing a library, shelf, or magic shelf. Click the **Choose an Icon** button in the icon field to open it.
 
-<ThemeImage src={"/img/icons/icon-picker.jpg"} alt={"Create New Library dialog showing the Library Icon field with a \"Choose an Icon\" button"} />
+<DocsImage src={"/img/icons/icon-picker"} alt={"Create New Library dialog showing the Library Icon field with a \"Choose an Icon\" button"} />
 This opens a modal with three tabs: **Prime Icons**, **SVG Icons**, and **Add SVG Icon**.
 
 ---
@@ -25,14 +25,14 @@ This opens a modal with three tabs: **Prime Icons**, **SVG Icons**, and **Add SV
 
 The first tab shows the built-in PrimeNG icon library. Use the search bar at the top to filter by name, then click any icon to select it.
 
-<ThemeImage src={"/img/icons/prime-icons.jpg"} alt={"Choose an Icon modal on the Prime Icons tab, showing a search bar and a grid of built-in icons"} />
+<DocsImage src={"/img/icons/prime-icons"} alt={"Choose an Icon modal on the Prime Icons tab, showing a search bar and a grid of built-in icons"} />
 ---
 
 ## SVG Icons
 
 The second tab shows your uploaded custom SVG icons. If you've added icons through the Add SVG Icon tab, they appear here as a searchable grid.
 
-<ThemeImage src={"/img/icons/custom-icons.jpg"} alt={"SVG Icons tab showing a search bar, a grid of uploaded custom icons, and a \"Drag here to delete icon\" trash zone at the bottom-right"} />
+<DocsImage src={"/img/icons/custom-icons"} alt={"SVG Icons tab showing a search bar, a grid of uploaded custom icons, and a \"Drag here to delete icon\" trash zone at the bottom-right"} />
 Click any icon to select it. Use the search bar to filter by name.
 
 To delete an icon, drag it to the **"Drag here to delete icon"** zone at the bottom-right. The zone highlights when you hover over it. Drop the icon to permanently delete it.
@@ -47,7 +47,7 @@ Deleted icons cannot be recovered. You'll need to re-upload them if needed later
 
 Switch to the **Add SVG Icon** tab to upload a new icon by pasting its SVG code.
 
-<ThemeImage src={"/img/icons/add-svg.jpg"} alt={"Add SVG Icon tab with a name field (\"king\"), an SVG code textarea with pasted content, a live preview showing the rendered icon, and a Save SVG button"} />
+<DocsImage src={"/img/icons/add-svg"} alt={"Add SVG Icon tab with a name field (\"king\"), an SVG code textarea with pasted content, a live preview showing the rendered icon, and a Save SVG button"} />
 1. **Name your icon** in the text field. Use lowercase with hyphens or underscores (e.g., `chess-king`). Only letters, numbers, hyphens, and underscores are allowed, up to 255 characters.
 
 2. **Paste the SVG code** into the textarea. Copy the full `<svg>...</svg>` markup from your icon source.

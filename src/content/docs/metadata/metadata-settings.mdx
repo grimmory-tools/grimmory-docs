@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 Configure how metadata is retrieved, stored, and matched for your books, including provider settings, file persistence, sidecar backups, and field preferences.
 
@@ -17,7 +17,7 @@ Navigate to **Settings > Metadata 1** to access this page. Requires the **Manage
 
 Configure how metadata is written back to original book files and how files are moved or renamed when metadata changes.
 
-<ThemeImage src={"/img/metadata/metadata-persistence.jpg"} alt={"Metadata Persistence"} />
+<DocsImage src={"/img/metadata/metadata-persistence"} alt={"Metadata Persistence"} />
 :::danger[Network Storage Warning]
 These features directly modify and move book files on disk (including rewriting metadata and renaming files). They are designed for **local file systems only**. Using them on NAS or cloud-backed storage is untested and may lead to file corruption, incomplete writes, or permanent data loss.
 :::
@@ -56,7 +56,7 @@ Enable this alongside a well-defined file naming pattern to keep your library or
 
 Create external metadata files alongside your books for portable metadata storage and backup.
 
-<ThemeImage src={"/img/metadata/sidecar-json.jpg"} alt={"Sidecar JSON Files"} />
+<DocsImage src={"/img/metadata/sidecar-json"} alt={"Sidecar JSON Files"} />
 When enabled, Grimmory writes a `BookName.metadata.json` file next to each book file containing all of its metadata in a structured JSON format. This provides a portable, human-readable backup of your metadata that lives alongside the book files themselves.
 
 ### What's Included in Sidecar Files
@@ -79,7 +79,7 @@ You can also bulk export and import sidecar files per library from the [Fetch Co
 
 Configure whether metadata is automatically fetched from your configured providers when new books arrive through Bookdrop.
 
-<ThemeImage src={"/img/metadata/auto-metadata-download.jpg"} alt={"Automatic Metadata Download"} />
+<DocsImage src={"/img/metadata/auto-metadata-download"} alt={"Automatic Metadata Download"} />
 When enabled, Grimmory will automatically retrieve metadata from your configured sources whenever new files are added to the Bookdrop folder. The metadata fetch uses the provider priority configuration set in the [Fetch Configuration](/metadata/metadata-fetch-configuration) page.
 
 :::caution[Performance Note]
@@ -92,7 +92,7 @@ Processing a large number of files simultaneously may increase the time required
 
 Configure which online sources to use for fetching book metadata. Enable providers and set up their API tokens or cookies to access richer book information.
 
-<ThemeImage src={"/img/metadata/metadata-providers.jpg"} alt={"Metadata Providers"} />
+<DocsImage src={"/img/metadata/metadata-providers"} alt={"Metadata Providers"} />
 Providers are split into two groups:
 
 ### Providers with Configuration
@@ -128,7 +128,7 @@ Enabling a provider here makes it available in the priority dropdowns on the [Fe
 
 Select which provider-specific metadata fields to display when editing book information or picking metadata from providers. Disabled fields are hidden from the interface entirely.
 
-<ThemeImage src={"/img/metadata/enabled-fields.jpg"} alt={"Enabled Fields in Metadata Editor & Picker"} />
+<DocsImage src={"/img/metadata/enabled-fields"} alt={"Enabled Fields in Metadata Editor & Picker"} />
 Each provider has its own set of unique fields that can be toggled individually:
 
 | Provider | Available Fields |
@@ -152,7 +152,7 @@ If you only use a few providers, disable the fields for providers you don't use.
 
 Configure automatic downloading of user reviews from external platforms. Reviews can be fetched from Amazon, Goodreads, and Hardcover for offline access within Grimmory.
 
-<ThemeImage src={"/img/metadata/public-reviews.jpg"} alt={"Public Reviews"} />
+<DocsImage src={"/img/metadata/public-reviews"} alt={"Public Reviews"} />
 ### Download Public Reviews
 
 The master toggle that enables or disables review downloading across all providers. When disabled, the entire reviews section is hidden from book detail views.

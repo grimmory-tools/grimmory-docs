@@ -5,14 +5,14 @@ sidebar:
   order: 5
 ---
 
-import ThemeImage from '../../../components/ThemeImage.astro';
+import DocsImage from '../../../components/DocsImage.astro';
 
 The Metadata Manager lets you clean up and standardize metadata across your entire library. Merge duplicates, rename entries, split combined values, and delete unwanted metadata in bulk.
 
-<ThemeImage src={"/img/metadata/manager/overview.jpg"} alt={"Metadata Manager Overview"} />
+<DocsImage src={"/img/metadata/manager/overview"} alt={"Metadata Manager Overview"} />
 Access it from **Settings > Metadata Manager**.
 
-<ThemeImage src={"/img/metadata/manager/access-settings.jpg"} alt={"Access Settings"} />
+<DocsImage src={"/img/metadata/manager/access-settings"} alt={"Access Settings"} />
 :::note[File Management]
 If "Auto-Move Files on Metadata Update" and/or "Write to File" are enabled, those settings are honored when metadata changes are applied through the manager.
 :::
@@ -47,8 +47,8 @@ Combine duplicate or similar entries into a standardized value. Useful for clean
 2. Click **Merge Selected**
 3. Enter the target value
 
-<ThemeImage src={"/img/metadata/manager/select-items.jpg"} alt={"Select Items"} />
-<ThemeImage src={"/img/metadata/manager/merge-target.jpg"} alt={"Merge Target"} />
+<DocsImage src={"/img/metadata/manager/select-items"} alt={"Select Items"} />
+<DocsImage src={"/img/metadata/manager/merge-target"} alt={"Merge Target"} />
 **For multi-value fields** (Authors, Genres, Moods, Tags), you can enter comma-separated values to give all affected books multiple tags. For example, merging "Mystery & Detective" into `Mystery, Detective` gives every affected book both tags.
 
 **For single-value fields** (Series, Publisher, Language), only a single target value is allowed. All selected entries are standardized to that one value.
@@ -67,9 +67,9 @@ Combine duplicate or similar entries into a standardized value. Useful for clean
 
 Rename individual entries or split them into multiple values. Click the **pencil icon** next to any entry.
 
-<ThemeImage src={"/img/metadata/manager/rename-button.jpg"} alt={"Rename Button"} />
-<ThemeImage src={"/img/metadata/manager/rename-input.jpg"} alt={"Rename Input"} />
-<ThemeImage src={"/img/metadata/manager/rename-confirm.jpg"} alt={"Rename Confirm"} />
+<DocsImage src={"/img/metadata/manager/rename-button"} alt={"Rename Button"} />
+<DocsImage src={"/img/metadata/manager/rename-input"} alt={"Rename Input"} />
+<DocsImage src={"/img/metadata/manager/rename-confirm"} alt={"Rename Confirm"} />
 For multi-value fields, entering comma-separated values splits the entry. For example, renaming "Mystery & Detective" to `Mystery, Detective` gives affected books both tags.
 
 For single-value fields, only a single new name is allowed.
@@ -80,7 +80,7 @@ For single-value fields, only a single new name is allowed.
 
 Remove metadata values from all books that have them. Click the **trash icon** on a single entry, or select multiple items and click **Delete Selected**.
 
-<ThemeImage src={"/img/metadata/manager/delete-option.jpg"} alt={"Delete Option"} />
+<DocsImage src={"/img/metadata/manager/delete-option"} alt={"Delete Option"} />
 Deletion removes the metadata from affected books. The books themselves remain in your library with all other metadata intact.
 
 :::danger[Cannot Be Undone]
