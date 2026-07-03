@@ -11,13 +11,16 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.40.0",
+    "@astrojs/starlight": "^0.41.2",
     "@astrojs/starlight-tailwind": "^5.0.0",
-    "@lucide/astro": "^1.18.0",
+    "@lucide/astro": "^1.23.0",
     "@tailwindcss/postcss": "^4.3.1",
-    "astro": "^6.4.5",
+    "astro": "^7.0.6",
     "sharp": "^0.34.5",
-    "starlight-openapi": "^0.25.3",
+    "starlight-openapi": "^0.26.0",
     "tailwindcss": "^4.3.1"
+  },
+  "overrides": {
+    "form-data": "4.0.6"
   }
 }
