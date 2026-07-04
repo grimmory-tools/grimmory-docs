@@ -1,6 +1,16 @@
 ---
+import { Image } from 'astro:assets';
 import AppButton from './AppButton.astro';
 import Logo from '../assets/logo.svg';
+import heroLight from '../assets/images/docs/homepage-hero/light.png';
+import heroDark from '../assets/images/docs/homepage-hero/dark.png';
+
+const heroImageProps = {
+  alt: '',
+  widths: [640, 960, 1280, 1920],
+  sizes: '(min-width: 50rem) 40rem, 100vw',
+  loading: 'eager' as const,
+};
 
 const PAGE_TITLE_ID = '_top';
 const { data } = Astro.locals.starlightRoute.entry;
@@ -34,7 +44,10 @@ const actionButtonProps = {
         </div>
       )}
     </div>
-    <div class="hero-media" aria-hidden="true"></div>
+    <div class="hero-media" aria-hidden="true">
+      <Image class="hero-image hero-image-light" src={heroLight} {...heroImageProps} />
+      <Image class="hero-image hero-image-dark" src={heroDark} {...heroImageProps} />
+    </div>
   </div>
 </div>
 
@@ -139,6 +152,20 @@ const actionButtonProps = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* Theme swap: light shown only under [data-theme='light'], dark otherwise —
+     matches the site's `dark = :not([data-theme='light'])` convention. */
+  .hero-media :global(.hero-image-dark) {
+    display: none;
+  }
+
+  :global(:root:not([data-theme='light'])) .hero-media :global(.hero-image-light) {
+    display: none;
+  }
+
+  :global(:root:not([data-theme='light'])) .hero-media :global(.hero-image-dark) {
+    display: block;
   }
 
   .actions {

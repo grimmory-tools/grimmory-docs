@@ -160,22 +160,78 @@ function toSrcSet(sources: Source[]) {
 }
 ---
 
-<img
-  class="docs-image"
-  src={renderedImage.kind === 'single' ? renderedImage.image.src : renderedImage.light.src}
-  srcset={renderedImage.kind === 'single' ? renderedImage.image.srcset : renderedImage.light.srcset}
-  data-docs-image={renderedImage.kind === 'themed' ? true : undefined}
-  data-light-src={renderedImage.kind === 'themed' ? renderedImage.light.src : undefined}
-  data-light-srcset={renderedImage.kind === 'themed' ? renderedImage.light.srcset : undefined}
-  data-dark-src={renderedImage.kind === 'themed' ? renderedImage.dark.src : undefined}
-  data-dark-srcset={renderedImage.kind === 'themed' ? renderedImage.dark.srcset : undefined}
-  sizes={sizes}
-  width={renderedImage.kind === 'single' ? renderedImage.image.width : renderedImage.light.width}
-  height={renderedImage.kind === 'single' ? renderedImage.image.height : renderedImage.light.height}
-  alt={alt}
-  loading="lazy"
-  decoding="async"
-/>
+{
+  renderedImage.kind === 'single' ? (
+    <img
+      class="docs-image"
+      src={renderedImage.image.src}
+      srcset={renderedImage.image.srcset}
+      sizes={sizes}
+      width={renderedImage.image.width}
+      height={renderedImage.image.height}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <>
+      {/*
+        Themed images ship without src/srcset so the browser's preload scanner
+        fetches nothing up front. The inline script below runs synchronously,
+        before paint, and assigns the variant matching the theme Starlight has
+        already set on <html> — so exactly one image loads, correct from the
+        first paint (no light-then-dark flash, no double fetch).
+      */}
+      <img
+        class="docs-image"
+        data-docs-image
+        data-light-src={renderedImage.light.src}
+        data-light-srcset={renderedImage.light.srcset}
+        data-dark-src={renderedImage.dark.src}
+        data-dark-srcset={renderedImage.dark.srcset}
+        sizes={sizes}
+        width={renderedImage.light.width}
+        height={renderedImage.light.height}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <script is:inline>
+        (function () {
+          var img = document.currentScript.previousElementSibling;
+          if (!img) return;
+          var theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+          img.src = img.getAttribute('data-' + theme + '-src') || '';
+          img.srcset = img.getAttribute('data-' + theme + '-srcset') || '';
+        })();
+      </script>
+      <noscript>
+        <img
+          class="docs-image"
+          src={renderedImage.light.src}
+          srcset={renderedImage.light.srcset}
+          sizes={sizes}
+          width={renderedImage.light.width}
+          height={renderedImage.light.height}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+      </noscript>
+    </>
+  )
+}
+
+<style>
+  .docs-image {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-control);
+  }
+</style>
 
 <script>
   const docsImages = document.querySelectorAll('img[data-docs-image]');
