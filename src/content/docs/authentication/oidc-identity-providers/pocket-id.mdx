@@ -22,10 +22,10 @@ This guide covers the initial setup. For details on user provisioning, group map
 
 Open your Pocket ID admin panel and go to **Settings > Administration > OIDC Clients**. Click **Add OIDC Client**.
 
-<DocsImage src={"/img/authentication/pocket-id/create-client"} alt={"Create Client"} />
+<DocsImage src={"/img/authentication/pocket-id/create-client"} alt={"Create Client"} manual />
 Fill in the client configuration:
 
-<DocsImage src={"/img/authentication/pocket-id/client-details"} alt={"Client Details"} />
+<DocsImage src={"/img/authentication/pocket-id/client-details"} alt={"Client Details"} manual />
 | Field | Value | Notes |
 |-------|-------|-------|
 | **Name** | `Grimmory` | Shown to users in the Pocket ID dashboard |
@@ -51,7 +51,7 @@ Click **Save**.
 
 After saving, Pocket ID generates a **Client ID** for your application.
 
-<DocsImage src={"/img/authentication/pocket-id/copy-client-id"} alt={"Copy Client ID"} />
+<DocsImage src={"/img/authentication/pocket-id/copy-client-id"} alt={"Copy Client ID"} manual />
 Copy it. You'll also need your **Issuer URL**, which is simply your Pocket ID base URL:
 
 | Value | Example |
@@ -94,7 +94,7 @@ Click **Save**, then toggle **OIDC Login** to **ON** in the Login Methods sectio
 
 Open your Pocket ID dashboard and go to **My Apps**. You should see the Grimmory application card.
 
-<DocsImage src={"/img/authentication/pocket-id/app-card"} alt={"Grimmory App Card"} />
+<DocsImage src={"/img/authentication/pocket-id/app-card"} alt={"Grimmory App Card"} manual />
 Click the **Grimmory** card. Pocket ID handles the authentication and redirects you to Grimmory.
 
 <DocsImage src={"/img/grid/overview"} alt={"Login Success"} />

@@ -24,10 +24,10 @@ This guide covers the initial setup. For details on user provisioning, group map
 
 Open your Authentik admin dashboard and click **"Create a new application"**. This launches the setup wizard.
 
-<DocsImage src={"/img/authentication/authentik/create-application"} alt={"Create Application"} />
+<DocsImage src={"/img/authentication/authentik/create-application"} alt={"Create Application"} manual />
 Fill in the application details:
 
-<DocsImage src={"/img/authentication/authentik/application-details"} alt={"Application Configuration"} />
+<DocsImage src={"/img/authentication/authentik/application-details"} alt={"Application Configuration"} manual />
 - **Name:** `Grimmory` (this is what users see on the Authentik dashboard)
 - **Slug:** `grimmory` (used in URLs, keep it lowercase)
 
@@ -35,12 +35,12 @@ Click **Next**.
 
 ### Select Provider Type
 
-<DocsImage src={"/img/authentication/authentik/provider-type"} alt={"Choose Provider"} />
+<DocsImage src={"/img/authentication/authentik/provider-type"} alt={"Choose Provider"} manual />
 Choose **OAuth2/OpenID Provider** and click **Next**.
 
 ### Configure the Provider
 
-<DocsImage src={"/img/authentication/authentik/provider-settings"} alt={"Configure Provider"} />
+<DocsImage src={"/img/authentication/authentik/provider-settings"} alt={"Configure Provider"} manual />
 - **Name:** `Grimmory OAuth2`
 - **Authorization Flow:** `default-provider-authorization-implicit-consent` (users won't be prompted to approve access each time they log in)
 - **Client Type:** `Public` (Grimmory uses PKCE, so a client secret isn't needed)
@@ -49,7 +49,7 @@ Choose **OAuth2/OpenID Provider** and click **Next**.
 
 This tells Authentik where to send users after they authenticate. The redirect URI must match exactly or the login will fail.
 
-<DocsImage src={"/img/authentication/authentik/redirect-uris"} alt={"Redirect URIs"} />
+<DocsImage src={"/img/authentication/authentik/redirect-uris"} alt={"Redirect URIs"} manual />
 Add the following (replace `books.example.com` with your actual Grimmory domain):
 
 - **Strict:** `https://books.example.com/oauth2-callback`
@@ -69,7 +69,7 @@ Regex: http://localhost:4200/*
 
 ### Configure Scopes
 
-<DocsImage src={"/img/authentication/authentik/oauth-scopes"} alt={"OAuth Scopes"} />
+<DocsImage src={"/img/authentication/authentik/oauth-scopes"} alt={"OAuth Scopes"} manual />
 Add these scopes (all required):
 
 | Scope | Why Grimmory needs it |
@@ -85,7 +85,7 @@ Click **Save**.
 
 Control which Authentik users can access Grimmory. Users who aren't bound to the application won't see it in their dashboard and can't authenticate.
 
-<DocsImage src={"/img/authentication/authentik/user-bindings"} alt={"Configure Bindings"} />
+<DocsImage src={"/img/authentication/authentik/user-bindings"} alt={"Configure Bindings"} manual />
 - **Type:** Select **User** to bind individual users, or **Group** to bind all members of a group
 - **Select** the users or groups who should have access
 - Click **Save Binding**
@@ -102,8 +102,8 @@ You need two values from Authentik to configure Grimmory: the **Client ID** and 
 
 Go to **Applications > Providers** and click on the provider you just created.
 
-<DocsImage src={"/img/authentication/authentik/providers-list"} alt={"Provider List"} />
-<DocsImage src={"/img/authentication/authentik/provider-credentials"} alt={"Provider Credentials"} />
+<DocsImage src={"/img/authentication/authentik/providers-list"} alt={"Provider List"} manual />
+<DocsImage src={"/img/authentication/authentik/provider-credentials"} alt={"Provider Credentials"} manual />
 Copy these two values:
 
 | Value | Where to find it | Example |
@@ -156,11 +156,11 @@ For sessions to stay in sync (so logging out of Authentik also logs the user out
 
 The fastest way to test without logging out of your admin account:
 
-<DocsImage src={"/img/authentication/authentik/user-impersonation"} alt={"User Impersonation"} />
+<DocsImage src={"/img/authentication/authentik/user-impersonation"} alt={"User Impersonation"} manual />
 1. Go to **Authentik > Directory > Users**, select a user bound to Grimmory, and click **Impersonate**
 2. Navigate to your Grimmory instance. You should see the Authentik login/dashboard.
 
-<DocsImage src={"/img/authentication/authentik/login-page"} alt={"Authentik Login Page"} />
+<DocsImage src={"/img/authentication/authentik/login-page"} alt={"Authentik Login Page"} manual />
 3. Click the **Grimmory** tile. You should be redirected and logged in automatically.
 
 <DocsImage src={"/img/grid/overview"} alt={"Grimmory Homepage"} />

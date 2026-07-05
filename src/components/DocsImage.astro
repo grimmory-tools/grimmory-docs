@@ -5,6 +5,12 @@ import type { ImageMetadata } from 'astro';
 type Props = {
   src: `/img/${string}`;
   alt: string;
+  /**
+   * Marks a screenshot that grimmory-seed's automation cannot capture
+   * (external UIs, e-reader hardware, devtools). Has no effect on rendering;
+   * `grimmory-seed sync` reads it so these aren't reported as coverage gaps.
+   */
+  manual?: boolean;
 };
 
 type Source = {

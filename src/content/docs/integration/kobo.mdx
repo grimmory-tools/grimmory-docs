@@ -78,11 +78,11 @@ Connect your Kobo to your computer via USB. You need to edit a configuration fil
 1. Enable hidden files in your file manager (the folder you need is hidden by default)
 2. Navigate to the Kobo drive and open the `.kobo` folder
 
-<DocsImage src={"/img/kobo/config-file-location"} alt={"Finder showing the KOBOeReader drive with the .kobo hidden folder visible"} />
+<DocsImage src={"/img/kobo/config-file-location"} alt={"Finder showing the KOBOeReader drive with the .kobo hidden folder visible"} manual />
 3. Open `.kobo/Kobo/Kobo eReader.conf` in a text editor
 4. Find the `[OneStoreServices]` section and look for the `api_endpoint` line
 
-<DocsImage src={"/img/kobo/config-before"} alt={"The original Kobo eReader.conf showing api_endpoint pointing to storeapi.kobo.com"} />
+<DocsImage src={"/img/kobo/config-before"} alt={"The original Kobo eReader.conf showing api_endpoint pointing to storeapi.kobo.com"} manual />
 5. Replace the `api_endpoint` value with your Grimmory URL followed by `/api/kobo/` and your token:
 
 **Local network (no reverse proxy):**
@@ -95,7 +95,7 @@ api_endpoint=http://192.168.1.100:6060/api/kobo/your-token-here
 api_endpoint=https://your-grimmory-domain.com/api/kobo/your-token-here
 ```
 
-<DocsImage src={"/img/kobo/config-after"} alt={"The modified Kobo eReader.conf with api_endpoint pointing to the Grimmory instance"} />
+<DocsImage src={"/img/kobo/config-after"} alt={"The modified Kobo eReader.conf with api_endpoint pointing to the Grimmory instance"} manual />
 6. Save the file and safely eject your Kobo
 
 That's the only device-side configuration needed. From now on, when your Kobo syncs, it talks to Grimmory.
@@ -115,10 +115,10 @@ With the Kobo configured, you control what appears on the device through the Kob
 <DocsImage src={"/img/kobo/shelf-with-books"} alt={"Grimmory's Kobo shelf view showing 7 books ready to sync"} />
 4. On your Kobo, go to **My Books**, tap the sync icon in the top-right corner, and tap **Sync now**
 
-<DocsImage src={"/img/kobo/sync-button"} alt={"Kobo device showing the Sync complete dialog with Sync now button"} />
+<DocsImage src={"/img/kobo/sync-button"} alt={"Kobo device showing the Sync complete dialog with Sync now button"} manual />
 5. Your Grimmory books appear on the device, ready to read
 
-<DocsImage src={"/img/kobo/synced-books"} alt={"Kobo device My Books screen showing the synced books from Grimmory"} />
+<DocsImage src={"/img/kobo/synced-books"} alt={"Kobo device My Books screen showing the synced books from Grimmory"} manual />
 ---
 
 ## Shelves as Collections
@@ -137,13 +137,13 @@ This gives you full control. The Kobo shelf determines *which* books are on the 
 
 1. On the device, tap the three dots on a book cover and select **Remove**
 
-<DocsImage src={"/img/kobo/remove-menu"} alt={"Kobo context menu on a book showing Read now, View Details, Add to collection, Mark as finished, and Remove options"} />
+<DocsImage src={"/img/kobo/remove-menu"} alt={"Kobo context menu on a book showing Read now, View Details, Add to collection, Mark as finished, and Remove options"} manual />
 2. Select **Remove from My Books** and tap **Remove**
 
-<DocsImage src={"/img/kobo/remove-confirm"} alt={"Kobo removal dialog with Remove download and Remove from My Books options"} />
+<DocsImage src={"/img/kobo/remove-confirm"} alt={"Kobo removal dialog with Remove download and Remove from My Books options"} manual />
 3. Tap **Sync now** to push the change back to Grimmory
 
-<DocsImage src={"/img/kobo/sync-after-removal"} alt={"Kobo after removal showing one fewer book, with Sync complete dialog"} />
+<DocsImage src={"/img/kobo/sync-after-removal"} alt={"Kobo after removal showing one fewer book, with Sync complete dialog"} manual />
 The book is removed from your Kobo shelf in Grimmory but stays in your library. It's not deleted, just unsynced.
 
 <DocsImage src={"/img/kobo/shelf-after-removal"} alt={"Grimmory Kobo shelf after sync showing the book has been removed from the shelf"} />
