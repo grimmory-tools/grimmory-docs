@@ -1,0 +1,39 @@
+---
+import * as lucideIcons from '@lucide/astro/icons';
+
+type Props = {
+  name: string;
+  label: string;
+  class?: string;
+};
+
+const { name, label, class: className } = Astro.props;
+const Icon = (lucideIcons as Record<string, any>)[toExportName(name)];
+
+if (!Icon) {
+  throw new Error(`Unknown Lucide icon "${name}". Use the kebab-case name from lucide.dev/icons.`);
+}
+
+function toExportName(name: string) {
+  return name
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+---
+
+<Icon class:list={['docs-icon', className]} size="1em" aria-label={label} />
+
+<style>
+  :global(.sl-markdown-content) .docs-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    max-width: 1em;
+    margin-block: 0;
+    margin-inline: 0.08em;
+    vertical-align: -0.14em;
+    stroke-width: 2.25;
+  }
+
+</style>

@@ -1,0 +1,100 @@
+---
+import { LibraryBig, Sparkles, BookOpen, RefreshCw, Globe, Wand, Users, Send } from '@lucide/astro';
+
+const features = [
+  { Icon: LibraryBig, title: 'Smart organization', text: 'Shelves, filters, and fast search across your library.' },
+  { Icon: Sparkles, title: 'Automatic metadata', text: 'Pull covers, details, and reviews from multiple sources.' },
+  { Icon: BookOpen, title: 'Built-in reader', text: 'Read EPUB, PDF, and comics in the browser with progress sync.' },
+  { Icon: RefreshCw, title: 'Kobo & KOReader sync', text: 'Sync reading progress across Kobo and KOReader.' },
+  { Icon: Globe, title: 'OPDS support', text: 'Browse and download your library from any OPDS reading app.' },
+  { Icon: Wand, title: 'Magic shelves', text: 'Rule-based collections that update automatically.' },
+  { Icon: Users, title: 'Multi-user', text: 'Share your library with per-user permissions.' },
+  { Icon: Send, title: 'Email books', text: 'Send any book to your Kindle or another email address.' },
+];
+---
+
+<section class="features">
+  <ul class="feature-grid">
+    {features.map(({ Icon, title, text }) => (
+      <li class="feature">
+        <div class="feature-head">
+          <Icon class="feature-icon" size={22} stroke-width={2} aria-hidden="true" />
+          <h2>{title}</h2>
+        </div>
+        <p>{text}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .features {
+    margin-block: clamp(1.5rem, 5vw, 3.5rem);
+  }
+  .feature-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 0;
+  }
+
+  .feature {
+    margin: 0;
+  }
+
+  .feature-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .feature-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .feature h2 {
+    margin: 0;
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--color-text-strong);
+  }
+
+  .feature p {
+    margin: 0;
+    font-size: var(--sl-text-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 49.99rem) {
+    .features {
+      padding-block: 2rem;
+    }
+    .feature + .feature {
+      margin-top: 1.75rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    }
+  }
+
+  @media (min-width: 50rem) {
+    .feature-grid {
+      --stagger-height: 5rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      padding-bottom: var(--stagger-height);
+    }
+    .feature-grid > .feature:nth-child(2n) {
+      transform: translateY(var(--stagger-height));
+    }
+    .feature {
+      background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.3rem 1.4rem;
+    }
+  }
+</style>

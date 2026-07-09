@@ -1,0 +1,48 @@
+---
+title: "Set Up Admin User"
+slug: initial-setup
+sidebar:
+  label: "Set Up Admin User"
+  order: 3
+---
+
+import DocsImage from '../../../components/DocsImage.astro';
+
+On first launch, Grimmory shows a setup screen to create the initial administrator account. This is a one-time step.
+
+---
+
+## Create Your Account
+
+Open `http://localhost:6060` in your browser and fill in the setup form:
+
+<DocsImage src={"/img/initial-setup/admin-user"} alt={"Admin User Setup"} />
+| Field | Notes |
+|-------|-------|
+| **Username** | Your login identifier |
+| **Full Name** | Display name shown in the UI |
+| **Email Address** | Used for account-related features |
+| **Password** | Minimum 6 characters |
+| **Confirm Password** | Must match the password above |
+
+All fields are required. Click **"Create Admin Account"** when done.
+
+:::caution[Save Your Credentials]
+There is no password recovery flow yet. If you lose your password, you'll need to reset it directly in the database. Use a password manager.
+:::
+
+---
+
+## Login
+
+After creating the account, you'll be redirected to the login page. Sign in with the username and password you just created.
+
+<DocsImage src={"/img/initial-setup/login"} alt={"Login Page"} />
+---
+
+## Dashboard
+
+After logging in, you'll see an empty dashboard prompting you to create your first library.
+
+<DocsImage src={"/img/initial-setup/empty-dashboard"} alt={"Empty Dashboard"} />
+Click **"Add a Library"** to get started. See [Set Up First Library](/library/setup-first-library) for a walkthrough.

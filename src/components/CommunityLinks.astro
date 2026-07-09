@@ -1,0 +1,58 @@
+---
+import AppButton from './AppButton.astro';
+import BookOpen from '@lucide/astro/icons/book-open';
+---
+
+<aside class="cta">
+  <h2 class="cta-title">Join the community</h2>
+  <nav class="cta-actions" aria-label="Community">
+    <ul>
+      <li>
+        <AppButton href="https://discord.gg/vNsB8CTebs" target="_blank" size="lg" icon="discord" label="Join the Discord" tone="primary" variant="solid" />
+      </li>
+      <li>
+        <AppButton href="/getting-started" size="lg" tone="neutral" variant="soft">
+          <BookOpen size="1em" aria-hidden="true" />
+          <span>Documentation</span>
+        </AppButton>
+      </li>
+      <li>
+        <AppButton href="https://github.com/grimmory-tools/grimmory" target="_blank" size="lg" icon="github" label="GitHub" tone="neutral" variant="soft" />
+      </li>
+      <li>
+        <AppButton href="https://opencollective.com/grimmory" target="_blank" size="lg" icon="openCollective" label="Sponsor" tone="neutral" variant="soft" />
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+<style>
+  .cta {
+    margin-block: clamp(3rem, 8vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+  }
+  .cta-title {
+    margin: 0;
+    font-size: var(--sl-text-2xl);
+    font-weight: 600;
+    color: var(--color-text-strong);
+  }
+  .cta-actions ul {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .cta-actions li {
+    margin: 0;
+    padding: 0;
+  }
+</style>

@@ -1,0 +1,98 @@
+---
+title: "Beta Testing Setup"
+head:
+  - tag: meta
+    attrs:
+      name: robots
+      content: noindex
+pagefind: false
+sidebar:
+  hidden: true
+---
+
+Thank you for helping us test the latest features! This guide will help you set up a **local testing environment** that stays completely separate from your "real" book library.
+
+## Prerequisites
+
+Before you start, you need to have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on your computer.
+
+## Setup Guide
+
+### **Step 1. Create a Sandbox Folder**
+
+To prevent any risk to your actual data, create a brand new folder on your computer (e.g., `grimmory-test`). Do all your work inside this folder.
+
+### **Step 2. Prepare Configuration Files**
+
+Copy your existing `.env` and `docker-compose.yml` files into this new sandbox folder.
+
+:::note[For new users]
+Follow Steps 1–3 in the [Installation Guide](/installation#installation-steps) to create these files from scratch.
+:::
+
+### **Step 3. Modify `docker-compose.yml`**
+
+Open the `docker-compose.yml` file in your sandbox folder using a text editor (Notepad, TextEdit, VS Code) and apply these changes:
+
+#### **A. Point to the Latest Pre-release Image:**
+
+Find the line starting with `image:` and update it with the latest `nightly-` tag provided by the team at https://github.com/grimmory-tools/grimmory/pkgs/container/grimmory/
+
+```yaml
+grimmory:
+  image: grimmory/grimmory:nightly-20260321-55c0ac0
+```
+
+#### **B. Avoid Container Conflicts:**
+
+To prevent your computer from getting confused between your "real" Grimmory and this "test" version, you must give the `container_name` a unique name.
+
+```yaml
+grimmory:
+  container_name: grimmory-test
+
+mariadb:
+  container_name: mariadb-test
+```
+
+### **Step 4. Launch Test Environment**
+
+Open your terminal or command prompt inside your sandbox folder and run:
+`docker compose up -d`
+
+**Access the app at:** [http://localhost:6060](http://localhost:6060)
+
+---
+
+## Troubleshooting
+
+| Error Message                      | Solution                                                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| "container name is already in use" | Ensure your test containers have a unique name. Refer to Step 3B.                                            |
+| "port is already allocated"        | Your "real" Grimmory (or another app) is likely still running. Stop it and try `docker compose up -d` again. |
+
+### Checking Logs
+
+If the app doesn't start or crashes, the logs will tell us why. Run these in your terminal:
+
+- **Grimmory Logs:** `docker compose logs grimmory`
+- **Database Logs:** `docker compose logs mariadb`
+
+### Resetting the Test Database
+
+As a last resort, if the testing data becomes corrupted and you want a fresh start:
+
+:::danger[Database Reset Warning]
+This deletes all library metadata inside your testing environment. Books remain but need re-importing.
+:::
+
+1. Stop the containers: Run `docker compose down -v`
+2. Delete the folder: `./mariadb/config` (inside your test directory)
+3. Restart: `docker compose up -d`
+
+---
+
+## Tester Tips
+
+- **Isolate Instances:** We strongly recommend stopping your "real" Grimmory instance while testing the "Beta" version. This prevents confusion and keeps your computer's resources focused on the test.
+- **Small Batches:** Don't import your whole library at once. Test the new features with 5–10 books first to ensure everything is stable.

@@ -1,0 +1,67 @@
+---
+title: "Table View"
+slug: book-browser/table
+sidebar:
+  label: "Table View"
+  order: 9
+---
+
+import DocsImage from '../../../components/DocsImage.astro';
+
+The table view displays books in a data-rich tabular layout with sortable columns, ideal for managing large libraries. Switch to table view using the toggle button in the toolbar.
+
+<DocsImage src={"/img/table/toggle-grid-state"} alt={"Grid State Toggle"} />
+<DocsImage src={"/img/table/toggle-table-state"} alt={"Table State Toggle"} />
+---
+
+## Visible Columns
+
+Click the eye icon in the toolbar to choose which columns to show or hide.
+
+<DocsImage src={"/img/table/table-visible-columns"} alt={"Visible Columns"} />
+Available columns: Title, Authors, Publisher, Series, Series #, Genres, Published, Last Read, Added On, File Size, Language, ISBN, Pages, Read Status, Amazon Rating, Goodreads Rating, Hardcover Rating, and their review counts.
+
+---
+
+## Sorting
+
+Click the sort icon in the toolbar to open the sort popover. Works the same as in grid view: multi-sort with drag-to-reorder priority and ascending/descending toggles per field.
+
+<DocsImage src={"/img/table/table-sorting"} alt={"Sorting"} />
+---
+
+## Search
+
+The search bar filters the table in real time, matching across title, series, and author fields.
+
+<DocsImage src={"/img/table/table-search"} alt={"Search"} />
+---
+
+## Sidebar Filters
+
+The sidebar filter panel works identically to the grid view, with the same filter categories and AND/OR mode toggle.
+
+<DocsImage src={"/img/table/sidebar-default"} alt={"Sidebar Filters"} />
+<DocsImage src={"/img/table/sidebar-sort-options"} alt={"Sidebar Sort Options"} />
+---
+
+## Bulk Selection
+
+Check the checkbox next to books to select them, or use **Select All** in the bottom action bar to select every visible book.
+
+<DocsImage src={"/img/table/table-select-all"} alt={"Select All"} />
+The action bar provides bulk operations: metadata actions, shelf assignment, lock/unlock, organize files, and more (based on your permissions).
+
+---
+
+## Delete Books
+
+Click the delete button in the bottom action bar to delete selected books. This **permanently removes the files from disk**, not just from the library.
+
+<DocsImage src={"/img/table/delete-menu"} alt={"Delete Menu"} />
+A confirmation dialog shows how many books will be deleted.
+
+<DocsImage src={"/img/table/delete-confirm"} alt={"Delete Confirm"} />
+:::danger[Permanent File Deletion]
+Deleting books removes the actual files from your drive. Make sure you have backups before confirming.
+:::

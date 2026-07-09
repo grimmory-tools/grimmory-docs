@@ -1,0 +1,190 @@
+---
+title: "Email Configuration"
+slug: email-setup
+sidebar:
+  label: "Email Setup"
+  order: 3
+---
+
+import DocsImage from '../../../components/DocsImage.astro';
+
+Configure email settings to send books directly to your devices or recipients. Set up email providers (like Gmail, Outlook, or custom SMTP servers) and manage recipient email addresses.
+
+Navigate to **Settings > Email** to access this page. Requires the **Email Books** permission.
+
+---
+
+The Email Configuration page has two sections:
+
+- **Email Providers**: SMTP server configurations used to send books
+- **Recipient Emails**: Email addresses where books are delivered
+
+Once you have a default provider and a default recipient configured, you can send books with a single click using **Quick Send** from any book card menu.
+
+<DocsImage src={"/img/email-setup/email-configuration"} alt={"Email Configuration"} />
+---
+
+## Email Providers
+
+An email provider is an SMTP server configuration that Grimmory uses to send books. You can add multiple providers and set one as the default.
+
+### Adding a Provider
+
+Click **"+ Add Provider"** to open the creation dialog.
+
+<DocsImage src={"/img/email-setup/create-provider-dialog"} alt={"Create Email Provider"} />
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Provider Name** | Yes | A descriptive name (e.g., "Gmail", "Office SMTP") |
+| **Host** | Yes | SMTP server hostname (e.g., `smtp.gmail.com`) |
+| **Port** | Yes | SMTP server port (typically `587` for STARTTLS or `465` for SSL) |
+| **Username** | No | Authentication username (usually your email address) |
+| **Password** | No | Authentication password or app password |
+| **From Address** | No | The sender email address displayed to recipients |
+
+**Checkboxes:**
+
+| Option | Description |
+|--------|-------------|
+| **Authentication** | Enable SMTP authentication with the username and password above |
+| **StartTLS** | Enable STARTTLS encryption (recommended for port 587) |
+| **Shared** | Admin only. Makes this provider available to all users on the instance. |
+
+### Default Provider
+
+The radio button next to each provider controls which one is the **default**. The default provider is used for Quick Send. Your first provider is automatically set as the default.
+
+### Shared Providers
+
+Admins can mark a provider as **Shared** to make it available to all users. This is useful for organization-wide SMTP servers so individual users don't need to configure their own.
+
+- Shared providers appear in every user's provider list
+- Only the admin who created a shared provider can edit or delete it
+- Non-admin users see shared providers as read-only
+
+### Editing and Deleting
+
+Each provider has edit and delete buttons. Click edit to modify settings inline, or delete to remove the provider. If you delete the default provider, another provider is automatically assigned as the new default.
+
+---
+
+## Recipient Emails
+
+Recipients are the email addresses where books are sent. Each user manages their own private list of recipients.
+
+### Adding a Recipient
+
+Click **"+ Add Recipient"** to add a new recipient.
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| **Email** | Yes | The recipient's email address |
+| **Name** | Yes | A label for the recipient (e.g., "My Kindle", "John's iPad") |
+
+### Default Recipient
+
+The radio button next to each recipient controls which one is the **default**. The default recipient is used for Quick Send. Your first recipient is automatically set as the default.
+
+---
+
+## Sending Books
+
+Once your email provider and recipients are configured, you can send books from any book card menu.
+
+### Quick Send
+
+Select **Email Book > Quick Send** from the book card menu. The book is sent immediately using your default provider and default recipient with no further interaction.
+
+:::tip[Perfect for E-Readers]
+Quick Send is ideal for sending books to a Kindle or other e-reader. Set the device's email as your default recipient and send books with one click.
+:::
+
+### Custom Send
+
+Select **Email Book > Custom Send** from the book card menu to open a dialog where you can:
+
+1. **Choose a provider** from your available providers (personal + shared)
+2. **Choose a recipient** from your recipient list
+3. **Choose a file format** if the book has multiple formats (e.g., EPUB and PDF)
+
+The dialog shows the file size for each format and warns you if a file exceeds 25 MB.
+
+:::note[No Format Conversion]
+Books are sent as-is in their original format. Grimmory does not convert between formats before sending.
+:::
+
+---
+
+## Gmail Setup
+
+Gmail is the most common provider. Here's how to set it up:
+
+### Step 1: Generate an App Password
+
+1. Go to [Google Account Security Settings](https://myaccount.google.com/security)
+2. Ensure **2-Step Verification** is enabled (required for app passwords)
+3. Navigate to **App Passwords**
+4. Select **Mail** as the app type, choose **Other**, enter "Grimmory"
+5. Click **Generate** and copy the 16-character password
+
+:::caution[Save Your App Password]
+Google only displays the app password once. Save it before closing the dialog.
+:::
+
+### Step 2: Add Gmail as a Provider
+
+Use these settings when creating the provider:
+
+| Field | Value |
+|-------|-------|
+| **Provider Name** | Gmail |
+| **Host** | `smtp.gmail.com` |
+| **Port** | `587` |
+| **Username** | Your Gmail address |
+| **Password** | The 16-character app password |
+| **From Address** | Your Gmail address |
+| **Authentication** | Checked |
+| **StartTLS** | Checked |
+
+---
+
+## Other Common Providers
+
+| Provider | Host | Port | Auth | StartTLS |
+|----------|------|------|------|----------|
+| **Gmail** | `smtp.gmail.com` | 587 | Yes | Yes |
+| **Outlook/Hotmail** | `smtp-mail.outlook.com` | 587 | Yes | Yes |
+| **Yahoo** | `smtp.mail.yahoo.com` | 587 | Yes | Yes |
+| **Custom SMTP** | Your server's hostname | Per your server | Per your server | Per your server |
+
+---
+
+## Troubleshooting
+
+### Authentication Failed
+- Verify you're using an **app password**, not your regular account password
+- Confirm 2-Factor Authentication is enabled (required by Gmail for app passwords)
+- Double-check the username and password fields
+
+### Connection Timeout
+- Confirm the host and port are correct
+- Ensure StartTLS is enabled for port 587
+- Check that your network or Docker container allows outbound SMTP connections
+
+### Books Not Arriving
+- Check the recipient's spam/junk folder
+- Verify the recipient email address is correct
+- For Kindle users, ensure your sending address is added to the [Approved Personal Document Email List](https://www.amazon.com/hz/mycd/myx#/home/settings/payment) in your Amazon account
+
+### Cannot See Email Settings
+- Verify you have the **Email Books** permission. Contact your administrator if needed.
+
+---
+
+## Notes
+
+- Email providers and recipients are personal to each user. Other users cannot see or use your private configurations.
+- All email provider and recipient changes are recorded in the [Audit Log](/tools/audit-logs).
+- The connection type is auto-detected: port 465 uses SSL, port 587 with StartTLS uses STARTTLS, otherwise plain SMTP.
+- Email sending happens asynchronously. You'll see a toast notification when the send completes or fails.
+- Supported formats for sending: EPUB, PDF, CBX (CBZ/CBR/CB7), MOBI, AZW3, FB2, and Audiobook (M4B/M4A/MP3).

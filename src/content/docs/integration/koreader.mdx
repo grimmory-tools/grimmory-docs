@@ -1,0 +1,85 @@
+---
+title: "KOReader Sync"
+sidebar:
+  label: "KOReader"
+  order: 2
+---
+
+import DocsImage from '../../../components/DocsImage.astro';
+
+KOReader sync lets you push and pull reading progress between [KOReader](https://koreader.rocks/) and Grimmory.
+
+Read a few chapters on your e-reader, push the progress, and it shows up in Grimmory. Pick up on another device, pull the latest position, and continue where you left off.
+
+Grimmory matches books by file content hash, so the same physical file must exist in both places. In practice this means KOReader needs to have downloaded the book from Grimmory (typically via OPDS) so the file bytes match. A book sideloaded from a different source won't produce the same hash, and progress won't link up.
+
+:::tip[Sync with Grimmory Reader]
+By default, KOReader progress and the built-in Grimmory web reader progress are tracked independently (they use different position formats). You can optionally enable **Sync reading progress with Grimmory eBook Reader** in the KOReader settings on the Devices page, which converts KOReader's XPointer positions to EPUB CFI so your web reader picks up where you left off. This conversion is approximate and may update by chapter rather than exact page.
+:::
+
+---
+
+## Step 1: Configure KOReader Sync in Grimmory
+
+Go to **Settings > Devices** in Grimmory. You'll see the **KOReader Settings** section with an enable toggle, an API path, and username/password fields.
+
+1. Click **Edit** to unlock the credential fields
+
+<DocsImage src={"/img/koreader/device-settings"} alt={"Grimmory Settings > Devices page showing KOReader Settings with Enable toggle, API Path, Username, and Password fields with an Edit button"} />
+2. Enter a **username** and **password** for KOReader to authenticate with (these are KOReader-specific credentials, separate from your Grimmory login)
+3. Click **Save**
+4. Toggle **Enable KOReader Sync** on
+5. Copy the **KOReader API Path** shown (e.g., `http://192.168.0.2:6060/api/koreader`). You'll need this in KOReader.
+
+<DocsImage src={"/img/koreader/credentials-setup"} alt={"KOReader Settings with sync enabled, API path populated, username and password filled in"} />
+:::note[Permissions]
+Only users with the **KOReader Sync** permission can use this feature. Admins have it by default. To grant it to other users, go to **Settings > Users** and enable the **KOReader Sync** checkbox on their row.
+:::
+
+<DocsImage src={"/img/koreader/user-permissions"} alt={"Settings > Users page showing the user list with permission columns including KOReader Sync"} />
+---
+
+## Step 2: Set Up Sync in KOReader
+
+Open a book in KOReader to access the tools menu.
+
+1. Tap the **tools icon** (wrench) in the top toolbar, then select **Progress sync**
+
+<DocsImage src={"/img/koreader/settings-menu"} alt={"KOReader tools menu showing Progress sync option"} manual />
+2. Tap **Custom sync server** and enter the API path you copied from Grimmory
+
+<DocsImage src={"/img/koreader/custom-sync-server"} alt={"KOReader Custom sync server dialog with the Grimmory API URL entered"} manual />
+3. Tap **Register / Login**, enter the username and password you set in Grimmory, and tap **Login**
+
+<DocsImage src={"/img/koreader/login-credentials"} alt={"KOReader login dialog with username and password fields and Login button"} manual />
+4. You're connected. Use **Push progress from this device now** to send your current position to Grimmory, or **Pull progress from other devices now** to retrieve the latest position from Grimmory.
+
+<DocsImage src={"/img/koreader/push-pull-options"} alt={"KOReader Progress sync menu showing Push and Pull options, along with auto-sync settings"} manual />
+5. One important setting: tap **Document matching method** and make sure **Binary** is selected. This matches books by file content (the same method Grimmory uses), ensuring the right book gets the right progress.
+
+<DocsImage src={"/img/koreader/matching-method"} alt={"KOReader Document matching method menu"} manual />
+<DocsImage src={"/img/koreader/binary-matching"} alt={"Binary option selected: \"Only identical files will be kept in sync\""} manual />
+:::tip[Auto Sync]
+KOReader can sync automatically. Enable **Automatically keep documents in sync** and optionally set **Periodically sync every # pages** so you don't have to push/pull manually each time.
+:::
+
+---
+
+## Viewing Synced Progress
+
+KOReader progress appears on the book's detail page in Grimmory as **KOReader Progress** with a percentage and a green progress indicator.
+
+<DocsImage src={"/img/koreader/synced-progress"} alt={"Book detail page for Digital Fortress showing KOReader Progress at 21.1% alongside Grimmory Progress and other metadata"} />
+Click the reset icon next to the KOReader progress to clear it in Grimmory. This does not affect the reading position stored on your KOReader device.
+
+---
+
+## Troubleshooting
+
+| Problem | What to check |
+|---------|---------------|
+| Login fails in KOReader | Make sure the username and password match exactly what you set in Grimmory's Devices settings. These are case-sensitive. Also verify the API path is reachable from your e-reader's network. |
+| Progress not appearing in Grimmory | Tap **Push progress from this device now** in KOReader after reading. If auto-sync is off, progress doesn't send automatically. |
+| Wrong book gets the progress | Make sure **Document matching method** is set to **Binary**, not Filename. Binary matches by file content hash, which is what Grimmory expects. |
+| Sideloaded book won't sync | The book file must be byte-identical to the one in Grimmory. Download it from Grimmory via OPDS to ensure the hashes match. A file from a different source (even the same title) will have a different hash. |
+| API path not accessible | If Grimmory is behind a reverse proxy, make sure `/api/koreader/**` paths are forwarded correctly. If using Docker, the API path shown in settings may use a container IP that isn't reachable from your e-reader's network. Use your external hostname or LAN IP instead. |

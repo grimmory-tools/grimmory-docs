@@ -85,7 +85,7 @@ Track progress on missing docs. Work through one section at a time, taking all s
 Batch by section. For each section:
 1. Set up the app state (populate data, navigate to the page)
 2. Take all screenshots for that section in one pass
-3. Save to `static/img/<feature-name>/` following existing naming conventions
+3. Save to `src/assets/images/<feature-name>/` following existing naming conventions
 4. Write the doc while screenshots are fresh
 
 Image specs (from DOCS_GUIDE.md):

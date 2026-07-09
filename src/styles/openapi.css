@@ -1,0 +1,313 @@
+@reference './tokens.css';
+
+.sl-markdown-content {
+  --docs-openapi-border: var(--color-border);
+  --docs-openapi-grid: color-mix(in srgb, var(--color-text) 4%, var(--color-border));
+  --docs-openapi-header: color-mix(in srgb, var(--color-text) 5%, var(--color-card));
+  --docs-openapi-fill: color-mix(in srgb, var(--color-text) 4%, var(--color-card));
+  --docs-openapi-hover: color-mix(in srgb, var(--color-text) 6%, var(--color-card));
+}
+
+:root[data-theme='light'] .sl-markdown-content {
+  --docs-openapi-header: color-mix(in srgb, var(--color-text) 3%, var(--color-card));
+}
+
+:root:not([data-theme='light']) .sl-markdown-content {
+  --docs-openapi-hover: color-mix(in srgb, var(--color-text) 9%, var(--color-card));
+}
+
+.sl-markdown-content :is(.sl-openapi-section-panel, .sl-openapi-operation-description) {
+  @apply rounded-lg border bg-card shadow-control;
+  border-color: var(--docs-openapi-border);
+}
+
+.sl-markdown-content :is(.sl-openapi-operation-description-header, .sl-openapi-snippets) {
+  border-color: var(--docs-openapi-border);
+}
+
+.sl-markdown-content .sl-openapi-section-panel {
+  color: var(--color-text);
+}
+
+.sl-markdown-content .sl-openapi-operation-description {
+  overflow: hidden;
+}
+
+.sl-markdown-content
+  :is(
+    .sl-openapi-operation-description-button,
+    .sl-openapi-content-picker-select select,
+    .sl-openapi-snippet-picker select,
+    .sl-openapi-snippet-picker-value
+  ) {
+  @apply rounded-md bg-card text-text-secondary;
+  border-color: var(--docs-openapi-border);
+}
+
+.sl-markdown-content
+  :is(.sl-openapi-operation-description-button, .sl-openapi-content-picker-select select, .sl-openapi-snippet-picker select):hover {
+  @apply text-text;
+  border-color: var(--color-primary);
+}
+
+.sl-markdown-content .sl-openapi-example div.expressive-code {
+  --ec-frm-frameBoxShdCssVal: none;
+}
+
+.sl-markdown-content .sl-openapi-example div.expressive-code .frame pre {
+  background-color: var(--color-card);
+  border: 0;
+  box-shadow: none;
+}
+
+.sl-markdown-content
+  starlight-openapi-content-picker:has([data-openapi-content-type='*/*']):has(.sl-openapi-content-picker-select-value)
+  .sl-openapi-content-picker-select {
+  display: none;
+}
+
+.sl-markdown-content .sl-openapi-section-panel:has(> .sl-openapi-keys) {
+  padding: 0;
+  overflow: hidden;
+}
+
+.sl-markdown-content .sl-openapi-keys {
+  column-gap: 0;
+}
+
+.sl-markdown-content :is(.sl-openapi-key-name, .sl-openapi-key-description) {
+  padding: 0.625rem 1rem;
+  color: var(--color-text);
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content .sl-openapi-key-name {
+  border-inline-end: 1px solid var(--docs-openapi-grid);
+}
+
+.sl-markdown-content .sl-openapi-keys .sl-openapi-key + .sl-openapi-key {
+  margin-top: 0;
+  border-top: 1px solid var(--docs-openapi-grid);
+}
+
+.sl-markdown-content .sl-openapi-key-name strong {
+  font-family: var(--sl-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+}
+
+.sl-markdown-content .sl-openapi-key-required {
+  color: var(--color-danger);
+}
+
+.sl-markdown-content .sl-openapi-tag {
+  border-color: var(--docs-openapi-border);
+  border-radius: 0.375rem;
+  background: var(--docs-openapi-fill);
+  padding: 0.1rem 0.4rem;
+  vertical-align: middle;
+}
+
+.sl-markdown-content .sl-openapi-key-description > div:has(> .sl-openapi-type) {
+  display: inline;
+}
+
+.sl-markdown-content .sl-openapi-key-description > .sl-openapi-tags {
+  display: inline-flex;
+  margin-block: 0;
+  margin-inline-start: 0.4rem;
+  vertical-align: middle;
+}
+
+.sl-markdown-content .sl-openapi-section-panel:not(:has(> .sl-openapi-keys)) {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;
+}
+
+.sl-markdown-content .sl-openapi-schema-object-root details {
+  border-color: var(--docs-openapi-border);
+}
+
+.sl-markdown-content details.sl-openapi-schema-object-root {
+  border-inline-start: 0;
+  padding-inline-start: 0;
+}
+
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  starlight-openapi-content-picker
+  > [role='tabpanel']
+  > div:has(> .sl-openapi-type) {
+  padding: 0.7rem 1rem 0;
+}
+
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  starlight-openapi-content-picker
+  > [role='tabpanel']
+  > details:not(.sl-openapi-schema-object-root) {
+  border-inline-start: 0;
+}
+
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  starlight-openapi-content-picker
+  > [role='tabpanel']
+  > details:not(.sl-openapi-schema-object-root)
+  > summary {
+  margin-inline-start: 0;
+  padding: 0.4rem 1rem;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) {
+  @apply rounded-lg border bg-card shadow-control;
+  margin-top: 1.5rem;
+  border-color: var(--docs-openapi-border);
+  overflow: hidden;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > :is(.sl-heading-wrapper, .sl-openapi-heading, .sl-openapi-section-pre-panel) {
+  margin: 0;
+  padding-inline: 1rem;
+  background: var(--docs-openapi-header);
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > :is(.sl-heading-wrapper, .sl-openapi-heading) {
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--docs-openapi-grid);
+}
+
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  > :is(.sl-heading-wrapper, .sl-openapi-heading):has(+ .sl-openapi-section-pre-panel) {
+  padding-block-end: 0.4rem;
+  border-bottom: 0;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > .sl-openapi-section-pre-panel {
+  padding-block: 0 0.85rem;
+  border-bottom: 1px solid var(--docs-openapi-grid);
+  color: var(--color-text-secondary);
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > .sl-openapi-section-pre-panel :is(p),
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > .sl-openapi-section-post-panel,
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  :is(starlight-openapi-content-picker > [role='tabpanel'], .sl-openapi-schema-object-root, .sl-openapi-schema-object-root > .sl-openapi-keys) {
+  margin: 0;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) > .sl-heading-wrapper,
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-heading {
+  color: var(--color-text);
+  font-size: var(--sl-text-base);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-anchor-link {
+  display: none;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-section-panel {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) starlight-openapi-content-picker {
+  display: block;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-content-picker-select {
+  margin: 0;
+  padding: 0.6rem 1rem 0.4rem;
+}
+
+.sl-markdown-content .sl-openapi-content-picker-select-value {
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--sl-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: var(--sl-text-xs);
+}
+
+.sl-markdown-content
+  .sl-openapi-section:has(.sl-openapi-keys)
+  starlight-openapi-content-picker
+  > [role='tabpanel']
+  > .sl-openapi-markdown {
+  margin: 0;
+  padding: 0 1rem 0.7rem;
+  border-bottom: 1px solid var(--docs-openapi-grid);
+  color: var(--color-text-secondary);
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-examples {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--docs-openapi-grid);
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-examples-heading {
+  margin: 0 0 0.6rem;
+  color: var(--color-text);
+  font-size: var(--sl-text-base);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.sl-markdown-content .sl-openapi-section:has(.sl-openapi-keys) .sl-openapi-examples-generated {
+  margin-inline-start: 0.4rem;
+  color: var(--color-text-secondary);
+  font-size: var(--sl-text-xs);
+  font-weight: 400;
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link {
+  @apply rounded-[8px] border bg-card shadow-control transition-[background-color,border-color,color] duration-150;
+  align-items: center;
+  border-color: var(--docs-openapi-grid);
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link:is(:hover, :focus-within) {
+  border-color: color-mix(in srgb, var(--color-text) 15%, transparent);
+  background: var(--docs-openapi-hover);
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link:active {
+  @apply translate-y-px;
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link:has(a:focus-visible) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link a {
+  color: var(--color-text-strong);
+  font-weight: 500;
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link-icon {
+  color: var(--color-text-secondary);
+}
+
+.sl-markdown-content .sl-openapi-overview-navigation-link:is(:hover, :focus-within) .sl-openapi-overview-navigation-link-icon {
+  color: var(--color-text-strong);
+}
+
+.sl-markdown-content .sl-openapi-operation-method-badge {
+  @apply rounded-md text-xs;
+}

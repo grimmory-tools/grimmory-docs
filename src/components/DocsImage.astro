@@ -1,0 +1,269 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+type Props = {
+  src: `/img/${string}`;
+  alt: string;
+  /**
+   * Marks a screenshot that grimmory-seed's automation cannot capture
+   * (external UIs, e-reader hardware, devtools). Has no effect on rendering;
+   * `grimmory-seed sync` reads it so these aren't reported as coverage gaps.
+   */
+  manual?: boolean;
+};
+
+type Source = {
+  width: number;
+  src: string;
+};
+
+type RenderedImage = {
+  src: string;
+  srcset: string;
+  width: number;
+  height: number;
+};
+
+type ResolvedImage =
+  | {
+      kind: 'single';
+      image: ImageMetadata;
+    }
+  | {
+      kind: 'themed';
+      light: ImageMetadata;
+      dark: ImageMetadata;
+    };
+
+const { src, alt } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/images/**/*.{avif,jpeg,jpg,png,webp}', {
+  eager: true,
+});
+
+const extensions = ['png', 'jpg', 'jpeg', 'webp', 'avif'];
+const sourcePath = src.replace(/^\/img\//, '../assets/images/').replace(/\/$/, '');
+const resolvedImage = resolveImage(sourcePath);
+const sizes = '(min-width: 72rem) 48rem, calc(100vw - 2rem)';
+
+const renderedImage =
+  resolvedImage.kind === 'single'
+    ? { kind: 'single' as const, image: await renderImage(resolvedImage.image) }
+    : {
+        kind: 'themed' as const,
+        light: await renderImage(resolvedImage.light),
+        dark: await renderImage(resolvedImage.dark),
+      };
+
+function resolveImage(sourcePath: string): ResolvedImage {
+  const themedBasePath = stripExtension(sourcePath);
+  const lightPath = findAsset(`${themedBasePath}/light`);
+  const darkPath = findAsset(`${themedBasePath}/dark`);
+
+  if (lightPath || darkPath) {
+    if (!lightPath || !darkPath) {
+      throw new Error(
+        `DocsImage found an incomplete themed image pair for "${src}". Expected both "${themedBasePath}/light.*" and "${themedBasePath}/dark.*".`,
+      );
+    }
+
+    const light = images[lightPath]?.default;
+    const dark = images[darkPath]?.default;
+
+    if (!light || !dark) {
+      throw new Error(`DocsImage could not load themed image assets for "${src}".`);
+    }
+
+    if (light.width !== dark.width || light.height !== dark.height) {
+      throw new Error(
+        `DocsImage themed variants for "${src}" must have matching dimensions. Light is ${light.width}x${light.height}; dark is ${dark.width}x${dark.height}.`,
+      );
+    }
+
+    return { kind: 'themed', light, dark };
+  }
+
+  const singlePath = findAsset(sourcePath);
+
+  if (!singlePath) {
+    throw new Error(
+      `DocsImage could not find image asset for "${src}". Expected either "${sourcePath}.*" or "${themedBasePath}/light.*" and "${themedBasePath}/dark.*".`,
+    );
+  }
+
+  const image = images[singlePath]?.default;
+
+  if (!image) {
+    throw new Error(`DocsImage could not load image asset for "${src}" at "${singlePath}".`);
+  }
+
+  return { kind: 'single', image };
+}
+
+function findAsset(path: string) {
+  if (images[path]) return path;
+
+  const matches = extensions.map((extension) => `${path}.${extension}`).filter((candidate) => images[candidate]);
+
+  if (matches.length > 1) {
+    throw new Error(
+      `DocsImage found multiple image assets for "${src}" at "${path}". Use a file extension or remove duplicate variants.`,
+    );
+  }
+
+  return matches[0];
+}
+
+function stripExtension(path: string) {
+  const slashIndex = path.lastIndexOf('/');
+  const dotIndex = path.lastIndexOf('.');
+
+  if (dotIndex <= slashIndex) return path;
+
+  return path.slice(0, dotIndex);
+}
+
+async function renderImage(image: ImageMetadata): Promise<RenderedImage> {
+  const sources = await getResponsiveSources(image, getWidths(image.width));
+  const fallback = sources.at(-1);
+
+  if (!fallback) {
+    throw new Error(`DocsImage could not generate optimized sources for "${src}".`);
+  }
+
+  return {
+    src: fallback.src,
+    srcset: toSrcSet(sources),
+    width: image.width,
+    height: image.height,
+  };
+}
+
+async function getResponsiveSources(image: ImageMetadata, widths: number[]) {
+  return Promise.all(
+    widths.map(async (width) => {
+      const optimized = await getImage({
+        src: image,
+        width,
+        format: 'webp',
+        quality: 82,
+      });
+
+      return { width, src: optimized.src };
+    }),
+  );
+}
+
+function getWidths(sourceWidth: number) {
+  return [480, 768, 1024, 1280, sourceWidth].filter((width, index, widths) => {
+    return width <= sourceWidth && widths.indexOf(width) === index;
+  });
+}
+
+function toSrcSet(sources: Source[]) {
+  return sources.map(({ width, src }) => `${src} ${width}w`).join(', ');
+}
+---
+
+{
+  renderedImage.kind === 'single' ? (
+    <img
+      class="docs-image"
+      src={renderedImage.image.src}
+      srcset={renderedImage.image.srcset}
+      sizes={sizes}
+      width={renderedImage.image.width}
+      height={renderedImage.image.height}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <>
+      {/*
+        Themed images ship without src/srcset so the browser's preload scanner
+        fetches nothing up front. The inline script below runs synchronously,
+        before paint, and assigns the variant matching the theme Starlight has
+        already set on <html> — so exactly one image loads, correct from the
+        first paint (no light-then-dark flash, no double fetch).
+      */}
+      <img
+        class="docs-image"
+        data-docs-image
+        data-light-src={renderedImage.light.src}
+        data-light-srcset={renderedImage.light.srcset}
+        data-dark-src={renderedImage.dark.src}
+        data-dark-srcset={renderedImage.dark.srcset}
+        sizes={sizes}
+        width={renderedImage.light.width}
+        height={renderedImage.light.height}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <script is:inline>
+        (function () {
+          var img = document.currentScript.previousElementSibling;
+          if (!img) return;
+          var theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+          img.src = img.getAttribute('data-' + theme + '-src') || '';
+          img.srcset = img.getAttribute('data-' + theme + '-srcset') || '';
+        })();
+      </script>
+      <noscript>
+        <img
+          class="docs-image"
+          src={renderedImage.light.src}
+          srcset={renderedImage.light.srcset}
+          sizes={sizes}
+          width={renderedImage.light.width}
+          height={renderedImage.light.height}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+      </noscript>
+    </>
+  )
+}
+
+<style>
+  .docs-image {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-control);
+  }
+</style>
+
+<script>
+  const docsImages = document.querySelectorAll('img[data-docs-image]');
+
+  function selectedTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  }
+
+  function updateDocsImages() {
+    const theme = selectedTheme();
+
+    for (const image of docsImages) {
+      if (!(image instanceof HTMLImageElement)) continue;
+
+      const src = image.dataset[`${theme}Src`];
+      const srcset = image.dataset[`${theme}Srcset`];
+
+      if (src) image.src = src;
+      if (srcset) image.srcset = srcset;
+    }
+  }
+
+  updateDocsImages();
+
+  new MutationObserver(updateDocsImages).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+</script>

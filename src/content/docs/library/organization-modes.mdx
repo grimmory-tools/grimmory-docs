@@ -1,0 +1,175 @@
+---
+title: "Organization Modes"
+sidebar:
+  label: "Organization Modes"
+  order: 3
+---
+
+When you create a library, you choose an **organization mode** that tells Grimmory how to group your files into books. This is a per-library setting and cannot be changed after creation.
+
+---
+
+## Book Per File
+
+Every file becomes its own book. No grouping, no fuzzy matching, no surprises.
+
+```
+Library/
+├── American Gods/
+│   ├── American Gods.epub   ← book 1
+│   ├── American Gods.pdf    ← book 2
+│   └── American Gods.m4b    ← book 3
+└── Dune/
+    └── Dune.epub            ← book 4
+```
+
+Even though the three American Gods files share a folder and a name, each one is a separate book entry in Grimmory.
+
+### When to use it
+
+- You want full control over what counts as a book
+- Your collection has lots of loose files and you don't care about multi-format grouping
+- You prefer to merge formats manually after import
+
+### Root-level files
+
+Works the same way. Every file at the library root is its own book.
+
+```
+Library/
+├── Dune.epub       ← book 1
+├── Dune.pdf        ← book 2
+└── 1984.epub       ← book 3
+```
+
+### Audiobooks
+
+Chaptered audiobooks (2+ audio files in a folder) are still grouped into a single audiobook. Grimmory detects folder-based audiobooks before the organization mode is applied, so this works the same in both modes.
+
+```
+Library/
+└── Project Hail Mary/
+    ├── 01 - Chapter 1.mp3   ← ┐
+    ├── 02 - Chapter 2.mp3   ← ├─ one audiobook
+    └── 03 - Chapter 3.mp3   ← ┘
+```
+
+---
+
+## Book Per Folder
+
+All files in the same folder are grouped as **one book**. The folder is the boundary.
+
+```
+Library/
+├── American Gods/
+│   ├── American Gods.epub   ← ┐
+│   ├── American Gods.pdf    ← ├─ one book, three formats
+│   └── American Gods.m4b    ← ┘
+└── Dune/
+    └── Dune.epub            ← one book
+```
+
+### When to use it
+
+- You organize each book into its own folder (the most common setup)
+- You want multi-format grouping (epub + pdf + m4b = one book)
+- You have chaptered audiobooks (multiple audio files per folder)
+
+### Root-level files
+
+Files at the library root have no folder to group by, so each file becomes its own book (same behavior as Book Per File).
+
+```
+Library/
+├── Dune.epub       ← book 1
+├── Dune.pdf        ← book 2
+└── 1984.epub       ← book 3
+```
+
+:::tip[Use subfolders]
+Move books into their own folders for proper grouping. Root-level files always end up as individual entries regardless of the mode.
+:::
+
+### Audiobooks
+
+Chaptered audiobooks work naturally. All audio files in a folder become one book.
+
+```
+Library/
+└── Project Hail Mary/
+    ├── 01 - Chapter 1.mp3   ← ┐
+    ├── 02 - Chapter 2.mp3   ← ├─ one audiobook
+    └── 03 - Chapter 3.mp3   ← ┘
+```
+
+#### Audio absorption
+
+If an audiobook subfolder sits under a folder that already has an ebook, the audiobook is absorbed into the same book entry.
+
+```
+Library/
+└── Project Hail Mary/
+    ├── Project Hail Mary.epub   ← ┐
+    └── audiobook/                   │
+        ├── 01 - Chapter 1.mp3  ← ├─ one book (epub + audiobook)
+        ├── 02 - Chapter 2.mp3  ← │
+        └── 03 - Chapter 3.mp3  ← ┘
+```
+
+This means you don't need to keep ebooks and chaptered audiobooks in separate folders. Grimmory walks up the directory tree looking for a parent folder that contains an ebook and merges them.
+
+### Author folders and nesting
+
+Intermediate directories (like author folders) don't interfere. Grimmory groups by the **immediate parent folder** of each file.
+
+```
+Library/
+└── Brandon Sanderson/
+    ├── Mistborn 1 - The Final Empire/
+    │   ├── The Final Empire.epub   ← one book
+    │   └── The Final Empire.m4b    ← same book
+    └── Mistborn 2 - The Well of Ascension/
+        └── The Well of Ascension.epub  ← different book
+```
+
+### Series in one folder
+
+If you put multiple series entries in a single folder, they will all be merged into one book. Give each book its own folder.
+
+```
+Library/
+└── Mistborn/
+    ├── Mistborn Book 1.epub   ← ┐
+    ├── Mistborn Book 2.epub   ← ├─ all merged into one book (probably not what you want)
+    └── Mistborn Book 3.epub   ← ┘
+```
+
+Instead, use separate folders:
+
+```
+Library/
+├── Mistborn 1 - The Final Empire/
+│   └── The Final Empire.epub      ← book 1
+├── Mistborn 2 - The Well of Ascension/
+│   └── The Well of Ascension.epub ← book 2
+└── Mistborn 3 - The Hero of Ages/
+    └── The Hero of Ages.epub      ← book 3
+```
+
+---
+
+## Choosing a Mode
+
+| | Book Per File | Book Per Folder |
+|---|---|---|
+| **Multi-format grouping** | No | Yes |
+| **Chaptered audiobooks** | Yes (folder = one audiobook) | Yes (folder = one audiobook) |
+| **Ebook + audiobook together** | No | Yes (with audio absorption) |
+| **Series in one folder** | Works (each file is separate) | Doesn't work (all merged) |
+| **Predictability** | Very high | High |
+| **Best for** | Flat file collections, manual control | Organized folder-per-book layouts |
+
+:::tip[Rule of thumb]
+If each book has its own folder, use **Book Per Folder**. If your files are loosely organized or you want one-file-one-book simplicity, use **Book Per File**.
+:::

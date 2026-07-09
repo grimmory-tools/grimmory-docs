@@ -1,0 +1,146 @@
+---
+title: "Bookdrop Advanced Features"
+slug: bookdrop-advanced
+sidebar:
+  label: "Advanced Features"
+  order: 2
+---
+
+Bookdrop includes two advanced tools for importing large collections into Grimmory:
+
+- Bulk Edit
+- Pattern Extraction
+
+---
+
+## Bulk Edit Metadata
+
+Apply the same metadata changes to multiple books at once.
+
+### How to Use
+
+1. **Select files** using checkboxes, or use the **"Select All"** button
+2. Click the **"Bulk Edit"** button in the toolbar
+3. **Edit the fields** you want to change:
+   - Text: Series Name, Publisher, Language
+   - Number: Series Total
+   - Arrays: Authors, Genres, Moods, Tags
+4. Choose **Merge** (add new data to existing metadata) or **Replace** (overwrite) for array fields
+5. Click **"Apply to Selected"**
+
+:::tip
+Only checked fields will be updated. Fields are auto-checked when you enter values, but make sure any fields you want to set are checked.
+:::
+
+**Example:** Update 150 comic issues with the same series name and publisher in seconds.
+
+---
+
+## Pattern Extraction
+
+Automatically extract metadata from filenames using patterns.
+
+### How to Use
+
+1. **Select files** to process, or use the **"Select All"** button
+2. Click the **"Extract Pattern"** button
+3. **Enter a pattern** or choose one of the existing ones. You can modify preset patterns after selection.
+4. **Preview** results on sample files
+5. Click **"Extract and Apply"**
+
+### Pattern Syntax
+
+**Placeholders** (capture metadata):
+- Text: `{Title}`, `{SeriesName}`, `{Authors}`, `{Publisher}`, `{Language}`, `{Subtitle}`
+- Numbers: `{SeriesNumber}`, `{SeriesTotal}`
+- Identifiers: `{ISBN10}`, `{ISBN13}`, `{ASIN}`
+- Dates: `{Published}`, `{Published:yyyy-MM-dd}`, `{Published:yyyy}`
+
+**Wildcard** (skip text without extraction): `*`
+
+**Literal text:** Everything else matches exactly as shown, including dashes and spaces. Adding ` - ` between two placeholders requires that exact text to appear between those values in the filename.
+
+### Example Patterns
+
+**Books:**
+```
+{Authors} - {Title}
+{Title} ({Published:yyyy})
+{Authors} - {Title} ({Published:yyyy})
+```
+
+**Series/Comics:**
+```
+{SeriesName} #{SeriesNumber}
+{SeriesName} - Chapter {SeriesNumber}
+{SeriesName} v{SeriesNumber} (of {SeriesTotal})
+[*] {SeriesName} - Chapter {SeriesNumber}
+```
+
+### Pattern Examples
+
+| Filename | Pattern | Result |
+|----------|---------|--------|
+| `John Smith - The Lost City.epub` | `{Authors} - {Title}` | Authors="John Smith"<br/>Title="The Lost City" |
+| `Chronicles #025.cbz` | `{SeriesName} #{SeriesNumber}` | Series="Chronicles"<br/>Number=25 |
+| `The Book (2023).epub` | `{Title} ({Published})` | Title="The Book"<br/>Year=2023 |
+| `[Tag] Series - Ch 5.cbz` | `[*] {SeriesName} - Ch {SeriesNumber}` | Series="Series"<br/>Number=5 |
+
+### Date Formats
+
+Grimmory tries to detect date formats automatically, but you can specify a format to override auto-detection. This is useful when a date is ambiguous.
+
+These example formats can be given to a date placeholder:
+
+| Format | Example | Use |
+|--------|---------|-----|
+| `yyyy-MM-dd` | 2023-05-15 | ISO standard |
+| `MM-dd-yyyy` | 05-15-2023 | US format |
+| `dd.MM.yyyy` | 15.05.2023 | European |
+| `yyyyMMdd` | 20230515 | Compact |
+| `yyyy` | 2023 | Year only |
+
+Tokens: `yyyy` = year, `MM` = month, `dd` = day, `M` = 1-2 digit month, `d` = 1-2 digit day
+
+:::note
+When using `yyyy`, Grimmory defaults the day and month to January 1 because book metadata requires a full date value.
+:::
+
+---
+
+## Quick Tips
+
+**Pattern Extraction:**
+- Always preview before extracting to see the data that will be pulled from the files
+- For files with very different patterns, edit them in groups instead of trying to make one pattern fit every filename style
+- Use wildcards `*` for any parts that vary between files
+
+**Bulk Edit:**
+- Only enable fields you want to change, enabling a blank field will replace it with a blank value
+- For array fields, merge adds your values to existing data, while replace overwrites the existing values
+- Press Enter after each value in array fields to add multiple values to those fields
+
+**Combining Features:**
+1. Use Pattern Extraction to get metadata from filenames, such as a book's position in its series
+2. Use Bulk Edit to add consistent series info, publishers, or tags across multiple files
+
+---
+
+## Troubleshooting
+
+**Pattern doesn't match:**
+- Check literal text matches exactly (spaces, dashes, etc) and use a wildcard if in doubt
+- Compare pattern to actual filenames character-by-character
+- Start from a simple pattern, and add to it while checking the preview to see what's failing
+
+**Dates wrong:**
+- Specify an explicit format: `{Published:MM-dd-yyyy}` for a date formatted like `02-20-2025` in the filename
+
+**Bulk edit not applying:**
+- Verify fields are checked
+- Ensure values are entered
+- Check selection count
+
+---
+
+You can always review the extracted or bulk metadata prior to finalizing the import by clicking on each book.

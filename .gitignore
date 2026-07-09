@@ -1,46 +1,12 @@
-# Node modules
+dist/
+.astro/
 node_modules/
-
-# Build output
-build/
-.docusaurus/
-
-# Dependency lock files (optional)
-pnpm-lock.yaml
-yarn.lock
-
-# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# OS files
+.env*
+!.env.example
 .DS_Store
-Thumbs.db
-
-# Environment files
-.env
-.env.local
-
-# IDE files
-.vscode/
-.idea/
-
-# Optional: ignore local .nojekyll if generated dynamically
-.nojekyll
-
-# Mac-specific metadata files
-*.DS_Store
-
-# GitHub workflows cache (optional)
-.github/workflows/node_modules/
-
-# Optional: if using VS Code devcontainers
-.devcontainer/
-
-# Ignore coverage reports (if you add tests later)
-coverage/
-
-# Optional: ignore output from linting or testing tools
-eslintcache
+local/
+._*

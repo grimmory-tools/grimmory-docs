@@ -1,0 +1,225 @@
+---
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import BookOpen from '@lucide/astro/icons/book-open';
+import Code from '@lucide/astro/icons/code';
+import ApiSidebarSublist from './ApiSidebarSublist.astro';
+import IconSidebarSublist from './IconSidebarSublist.astro';
+
+interface SidebarEntry {
+	type: 'link' | 'group';
+	label: string;
+	entries?: SidebarEntry[];
+	href?: string;
+	isCurrent?: boolean;
+}
+
+type SidebarGroup = SidebarEntry & { type: 'group'; entries: SidebarEntry[] };
+
+const { sidebar } = Astro.locals.starlightRoute;
+
+function isGroup(entry: SidebarEntry): entry is SidebarGroup {
+	return entry.type === 'group' && Array.isArray(entry.entries);
+}
+
+function hasCurrentEntry(entries: SidebarEntry[] = []): boolean {
+	return entries.some((entry) => entry.isCurrent || (entry.entries ? hasCurrentEntry(entry.entries) : false));
+}
+
+function getTabEntries(group: SidebarGroup) {
+	const [onlyEntry] = group.entries;
+
+	if (group.label === 'API' && group.entries.length === 1 && isGroup(onlyEntry)) {
+		return onlyEntry.entries;
+	}
+
+	return group.entries;
+}
+
+const tabs = sidebar.filter(isGroup);
+const activeTab = tabs.find((tab) => hasCurrentEntry(getTabEntries(tab))) ?? tabs[0];
+const iconByTabLabel: Record<string, typeof BookOpen> = {
+	Docs: BookOpen,
+	API: Code,
+};
+---
+
+<SidebarPersister>
+	<div data-sidebar-tabs>
+		<ul class="tab-list tabbed-sidebar" role="tablist" aria-label="Documentation sections">
+			{
+				tabs.map((tab) => {
+					const tabId = `sidebar-tab-${tab.label.toLowerCase().replaceAll(/\s+/g, '-')}`;
+					const isActive = tab === activeTab;
+					const TabIcon = iconByTabLabel[tab.label];
+
+					return (
+						<li class="tab-item" role="presentation">
+							<a
+								id={tabId}
+								href={`#${tabId}`}
+								role="tab"
+								aria-controls={`${tabId}-panel`}
+								aria-selected={isActive ? 'true' : undefined}
+								tabindex={isActive ? undefined : '-1'}
+								data-tab-trigger
+							>
+								{TabIcon && <TabIcon class="icon" aria-hidden="true" />}
+								<span>{tab.label}</span>
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+
+		{
+			tabs.map((tab) => {
+				const tabId = `sidebar-tab-${tab.label.toLowerCase().replaceAll(/\s+/g, '-')}`;
+				const isActive = tab === activeTab;
+				const entries = getTabEntries(tab);
+
+				return (
+					<div id={`${tabId}-panel`} role="tabpanel" aria-labelledby={tabId} hidden={!isActive}>
+						{tab.label === 'API' ? <ApiSidebarSublist sublist={entries} /> : <IconSidebarSublist sublist={entries} />}
+					</div>
+				);
+			})
+		}
+	</div>
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+	<MobileMenuFooter />
+</div>
+
+<style>
+	@layer components {
+		.tabbed-sidebar {
+			--tab-switcher-border-width: 1px;
+			--tab-switcher-padding: 0.25rem;
+			--tab-item-border-radius: 0.5rem;
+			--tab-switcher-border-radius: calc(var(--tab-item-border-radius) + var(--tab-switcher-padding));
+
+			--tab-switcher-border-color: var(--sl-color-hairline-light);
+			--tab-switcher-background-color: var(--sl-color-bg-nav);
+			--tab-switcher-text-color: var(--sl-color-gray-3);
+			--tab-switcher-text-color--active: var(--sl-color-white);
+			--tab-switcher-icon-color: var(--sl-color-gray-4);
+			--tab-switcher-icon-color--active: var(--sl-color-text-accent);
+			--tab-item-background-color--hover: var(--sl-color-gray-6);
+			--tab-item-background-color--active: var(--sl-color-black);
+			--tab-item-border-color--active: var(--tab-switcher-border-color);
+		}
+
+		:global([data-theme='dark']) .tabbed-sidebar {
+			--tab-switcher-text-color: var(--sl-color-gray-2);
+			--tab-switcher-icon-color: var(--sl-color-gray-3);
+			--tab-item-background-color--hover: var(--sl-color-bg);
+			--tab-item-background-color--active: var(--sl-color-gray-6);
+			--tab-item-border-color--active: transparent;
+		}
+
+		.tabbed-sidebar.tab-list {
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+			margin: 0 0 1.5rem;
+			padding: var(--tab-switcher-padding);
+			border: var(--tab-switcher-border-width) solid var(--tab-switcher-border-color);
+			border-radius: var(--tab-switcher-border-radius);
+			background-color: var(--tab-switcher-background-color);
+			list-style: none;
+		}
+
+		.tab-item a {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			border: var(--tab-switcher-border-width) solid transparent;
+			border-radius: var(--tab-item-border-radius);
+			padding: calc(0.5rem - var(--tab-switcher-border-width));
+			background-clip: padding-box;
+			color: var(--tab-switcher-text-color);
+			font-weight: 600;
+			line-height: var(--sl-line-height-headings);
+			text-decoration: none;
+		}
+
+		.tab-item a:hover {
+			color: var(--tab-switcher-text-color--active);
+			background-color: var(--tab-item-background-color--hover);
+		}
+
+		.tabbed-sidebar.tab-list .tab-item a[aria-selected='true'],
+		.tabbed-sidebar.tab-list .tab-item a[aria-selected='true']:hover,
+		.tabbed-sidebar.tab-list .tab-item a[aria-selected='true']:focus {
+			border-color: var(--tab-item-border-color--active);
+			color: var(--tab-switcher-text-color--active);
+			background-color: var(--tab-item-background-color--active);
+		}
+
+		.icon {
+			width: 1em;
+			height: 1em;
+			margin: 0.25rem;
+			color: var(--tab-switcher-icon-color);
+			flex-shrink: 0;
+		}
+
+		.tab-item a:hover .icon {
+			color: inherit;
+		}
+
+		.tabbed-sidebar.tab-list .tab-item a[aria-selected='true'] .icon {
+			color: var(--tab-switcher-icon-color--active);
+		}
+	}
+</style>
+
+<script>
+	for (const root of document.querySelectorAll('[data-sidebar-tabs]')) {
+		const tabs = Array.from(root.querySelectorAll('[data-tab-trigger]'));
+		const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+
+		const selectTab = (index) => {
+			tabs.forEach((tab, tabIndex) => {
+				const selected = tabIndex === index;
+				if (selected) {
+					tab.setAttribute('aria-selected', 'true');
+					tab.removeAttribute('tabindex');
+				} else {
+					tab.removeAttribute('aria-selected');
+					tab.setAttribute('tabindex', '-1');
+				}
+				panels[tabIndex].toggleAttribute('hidden', !selected);
+			});
+		};
+
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', (event) => {
+				event.preventDefault();
+				selectTab(index);
+			});
+
+			tab.addEventListener('keydown', (event) => {
+				const nextIndex =
+					event.key === 'ArrowDown' || event.key === 'ArrowRight'
+						? (index + 1) % tabs.length
+						: event.key === 'ArrowUp' || event.key === 'ArrowLeft'
+							? (index - 1 + tabs.length) % tabs.length
+							: event.key === 'Home'
+								? 0
+								: event.key === 'End'
+									? tabs.length - 1
+									: undefined;
+
+				if (nextIndex === undefined) return;
+
+				event.preventDefault();
+				selectTab(nextIndex);
+				tabs[nextIndex].focus();
+			});
+		});
+	}
+</script>
