@@ -7,7 +7,9 @@ sidebar:
 
 import DocsImage from '../../../components/DocsImage.astro';
 
-KOReader sync lets you push and pull reading progress between [KOReader](https://koreader.rocks/) and Grimmory. Read a few chapters on your e-reader, push the progress, and it shows up in Grimmory. Pick up on another device, pull the latest position, and continue where you left off.
+KOReader sync lets you push and pull reading progress between [KOReader](https://koreader.rocks/) and Grimmory.
+
+Read a few chapters on your e-reader, push the progress, and it shows up in Grimmory. Pick up on another device, pull the latest position, and continue where you left off.
 
 Grimmory matches books by file content hash, so the same physical file must exist in both places. In practice this means KOReader needs to have downloaded the book from Grimmory (typically via OPDS) so the file bytes match. A book sideloaded from a different source won't produce the same hash, and progress won't link up.
 
