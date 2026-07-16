@@ -1,6 +1,6 @@
 ---
 title: "Authentik"
-slug: authentication/authentik
+slug: docs/authentication/authentik
 sidebar:
   label: "Authentik"
   order: 3
@@ -13,7 +13,7 @@ This guide walks you through setting up [Authentik](https://goauthentik.io/) as 
 The setup has two parts: creating an OAuth2 application in Authentik, then entering the credentials in Grimmory. The whole process takes about 5 minutes.
 
 :::note[Already have OIDC working?]
-This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/authentication/oidc-settings) reference.
+This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/docs/authentication/oidc-settings) reference.
 :::
 
 ---
@@ -91,7 +91,7 @@ Control which Authentik users can access Grimmory. Users who aren't bound to the
 - Click **Save Binding**
 
 :::tip[Use groups for easier management]
-Create a group like `grimmory-users` in Authentik and bind it to the application. Then just add or remove users from the group instead of editing bindings each time. This also pairs well with Grimmory's [Group Mapping](/authentication/oidc-settings#group-mapping) feature.
+Create a group like `grimmory-users` in Authentik and bind it to the application. Then just add or remove users from the group instead of editing bindings each time. This also pairs well with Grimmory's [Group Mapping](/docs/authentication/oidc-settings#group-mapping) feature.
 :::
 
 ---
@@ -172,12 +172,12 @@ The fastest way to test without logging out of your admin account:
 
 ## What's Next
 
-Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/authentication/oidc-settings):
+Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/docs/authentication/oidc-settings):
 
-- **[User Provisioning](/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
-- **[Group Mapping](/authentication/oidc-settings#group-mapping):** Map Authentik groups to Grimmory permissions and library access (Authentik includes groups in the `groups` claim by default, no extra configuration needed)
-- **[OIDC-Only Mode](/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Authentik
-- **[Account Linking](/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
+- **[User Provisioning](/docs/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
+- **[Group Mapping](/docs/authentication/oidc-settings#group-mapping):** Map Authentik groups to Grimmory permissions and library access (Authentik includes groups in the `groups` claim by default, no extra configuration needed)
+- **[OIDC-Only Mode](/docs/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Authentik
+- **[Account Linking](/docs/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
 
 ---
 
@@ -191,7 +191,7 @@ Now that basic OIDC is working, you can configure additional features in Grimmor
 
 ### "User Not Provisioned" Error
 
-Auto-provisioning is off by default. Either enable it in [OIDC Settings](/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Authentik `preferred_username` (case-sensitive).
+Auto-provisioning is off by default. Either enable it in [OIDC Settings](/docs/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Authentik `preferred_username` (case-sensitive).
 
 ### "Invalid Client" Error
 
@@ -219,4 +219,4 @@ If you're using group mapping, check that:
 ## Additional Resources
 
 - [Authentik Documentation](https://goauthentik.io/docs/)
-- [Grimmory OIDC Settings Reference](/authentication/oidc-settings)
+- [Grimmory OIDC Settings Reference](/docs/authentication/oidc-settings)

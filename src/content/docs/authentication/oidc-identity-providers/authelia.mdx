@@ -1,6 +1,6 @@
 ---
 title: "Authelia"
-slug: authentication/authelia
+slug: docs/authentication/authelia
 sidebar:
   label: "Authelia"
   order: 5
@@ -13,7 +13,7 @@ This guide walks you through setting up [Authelia](https://www.authelia.com/) as
 By the end of this guide, your users will be able to sign in to Grimmory with their Authelia account. The setup takes about 5 minutes.
 
 :::note[Already have OIDC working?]
-This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/authentication/oidc-settings) reference.
+This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/docs/authentication/oidc-settings) reference.
 :::
 
 ---
@@ -48,7 +48,7 @@ identity_providers:
 
 **`authorization_policy: two_factor`** requires 2FA. Change to `one_factor` if you don't use MFA, or adjust based on your security needs.
 
-**`scopes`** must include `groups` if you want to use Grimmory's [Group Mapping](/authentication/oidc-settings#group-mapping) feature. Without it, Authelia won't include group memberships in the token.
+**`scopes`** must include `groups` if you want to use Grimmory's [Group Mapping](/docs/authentication/oidc-settings#group-mapping) feature. Without it, Authelia won't include group memberships in the token.
 
 :::danger[Don't forget the `groups` scope]
 If you plan to use group mapping, you must include `groups` in both the `scopes` list and the `claims_policy`. Without it, Authelia won't send group information to Grimmory, and group mapping will silently do nothing.
@@ -108,12 +108,12 @@ Verify that your username and email are correct.
 
 ## What's Next
 
-Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/authentication/oidc-settings):
+Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/docs/authentication/oidc-settings):
 
-- **[User Provisioning](/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
-- **[Group Mapping](/authentication/oidc-settings#group-mapping):** Map Authelia groups to Grimmory permissions and library access (make sure you included `groups` in the scopes and claims policy)
-- **[OIDC-Only Mode](/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Authelia
-- **[Account Linking](/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
+- **[User Provisioning](/docs/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
+- **[Group Mapping](/docs/authentication/oidc-settings#group-mapping):** Map Authelia groups to Grimmory permissions and library access (make sure you included `groups` in the scopes and claims policy)
+- **[OIDC-Only Mode](/docs/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Authelia
+- **[Account Linking](/docs/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
 
 ---
 
@@ -132,7 +132,7 @@ Now that basic OIDC is working, you can configure additional features in Grimmor
 
 ### "User Not Provisioned" Error
 
-Auto-provisioning is off by default. Either enable it in [OIDC Settings](/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Authelia username (case-sensitive).
+Auto-provisioning is off by default. Either enable it in [OIDC Settings](/docs/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Authelia username (case-sensitive).
 
 ### Group Mapping Not Working
 
@@ -156,4 +156,4 @@ This is controlled by Authelia's `authorization_policy`. If you set it to `two_f
 
 - [Authelia OpenID Connect Documentation](https://www.authelia.com/configuration/identity-providers/openid-connect/provider/)
 - [Authelia OIDC Client Configuration](https://www.authelia.com/configuration/identity-providers/openid-connect/clients/)
-- [Grimmory OIDC Settings Reference](/authentication/oidc-settings)
+- [Grimmory OIDC Settings Reference](/docs/authentication/oidc-settings)
