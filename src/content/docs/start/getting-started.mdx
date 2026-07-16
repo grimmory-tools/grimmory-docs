@@ -41,7 +41,7 @@ docker compose up -d
 docker compose ps   # verify both containers are running
 ```
 
-See the [Installation Guide](/installation) for the complete `docker-compose.yml` with all environment variables and configuration options.
+See the [Installation Guide](/docs/installation) for the complete `docker-compose.yml` with all environment variables and configuration options.
 
 ---
 
@@ -57,7 +57,7 @@ Open `http://localhost:6060` in your browser. On first launch, Grimmory shows a 
 | Password | Yes | Minimum 6 characters |
 | Confirm Password | Yes | Must match |
 
-After submitting, you'll be redirected to the login page. See [Initial Setup](/initial-setup) for details.
+After submitting, you'll be redirected to the login page. See [Initial Setup](/docs/initial-setup) for details.
 
 ---
 
@@ -80,7 +80,7 @@ Click **"Add a Library"** from the dashboard to open the library creation dialog
 
 Grimmory supports EPUB, PDF, MOBI, AZW3, FB2, CBZ/CBR/CB7, M4B, M4A, and MP3.
 
-After saving, the library scans your folders automatically. See [Set Up First Library](/library/setup-first-library) for a full walkthrough, and [Organization Modes](/library/organization-modes) for how to organize your files.
+After saving, the library scans your folders automatically. See [Set Up First Library](/docs/library/setup-first-library) for a full walkthrough, and [Organization Modes](/docs/library/organization-modes) for how to organize your files.
 
 ---
 
@@ -92,7 +92,7 @@ After saving, the library scans your folders automatically. See [Set Up First Li
 cp /path/to/your/books/* ~/grimmory/books/
 ```
 
-**Bookdrop:** Drop files into the bookdrop folder. Grimmory auto-detects them, fetches metadata, and stages them for review. You can edit metadata, assign a destination library, and finalize the import from the UI. See [Bookdrop](/bookdrop).
+**Bookdrop:** Drop files into the bookdrop folder. Grimmory auto-detects them, fetches metadata, and stages them for review. You can edit metadata, assign a destination library, and finalize the import from the UI. See [Bookdrop](/docs/bookdrop).
 
 **Web upload:** Use the upload button in the toolbar. You can upload directly to a library or to Bookdrop for staging. The default file size limit is 100 MB per file (configurable by admins).
 
@@ -124,7 +124,7 @@ Connect external reading apps via OPDS:
 
 Grimmory also provides a Komga-compatible API for apps like Tachiyomi and Komelia. OPDS uses its own user accounts, created by admins in the OPDS settings page.
 
-See [Kobo Integration](/integration/kobo) and [OPDS](/integration/opds) for detailed setup guides.
+See [Kobo Integration](/docs/integration/kobo) and [OPDS](/docs/integration/opds) for detailed setup guides.
 
 ---
 
@@ -132,17 +132,17 @@ See [Kobo Integration](/integration/kobo) and [OPDS](/integration/opds) for deta
 
 | Feature | Description |
 |---------|-------------|
-| [Metadata Configuration](/metadata/metadata-fetch-configuration) | Set up automatic metadata enrichment from online sources |
-| [Bookdrop Advanced Features](/bookdrop-advanced) | Bulk editing, filename pattern extraction, and more |
-| [Magic Shelf](/magic-shelf) | Dynamic, auto-updating shelves based on filters |
-| [Authentication](/authentication/overview) | OIDC providers, multi-user setup, and permissions |
+| [Metadata Configuration](/docs/metadata/metadata-fetch-configuration) | Set up automatic metadata enrichment from online sources |
+| [Bookdrop Advanced Features](/docs/bookdrop-advanced) | Bulk editing, filename pattern extraction, and more |
+| [Magic Shelf](/docs/magic-shelf) | Dynamic, auto-updating shelves based on filters |
+| [Authentication](/docs/authentication/overview) | OIDC providers, multi-user setup, and permissions |
 
 ---
 
 ## Common Questions
 
 **Can I access Grimmory remotely?**
-Yes, set up a reverse proxy with HTTPS. See the [Installation Guide](/installation).
+Yes, set up a reverse proxy with HTTPS. See the [Installation Guide](/docs/installation).
 
 **How do I backup my library?**
 Backup your `data` directory (application state) and your books directory regularly.
