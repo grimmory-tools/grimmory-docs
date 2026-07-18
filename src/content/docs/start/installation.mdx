@@ -139,9 +139,8 @@ a local configuration override file.
 
 The local YAML override file may be created with contents such as `spring: { datasource: { password: example-password } }`.
 
-To use this override file Grimmory must have an environment variable `SPRING_CONFIG_LOCATION` added with the value
-`classpath:/application.yaml,/my-config-override.yaml` - where `/my-config-override.yaml` is the location of your configuration
-with secrets injected.
+To use this override file Grimmory must have an environment variable `SPRING_CONFIG_ADDITIONAL_LOCATION` added with the value
+being the location of your configuration with secrets injected.
 :::
 
 ---
