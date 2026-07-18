@@ -133,6 +133,16 @@ services:
 For production, pin to specific versions (e.g., `grimmory/grimmory:v1.2.3`). Check [releases](https://github.com/grimmory-tools/grimmory/releases).
 :::
 
+:::caution[Security]
+If your security needs forbid secrets from being used in environment variables, you may use `SPRING_CONFIG_ADDITIONAL_LOCATION` to read
+a local configuration override file.
+
+The local YAML override file may be created with contents such as `spring: { datasource: { password: example-password } }`.
+
+To use this override file Grimmory must have an environment variable `SPRING_CONFIG_ADDITIONAL_LOCATION` added with the value
+being the location of your configuration with secrets injected.
+:::
+
 ---
 
 ### Step 3: Start the Containers
