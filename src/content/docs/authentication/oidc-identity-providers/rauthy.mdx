@@ -1,0 +1,166 @@
+---
+title: "Rauthy"
+slug: docs/authentication/rauthy
+sidebar:
+  label: "Rauthy"
+  order: 4
+---
+
+import DocsImage from '../../../../components/DocsImage.astro';
+
+This guide walks you through setting up [Rauthy](https://sebadob.github.io/rauthy/) as an OIDC provider for Grimmory. Rauthy is a lightweight, self-hosted identity provider that's simple to set up and operate, with secure defaults and lots of config options.
+
+By the end of this guide, your users will be able to sign in to Grimmory with their Rauthy account. The setup takes about 5 minutes.
+
+:::note[Already have OIDC working?]
+This guide covers the initial setup. For details on user provisioning, group mapping, OIDC-Only Mode, and other advanced features, see the [OIDC Settings](/docs/authentication/oidc-settings) reference.
+:::
+
+---
+
+## Part 1: Create the `offline_access` OIDC Scope
+
+Follow [Rauthy's documentation](https://sebadob.github.io/rauthy/work/custom_scopes_attributes.html) to create a custom scope and user attribute, both named `offline_access`. This is necessary for Grimmory to keep user session tokens refreshed, so that users stay logged in.
+
+:::note
+You can skip the last step("Allow Scope For Client"), since we haven't made the Grimmory OIDC client yet. We'll come back to that later.
+:::
+
+---
+
+## Part 2: Create an OIDC Client in Rauthy
+
+Open your Rauthy admin panel and go to **Clients**. Click **Add New**.
+
+<DocsImage src={"/img/authentication/rauthy/create-client"} alt={"Create Client"} manual />
+Fill in the client configuration:
+
+<DocsImage src={"/img/authentication/rauthy/client-details"} alt={"Client Details"} manual />
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| **Client ID** | `grimmory-client-id` | Used to authenticate Grimmory to Rauthy. Randomly generate this or come up with your own. |
+| **Name** | `Grimmory` | Shown to users on authentication pages |
+| **Confidential** | OFF | Grimmory uses PKCE, so this can be disabled |
+| **Redirect URIs** | `https://books.example.com/oauth2-callback` | Replace with your actual Grimmory domain |
+
+:::tip[Where do I find the exact Callback URL?]
+After you configure the provider in Grimmory (Part 3), the OIDC settings page shows a **Provider Configuration Reference** panel with the exact Redirect URI. You can come back to Rauthy and update the callback URL to match.
+:::
+
+**Local development example:**
+
+```text
+Redirect URIs: http://localhost:4200/oauth2-callback
+```
+
+Click **Save**.
+
+---
+
+## Part 3: Configuring The OIDC Client
+
+After saving, scroll down to the Scopes section. You'll need to add the previously configured `offline_access` scope to Grimmory's client.
+
+<DocsImage src={"/img/authentication/rauthy/client-scopes"} alt={"Client Scopes"} manual />
+
+Click the edit button in the first box, Allowed Scopes. Click the checkbox next to the `offline_access` scope, then press **Close**. You don't have to do this for the Default Scopes section.
+
+<DocsImage src={"/img/authentication/rauthy/client-scopes-editor"} alt={"Client Scopes Editor"} manual />
+
+Next, scroll down to the **Tokens** section, and find the two dropdowns to choose token algorithms. Change them from the default `EdDSA` to `RS512`.
+
+<DocsImage src={"/img/authentication/rauthy/token-algorithms"} alt={"Token Algorithms"} manual />
+
+---
+
+## Part 4: Configure Grimmory
+
+Navigate to **Settings > OIDC** in Grimmory.
+
+<DocsImage src={"/img/authentication/pocket-id/grimmory-oidc-settings"} alt={"Grimmory OIDC Settings"} />
+Fill in the provider configuration:
+
+| Field | Value |
+|-------|-------|
+| **Provider Name** | `Rauthy` (shown on the login button) |
+| **Client ID** | Paste the Client ID from Pocket ID |
+| **Client Secret** | Leave empty (public client) |
+| **Issuer URI** | Rauthy's Issuer URL (e.g., `https://rauthy.example.com/auth/v1/`) |
+
+The default claim mappings work with Pocket ID out of the box:
+
+| Claim | Value |
+|-------|-------|
+| **Username** | `preferred_username` |
+| **Email** | `email` |
+| **Display Name** | `name` |
+| **Groups** | `groups` |
+
+Click **Test Connection** to verify Grimmory can reach Pocket ID. All checks should pass.
+
+Click **Save**, then toggle **OIDC Login** to **ON** in the Login Methods section.
+
+---
+
+## Test It
+
+Open your Pocket ID dashboard and go to **My Apps**. You should see the Grimmory application card.
+
+<DocsImage src={"/img/authentication/pocket-id/app-card"} alt={"Grimmory App Card"} manual />
+Click the **Grimmory** card. Pocket ID handles the authentication and redirects you to Grimmory.
+
+<DocsImage src={"/img/grid/overview"} alt={"Login Success"} />
+You should be logged in automatically. Verify that your username and email are correct.
+
+**Alternative:** Open an incognito window, go to your Grimmory instance, and click "Sign in with Pocket ID".
+
+---
+
+## What's Next
+
+Now that basic OIDC is working, you can configure additional features in Grimmory's [OIDC Settings](/docs/authentication/oidc-settings):
+
+- **[User Provisioning](/docs/authentication/oidc-settings#user-provisioning):** Automatically create Grimmory accounts when users sign in for the first time
+- **[Group Mapping](/docs/authentication/oidc-settings#group-mapping):** Map Pocket ID groups to Grimmory permissions and library access
+- **[OIDC-Only Mode](/docs/authentication/oidc-settings#oidc-only-mode):** Hide the local login form and redirect everyone to Pocket ID
+- **[Account Linking](/docs/authentication/oidc-settings#link-existing-local-accounts):** Migrate existing local users to OIDC without losing their data
+
+---
+
+## Troubleshooting
+
+### Login Redirects But Fails
+
+- The **Callback URL** in Pocket ID must match the Redirect URI from Grimmory's Provider Configuration Reference panel exactly.
+- Make sure **Public Client** is toggled ON in Pocket ID.
+- Verify the Client ID has no extra spaces.
+
+### "User Not Provisioned" Error
+
+Auto-provisioning is off by default. Either enable it in [OIDC Settings](/docs/authentication/oidc-settings#user-provisioning), or create a Grimmory user with a username that exactly matches the Pocket ID username (case-sensitive).
+
+### "Invalid Client" Error
+
+- Double-check the Client ID. Copy it fresh from Pocket ID.
+- Make sure the Issuer URI matches your Pocket ID URL exactly.
+
+### Grimmory Can't Reach Pocket ID
+
+If **Test Connection** fails, Grimmory's server can't reach the Pocket ID discovery endpoint. Common causes:
+
+- If both run in Docker, make sure they're on the same network or that the external URL is reachable from Grimmory's container.
+- Check DNS resolution: can the Grimmory container resolve the Pocket ID hostname?
+- Check firewall rules between the two services.
+
+### Can't Access Grimmory At All
+
+- Admin backdoor: `/login?local=true`
+- Nuclear option: set `FORCE_DISABLE_OIDC=true` as an environment variable and restart
+
+---
+
+## Additional Resources
+
+- [Pocket ID Documentation](https://pocket-id.org/docs)
+- [Grimmory OIDC Settings Reference](/docs/authentication/oidc-settings)
