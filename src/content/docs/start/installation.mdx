@@ -58,7 +58,7 @@ Create a `.env` file:
 APP_USER_ID=1000
 APP_GROUP_ID=1000
 TZ=Etc/UTC
-BOOKLORE_PORT=6060
+SERVER_PORT=6060
 
 # Database Connection (Grimmory)
 DATABASE_URL=jdbc:mariadb://mariadb:3306/grimmory
@@ -90,12 +90,12 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - DATABASE_USERNAME=${DB_USER}
       - DATABASE_PASSWORD=${DB_PASSWORD}
-      - BOOKLORE_PORT=${BOOKLORE_PORT}
+      - SERVER_PORT=${SERVER_PORT}
     depends_on:
       mariadb:
         condition: service_healthy
     ports:
-      - "${BOOKLORE_PORT}:${BOOKLORE_PORT}"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     volumes:
       - ./data:/app/data
       - ./books:/books
