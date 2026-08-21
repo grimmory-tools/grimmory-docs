@@ -525,3 +525,18 @@ Two escape hatches:
 ### Auto-Redirect Loop
 
 If OIDC-Only Mode is enabled and the provider keeps bouncing back with errors, Grimmory has built-in loop protection. After 3 failed redirect attempts, it stops auto-redirecting and shows an error message on the login page with a link to the local login form.
+
+### Filtered host
+
+If the identity provider is hosted on a traditionally "local" or "reserved" IP address it may be blocked by Grimmory by default
+to protect users from [Server-Side Request Forgery](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery) (SSRF) attacks.
+
+This can be seen during an OIDC login attempt as a "Filtered Host" exception or when testing connections where the connection test will fail with the error "Filtered Host".
+
+:::danger[Disabling SSRF Protection]
+Disabling SSRF Protection means that any administrative user that can control your OIDC configuration can make blind GET
+requests to hosts that are possibly on private IP address space, such as local computers on your network.
+:::
+
+To disable SSRF protections on the OIDC flow, an **environment variable override** must be added: `OIDC_ALLOW_UNSAFE_HOSTS=true`.  Environment variable changes require a restart to take effect.
+
