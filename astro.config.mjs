@@ -6,6 +6,12 @@ const apiSidebarGroup = createOpenAPISidebarGroup();
 
 export default defineConfig({
   site: 'https://grimmory.org',
+  redirects: {
+    "/docs": {
+      status: 302,
+      destination: "/docs/getting-started/"
+    },
+  },
   fonts: [
     {
       provider: fontProviders.fontsource(),
