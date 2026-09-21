@@ -6,6 +6,7 @@ const apiSidebarGroup = createOpenAPISidebarGroup();
 
 export default defineConfig({
   site: 'https://grimmory.org',
+  trailingSlash: "always",
   redirects: {
     "/docs": {
       status: 302,
