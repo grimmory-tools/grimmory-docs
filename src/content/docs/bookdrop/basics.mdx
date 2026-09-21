@@ -12,14 +12,18 @@ Add books to your library by dropping files into a folder. Bookdrop watches for 
 
 <DocsImage src={"/img/bookdrop/processing-status"} alt={"Bookdrop Processing"} />
 :::caution[Network Storage Limitation]
-Bookdrop may not reliably detect new files on network-mounted storage (e.g., NFS or SMB). Many network filesystems do not propagate real-time filesystem events to the host process, so Bookdrop may not notice newly added files.
+Bookdrop watches the folder with Java `WatchService` (inotify on Linux). Network filesystems often do not deliver those events into the container, so new files can sit unnoticed until a scan.
+
+**NFS:** there is no mount option that turns remote creates into inotify events. Use a local disk path, or rely on a scan below.
+
+**SMB/CIFS:** keep the default `notify` option and do not add `nonotify`. That only helps when this host's CIFS client generates local events; it still will not see changes that never reach this machine.
 
 **If Bookdrop doesn't react when you add files:**
-- Use a local folder instead
-- Adjust mount options to enable notification support
-- Restart Grimmory to trigger a manual rescan
-- Open the Bookdrop UI and click the manual "Refresh" button to force a reload
-- You can also enable periodic scanning for the Bookdrop folder in **Settings → Tasks**.
+- Use a local folder instead of NFS/SMB
+- For SMB, drop `nonotify` from the mount if it is set
+- Restart Grimmory to trigger a startup rescan
+- Open the Bookdrop UI and click **Refresh**
+- Enable periodic scanning for the Bookdrop folder in **Settings → Tasks**
 :::
 
 :::tip[Pro Tip]
