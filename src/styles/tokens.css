@@ -187,13 +187,13 @@
 }
 
 :root {
-  --color-logo-start: var(--color-orange-300);
-  --color-logo-end: var(--color-orange-500);
+  --color-logo-start: #fdba74;
+  --color-logo-end: #f97316;
   --color-logo-bookmark: #ffffff;
 }
 :root[data-theme='light'] {
-  --color-logo-start: var(--color-orange-400);
-  --color-logo-end: var(--color-orange-600);
+  --color-logo-start: var(#fdba74);
+  --color-logo-end: var(#F16422);
   --color-logo-bookmark: #ff2126;
 }
 
