@@ -12,16 +12,18 @@ import DocsImage from '../../../components/DocsImage.astro';
 
 ---
 
-## Get Your Token
+## Get Your API Key
+
+API Keys have "scopes" to grant permissions during access. 
+
+Metadata search requires an API key with the `read:catalog` scope to search for
+and read book data from the Hardcover public catalog.
 
 1. Sign up or log in at [hardcover.app](https://hardcover.app)
-2. Go to [Account > API](https://hardcover.app/account/api) to open the API Access page
-3. Copy the token from the text box. It starts with `Bearer` followed by a long string beginning with `eyJ...`
-
-<DocsImage src={"/img/metadata/hardcover-api/hardcover-1"} alt={"Hardcover API Access page showing the Bearer token"} manual />
-:::caution[Copy Only the Token]
-The text box contains `Bearer eyJ...`. When pasting into Grimmory, copy only the part **after** `Bearer `. Do not include the word "Bearer" or the space after it.
-:::
+2. Go to [Account > Hardcover API > New API Key][hardcover-create-api-key]
+3. Give the API key a memorable name, such as `Grimmory Metadata Fetch`
+4. Check off the scopes needed by Grimmory
+5. Click Create Key and Copy the created API key from the text box
 
 ---
 
@@ -29,7 +31,7 @@ The text box contains `Bearer eyJ...`. When pasting into Grimmory, copy only the
 
 1. Open **Settings > Metadata 1**
 2. Enable the **Hardcover** checkbox
-3. Paste the token (without the `Bearer ` prefix) into the **API Token** field
+3. Paste the token into the **API Token** field
 4. Click **Save**
 
 <DocsImage src={"/img/metadata/hardcover-api/hardcover-2"} alt={"Grimmory Metadata 1 settings with the Hardcover token field"} />
@@ -41,6 +43,8 @@ Hardcover is now active as a metadata provider. You can set its priority for ind
 
 | Problem | What to check |
 |---------|---------------|
-| Authentication errors | Make sure you removed the `Bearer ` prefix. Check for extra spaces at the start or end of the token. |
-| Token stopped working | Hardcover tokens expire after 1 year. Go back to the API page and copy the new token. Hardcover may also reset tokens during their beta period. |
+| Authentication errors | Check for extra spaces at the start or end of the token. |
+| Token stopped working | Hardcover tokens default expire after 1 year. Go back to the API page and copy the new token. Hardcover may also reset tokens during their beta period. |
 | No results for a book | Hardcover's coverage is broad but not exhaustive. Verify the book exists on hardcover.app by searching manually. |
+
+[hardcover-create-api-key]: https://hardcover.app/account/api/keys/new?scope=read%3Acatalog

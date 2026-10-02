@@ -46,20 +46,39 @@ On your KOReader device, go to **Tools > Progress sync > Custom sync server** an
 
 ## Hardcover Integration
 
-Sync your KOReader reading progress from Grimmory to your [Hardcover](https://hardcover.app) account. When enabled, progress updates from KOReader are automatically pushed to Hardcover.
-
-Requires the **KOReader Sync** or **Kobo Sync** permission.
+Sync your reading progress from Grimmory to your [Hardcover](https://hardcover.app) account.
+When enabled, progress updates are automatically pushed to Hardcover.
 
 <DocsImage src={"/img/devices/hardcover-integration"} alt={"Hardcover Integration"} />
+
+Requires a Hardcover API key with "scopes" to grant permissions during access.
+
+| Scope             | Purpose                                                        |
+| ----------------- | -------------------------------------------------------------- |
+| `read:catalog`    | Search for books.                                              |
+| `read:library`    | Get books in your Hardcover library.                           |
+| `read:me:content` | Get your reading progress for books in your Hardcover library. |
+| `write:library`   | Write progress to your Hardcover library.                      |
+
+To create an API key:
+
+1. Sign up or log in at [hardcover.app](https://hardcover.app)
+2. Go to [Account > Hardcover API > New API Key][hardcover-create-api-key]
+3. Give the API key a memorable name, such as `Grimmory Sync`
+4. Check off the scopes needed by Grimmory
+5. Click Create Key and Copy the created API key from the text box
+
 ### Configuration
 
 | Setting | Description |
 |---------|-------------|
-| **Sync KOReader Reading Progress to Hardcover** | Enable or disable the sync. When enabled, the API Key field appears. |
-| **Hardcover API Key** | Your personal API key from Hardcover. Get it from [hardcover.app/account/api](https://hardcover.app/account/api). This key is private to your account. |
+| **Enable Hardcover Sync** | Enable or disable the sync. When enabled, the API Key field appears. |
+| **Hardcover API Key** | Your personal API key from Hardcover.  This key is private to your account. |
 
 :::note[How It Works]
-When KOReader progress is synced to Grimmory, Grimmory automatically forwards the update to Hardcover. Books are marked as "Currently Reading" when progress begins and "Read" when progress reaches 99%+. Grimmory matches books to Hardcover using the Hardcover book ID stored in metadata.
+Grimmory automatically forwards any progress update to Hardcover. Books are marked as "Currently Reading"
+when progress begins and "Read" when progress reaches 99%+. Grimmory matches books to Hardcover using
+the Hardcover book ID stored in metadata.
 :::
 
 ---
@@ -130,3 +149,5 @@ KEPUB and CBX conversions take extra processing time. Large files or libraries w
 - Personal ratings set on Kobo sync into Grimmory on the next Kobo sync. Kobo ratings (1-5) are converted to Grimmory personal ratings (0-10). Existing Grimmory personal ratings are not pushed to Kobo.
 - KEPUB conversion uses the [kepubify](https://github.com/pgaskin/kepubify) tool and is handled server-side.
 - All device settings changes are reflected immediately without needing to restart the server.
+
+[hardcover-create-api-key]: https://hardcover.app/account/api/keys/new?scope=read%3Acatalog+read%3Alibrary+read%3Ame%3Acontent+write%3Alibrary
