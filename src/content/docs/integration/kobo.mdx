@@ -12,7 +12,7 @@ Kobo sync lets you send books from Grimmory to your Kobo eReader and sync readin
 
 Reading progress sync is bidirectional, and personal ratings set on Kobo sync back to Grimmory. Your shelves and magic shelves also carry over as Kobo collections, so the organization you've built in Grimmory follows you to the device.
 
-You control what gets synced through a dedicated Kobo shelf: add a book to the shelf and it appears on your device, remove it and it disappears on the next sync.
+You control what gets synced through the dedicated Kobo shelf, or by turning on **Sync to Kobo** for any shelf or magic shelf: add a book to a synced shelf and it appears on your device, remove it and it disappears on the next sync.
 
 :::note[Kobo Account Required]
 Your device must be signed in to a Kobo account for this integration to function. 
@@ -124,15 +124,25 @@ With the Kobo configured, you control what appears on the device through the Kob
 5. Your Grimmory books appear on the device, ready to read
 
 <DocsImage src={"/img/kobo/synced-books"} alt={"Kobo device My Books screen showing the synced books from Grimmory"} manual />
+### Sync a Whole Shelf
+
+Instead of adding books one by one, you can sync an entire shelf or magic shelf. Tick **Sync this shelf to my Kobo** when creating or editing a shelf (or **Sync to Kobo** in the magic shelf builder). Every book on that shelf is then delivered to your device, and books you add to the shelf later follow on the next sync.
+
+- The legacy **Kobo** shelf keeps working alongside synced shelves. A book is sent to the device if it is on any of them.
+- A book that sits on several synced shelves is only sent once.
+- Magic shelves are re-evaluated on every sync, so books that start or stop matching the rules are added or removed automatically. Only the first 250 matching books of a magic shelf are synced.
+- Unticking the option removes the shelf's books from the device on the next sync, unless they are still on another synced shelf or the Kobo shelf.
+- The option is only available to users with the **Kobo Sync** permission.
+
 ---
 
 ## Shelves as Collections
 
 Your Grimmory shelves (including magic shelves) automatically sync to the Kobo as collections. This means the shelf organization you've set up in Grimmory is mirrored on the device.
 
-There's one important filter: only books that are in your Kobo shelf appear in collections on the device. If your "Favorites" shelf has 10 books but only 4 of those are also in the Kobo shelf, the "Favorites" collection on the Kobo shows just those 4. Shelves with no Kobo-synced books don't appear as collections at all.
+There's one important filter: only books that are being synced to the device appear in collections. If your "Favorites" shelf has 10 books but only 4 of those are also on the Kobo shelf (or on another shelf with **Sync to Kobo** enabled), the "Favorites" collection on the Kobo shows just those 4. A shelf that has **Sync to Kobo** enabled shows all of its books. Shelves with no Kobo-synced books don't appear as collections at all.
 
-This gives you full control. The Kobo shelf determines *which* books are on the device, and your other shelves determine *how* they're organized.
+This gives you full control. The Kobo shelf and synced shelves determine *which* books are on the device, and your other shelves determine *how* they're organized.
 
 ---
 
@@ -158,6 +168,8 @@ The book is removed from your Kobo shelf in Grimmory but stays in your library. 
 2. Click the three-dot menu on the book and select **Assign Shelf**
 3. Uncheck the Kobo shelf and save
 4. Sync your Kobo device to apply the change
+
+For books that arrived through a synced shelf, remove them from that shelf or untick **Sync this shelf to my Kobo**, then sync the device.
 
 ---
 
@@ -200,7 +212,7 @@ Once granted, the user can find their own sync token in **Settings > Devices** a
 
 | Problem | What to check |
 |---------|---------------|
-| Books not appearing on Kobo | Make sure the books are in your Kobo shelf, then trigger a sync on the device. Check that the `api_endpoint` in the config file is correct and reachable from the Kobo's network. |
+| Books not appearing on Kobo | Make sure the books are in your Kobo shelf or on a shelf with **Sync to Kobo** enabled, then trigger a sync on the device. Check that the `api_endpoint` in the config file is correct and reachable from the Kobo's network. |
 | Sync hangs or fails | If behind a reverse proxy, verify the proxy headers and buffer settings are configured (see above). The Kobo sends large headers that default buffer sizes will reject. |
 | "Store unavailable" on Kobo | The Kobo can't reach Grimmory. Check the URL in `api_endpoint`, make sure the port is accessible, and confirm HTTPS is working if you're using it. |
 | Reading progress not syncing back | Progress syncs during the next device sync. Make sure you trigger a sync on the Kobo after reading. |
