@@ -211,6 +211,10 @@ ports:
   - "8080:6060" # Access via http://localhost:8080
 ```
 
+If you edit the mapping by hand, only change the left side. The right side must stay equal to `SERVER_PORT` (or the older `BOOKLORE_PORT`), the port Grimmory listens on inside the container. If they differ, for example `"8080:6060"` with `SERVER_PORT=8080`, Docker forwards to a port where nothing listens and the browser shows an empty response (`ERR_EMPTY_RESPONSE`).
+
+The same goes for a second instance on the same host: a different port on the left, the container port unchanged.
+
 ### Can't Access from Network
 
 Open the port in your firewall:
