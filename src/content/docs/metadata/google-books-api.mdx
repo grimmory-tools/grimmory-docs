@@ -1,0 +1,41 @@
+---
+title: "Google Books API Key Setup"
+slug: docs/metadata/google-books-api
+sidebar:
+  label: "Google Books API"
+  order: 8
+---
+
+import DocsImage from '../../../components/DocsImage.astro';
+
+[Google Books](https://developers.google.com/books) has an API that can be used as a metadata provider. To use it in Grimmory, you need a free API key.
+
+---
+
+## Get Your API Key
+
+API Keys have "scopes" to grant permissions during access. 
+
+Metadata search requires an API key with the `read:catalog` scope to search for
+and read book data from the Hardcover public catalog.
+
+1. Sign up or log in to a [Google Cloud Account](https://docs.cloud.google.com/docs/get-started/)
+2. Create a Project within your Google Cloud Account.
+3. Search for the Books API and select Enable.
+4. In the Credentials section, create an API key for the Books API. Give the API key a memorable name, such as `Grimmory Metadata Fetch`
+    5. Copy the created API key from the text box
+
+---
+
+## Configure Grimmory
+
+1. Open **Settings > Metadata 1**
+2. Paste the key into the **Google Books API Key** field
+3. Enable the **Google Books** checkbox
+4. (Optional) Select a language restriction.
+5. Click **Save**
+
+<DocsImage src={"/img/metadata/google-books-api/google-books-api-entry"} alt={"Grimmory Metadata 1 settings with the Google Books optional language restriction and required APIkey field"} />
+Google Books is now active as a metadata provider. You can set its priority for individual fields in the Advanced Metadata Fetch dialog. To verify the connection, navigate to the "Search Metadata" page for any individual book and search using the Google provider selected.
+
+---
