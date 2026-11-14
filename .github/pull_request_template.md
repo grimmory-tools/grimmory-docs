@@ -34,7 +34,7 @@
 
 - [ ] This PR links and implements an accepted issue.
 - [ ] This PR is a single focused change.
-- [ ] I ran the relevant validation for this change, such as `npm run build` and/or `npm run typecheck`.
+- [ ] I ran the relevant validation for this change, such as `npm run build`.
 - [ ] I have added screenshots if there were any UI changes.
 - [ ] I have disclosed any AI usage as per the organization AI Policy above.
 - [ ] I understand all of my submitted changes.
